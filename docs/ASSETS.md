@@ -29,9 +29,11 @@ Reviewed 2026-09-25. Each local photograph is a real Wikimedia Commons image red
 | smarket.jpg | Ypsilon from Finland | [S Market Ranua](https://commons.wikimedia.org/wiki/File:S_Market_Ranua.jpg) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | dur.jpg | Mariam elr | [DUR stop sign](https://commons.wikimedia.org/wiki/File:Stop_sign,_Beyoğlu_7May23.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
+| yuque-botswana-covered-roads.png (source diagram) | Plonk It; Chinese adaptation by 图寻汉化组 | [Botswana guide](https://www.yuque.com/chaofun/tuxun/botswana) | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
+
 The local country flag SVGs derive from [flag-icons](https://github.com/lipis/flag-icons), MIT licensed. Its license should accompany redistribution; the project keeps the package in `package-lock.json`. Flag illustrations can have additional jurisdiction-specific rules. The UI does not depend on operating-system flag emoji.
 
-One original Plonk It road-coverage diagram from the user-provided Yuque library is kept separately in `docs/images/yuque-botswana-covered-roads.png`, with source, creator, CC BY-NC-SA 4.0 terms and unchanged watermarks explained in [YUQUE_REVIEW.md](YUQUE_REVIEW.md). It is not a clue-card photograph and the code license does not cover it.
+One original Plonk It road-coverage diagram from the user-provided Yuque library is displayed only in the Botswana clue info as source context. It is stored in `public/images/yuque-botswana-covered-roads.png`; source, creator, CC BY-NC-SA 4.0 terms and unchanged watermarks are explained in [YUQUE_REVIEW.md](YUQUE_REVIEW.md). It is not a clue-card photograph, is not scored, and the code license does not cover it.
 
 No tutorial-site Street View screenshot or Google Street View screenshot is packaged. Source attribution and a compliant photo license permit local reuse; a source URL alone does not. New images must be manually checked for subject matter, license scope, required credit and recognizable content before their asset status becomes approved.
 

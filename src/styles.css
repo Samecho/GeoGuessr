@@ -10,3 +10,4 @@
 .instance-strip{display:flex;gap:8px;margin-top:10px}.instance-strip button{width:76px;height:55px;padding:2px;background:#edf2f3;border:2px solid transparent;border-radius:6px;overflow:hidden}.instance-strip button.active{border-color:#168090}.instance-strip img{width:100%;height:100%;object-fit:cover}
 
 .exclusion-help{font-size:10px;line-height:1.4;color:#7d9198;margin:0 0 12px}
+.source-figure{margin:16px 0 2px;border:1px solid #dce6e8;border-radius:8px;padding:10px;background:#f6f9f9}.source-figure img{display:block;width:100%;max-height:330px;object-fit:contain}.source-figure figcaption{margin-top:7px;color:#607b83;font-size:11px;line-height:1.45}

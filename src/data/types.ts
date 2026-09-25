@@ -20,6 +20,7 @@ export type Clue = {
   id: string; categoryId: string; groupId: string; appearance: Text2; formalName: Text2
   identify: Text2; geography: Text2; strength: Text2; caveat: Text2
   sourceUrls: string[]; reviewed: string; assetIds: string[]; tags: string[]
+  referenceAssetIds?: string[]
   exclusionAllowed?: boolean
 }
 export type Observation = { clueId: string; mode: 'seen' | 'excluded'; certainty: 'certain' | 'uncertain' }

@@ -13,9 +13,9 @@
 
 ## 使用了语雀中的图片
 
-下图是[博茨瓦纳指南](https://www.yuque.com/chaofun/tuxun/botswana)里的**道路覆盖示意图**，由 Plonk It 绘制、图寻汉化组转载，图寻文档保留的 `TuxunDoc` 与 `plonkit.net/guide` 标识未移除。它是人工绘制的覆盖示意，不含抽离的 Google Street View 画面。依[图寻版权声明](https://www.yuque.com/chaofun/tuxun/copyright)对 Plonk It Guide 系列的授权，以 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 单独再分发；本项目的代码许可证不适用于此图。原图仅用于研究记录，不作为当前道路覆盖清单或可选视觉线索，因为图中道路覆盖可能已变化。
+下图是[博茨瓦纳指南](https://www.yuque.com/chaofun/tuxun/botswana)里的**道路覆盖示意图**，由 Plonk It 绘制、图寻汉化组转载，图寻文档保留的 `TuxunDoc` 与 `plonkit.net/guide` 标识未移除。它是人工绘制的覆盖示意，不含抽离的 Google Street View 画面。依[图寻版权声明](https://www.yuque.com/chaofun/tuxun/copyright)对 Plonk It Guide 系列的授权，以 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 单独再分发；本项目的代码许可证不适用于此图。原图在博茨瓦纳条纹标牌杆的说明中作为资料背景展示，不作为当前道路覆盖清单或可选视觉线索，因为图中道路覆盖可能已变化。
 
-![Plonk It 博茨瓦纳道路覆盖示意图，保留原有署名与水印](images/yuque-botswana-covered-roads.png)
+![Plonk It 博茨瓦纳道路覆盖示意图，保留原有署名与水印](../public/images/yuque-botswana-covered-roads.png)
 
 知识库中的大量实景图是 Google Street View 截图，图寻或译者的许可不能替代底层画面权利。因此本轮**没有**把这些截图抽出放进公开图库。实际新增 13 张 Wikimedia Commons 独立授权实拍，支持 14 条带图线索；其中同一张爱尔兰照片展示了两种不同视觉观察，相关规则归入同一证据组。逐张作者、许可与原图见 [ASSETS.md](ASSETS.md)。例如语雀[英国指南](https://www.yuque.com/chaofun/tuxun/united-kingdom)讲贝利沙灯，对应图卡采用 Basher Eyre 的 CC BY-SA 实拍；语雀[巴西指南](https://www.yuque.com/chaofun/tuxun/brazil)讲卡廷加干旱景观，对应图卡采用 A. Duarte 的 CC BY-SA 道路照片。这样使用了知识库的资料和一张原创示意图，同时保持图库照片的独立再分发依据。
 

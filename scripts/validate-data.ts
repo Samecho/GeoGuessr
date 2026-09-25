@@ -48,6 +48,7 @@ for (const clue of clues) {
   if (!clue.sourceUrls.length) fail(`${clue.id}: no sources`)
   clue.sourceUrls.forEach((source) => url(clue.id, source))
   clue.assetIds.forEach((id) => { if (!assetIds.has(id)) fail(`${clue.id}: unknown asset ${id}`) })
+  clue.referenceAssetIds?.forEach((id) => { if (!assetIds.has(id)) fail(`${clue.id}: unknown reference asset ${id}`) })
 }
 for (const scheme of regionSchemes) {
   if (!countryIds.has(scheme.countryId)) fail(`${scheme.countryId}: scheme for excluded country`)

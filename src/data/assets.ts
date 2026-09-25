@@ -34,6 +34,7 @@ export const assets: Asset[] = [
   a('irish-diamond', 'irish.jpg', 'Sign-1020567,_Blanchardstown,_Dublin,_Ireland.jpg', 'Leimanbhradain', 'CC BY-SA 4.0', ccsa + '4.0/'),
   a('s-market', 'smarket.jpg', 'S_Market_Ranua.jpg', 'Ypsilon from Finland', 'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/'),
   a('dur-sign', 'dur.jpg', 'Stop_sign,_Beyoğlu_7May23.jpg', 'Mariam elr', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  { id: 'yuque-botswana-road-map', path: '/images/yuque-botswana-covered-roads.png', sourceUrl: 'https://www.yuque.com/chaofun/tuxun/botswana', author: 'Plonk It; Chinese adaptation by 图寻汉化组', license: 'CC BY-NC-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-nc-sa/4.0/', attribution: 'Plonk It / 图寻汉化组, Botswana road coverage diagram from 图寻文档; original marks retained', redistribution: 'The Yuque copyright page grants CC BY-NC-SA 4.0 for the translated Plonk It Guide series; this original diagram contains no extracted Street View frame and is shown only with the applicable attribution.', reviewed: '2026-09-25', status: 'approved' },
 ]
 export const assetById = new Map(assets.map((asset) => [asset.id, asset]))
 

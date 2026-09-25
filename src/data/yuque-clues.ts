@@ -12,10 +12,10 @@ const notes: Record<Kind, { strength: Text2; caveat: Text2 }> = {
 }
 const guide = (slug: string) => `https://www.yuque.com/chaofun/tuxun/${slug}`
 const clue = (id: string, categoryId: string, groupId: string, appearance: Text2, formalName: Text2,
-  identify: Text2, geography: Text2, slug: string, kind: Kind, assetIds: string[] = []): Clue => ({
+  identify: Text2, geography: Text2, slug: string, kind: Kind, assetIds: string[] = [], referenceAssetIds: string[] = []): Clue => ({
   id, categoryId, groupId, appearance, formalName, identify, geography,
   strength: notes[kind].strength, caveat: notes[kind].caveat,
-  sourceUrls: [guide(slug)], reviewed: '2026-09-25', assetIds, tags: [kind],
+  sourceUrls: [guide(slug)], reviewed: '2026-09-25', assetIds, referenceAssetIds, tags: [kind],
 })
 
 // Independently worded observations researched from the linked Yuque guides.
@@ -23,7 +23,7 @@ const clue = (id: string, categoryId: string, groupId: string, appearance: Text2
 export const yuqueClues: Clue[] = [
   clue('southern-yellow-edge', 'markings', 'southern-africa-lines', t('Yellow road edge, white center', '黄外线与白色中心线'), t('Southern African yellow shoulder line', '非洲南部黄色道路边线'), t('Check that yellow marks the road edge, not the opposing-lane divider.', '确认黄色位于道路外缘，而非对向车道分界。'), t('Documented across South Africa, Botswana, Eswatini and Lesotho.', '已记录于南非、博茨瓦纳、斯威士兰和莱索托。'), 'south-africa', 'road'),
   clue('southern-triple-center', 'markings', 'southern-africa-lines', t('Three parallel center markings', '三条平行中心标线'), t('Triple center-line marking', '三重道路中心线'), t('Look for two outer solid lines around a third line on a main road.', '看主路中央两条外侧实线夹着第三条线。'), t('Described in South Africa and neighbouring southern African countries.', '南非及相邻非洲南部国家的教程均有记载。'), 'south-africa', 'road'),
-  clue('botswana-striped-signpost', 'posts', 'striped-posts', t('Signpost painted black and yellow', '黑黄相间的标牌杆'), t('Striped warning-sign support', '条纹警示标牌支杆'), t('Use the actual sign support with alternating bands, not an unrelated fence.', '辨认标牌支杆的交替色带，而非附近围栏。'), t('Highlighted in the Botswana guide; similar roadside paint can occur elsewhere.', '博茨瓦纳教程重点提及；其他地方也可能有相似路侧涂装。'), 'botswana', 'road'),
+  clue('botswana-striped-signpost', 'posts', 'striped-posts', t('Signpost painted black and yellow', '黑黄相间的标牌杆'), t('Striped warning-sign support', '条纹警示标牌支杆'), t('Use the actual sign support with alternating bands, not an unrelated fence.', '辨认标牌支杆的交替色带，而非附近围栏。'), t('Highlighted in the Botswana guide; similar roadside paint can occur elsewhere.', '博茨瓦纳教程重点提及；其他地方也可能有相似路侧涂装。'), 'botswana', 'road', [], ['yuque-botswana-road-map']),
   clue('mexico-black-base-post', 'posts', 'road-post-shape', t('Small white cylinder with black base', '底部黑色的小白色圆柱桩'), t('Short Mexican-style delineator', '短圆柱形引导桩'), t('Look for a low white cylinder with a black foot; some have a yellow reflector.', '看低矮白色圆柱与黑色底部，有的带黄色反光片。'), t('The Mexico guide documents this design; avoid an exclusivity claim without a wider survey.', '墨西哥教程记录此式样；缺少广域调查，不作独有判断。'), 'mexico', 'road'),
   clue('mexico-octagonal-pole', 'poles', 'utility-pole-shape', t('Octagonal concrete utility pole', '八棱混凝土电线杆'), t('Octagonal concrete distribution pole', '八棱混凝土配电杆'), t('Count the flat faces on the shaft rather than relying only on the concrete color.', '观察杆身多个平面，而非仅凭混凝土颜色判断。'), t('Commonly described in Mexico and also reported in Colombia.', '墨西哥教程称常见，哥伦比亚也有。'), 'mexico', 'road'),
   clue('thai-black-base-signpost', 'signs', 'signpost-paint', t('White square signpost with black foot', '底部涂黑的白色方形路牌杆'), t('Thai-style painted sign support', '方形涂色路牌支杆'), t('Check the heavy square support and black paint at its lower end.', '观察粗重方形支杆及底部黑漆。'), t('Highlighted by the Thailand guide as a useful local road-sign detail.', '泰国教程将其列为有用的当地路牌细节。'), 'thailand', 'road'),

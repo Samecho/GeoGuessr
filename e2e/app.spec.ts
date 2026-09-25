@@ -90,3 +90,14 @@ test('multiple photos of one clue remain a single selectable observation', async
   await expect(page.locator('.modal-image img')).toHaveAttribute('src', /yellow-rear-plate\.jpg/)
   await expect(card).toHaveAttribute('aria-pressed', 'false')
 })
+
+test('Yuque source diagram is viewable in info without selecting the observation', async ({ page }) => {
+  await page.goto('/')
+  const clue = page.locator('.text-clue').filter({ hasText: 'Signpost painted black and yellow' })
+  await clue.getByRole('button', { name: 'About this clue: Signpost painted black and yellow' }).click()
+  await expect(clue.locator('.text-clue-pick')).toHaveAttribute('aria-pressed', 'false')
+  const diagram = page.locator('.source-figure img')
+  await expect(diagram).toBeVisible()
+  expect(await diagram.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+  await expect(page.locator('.source-figure figcaption')).toContainText('historical context')
+})

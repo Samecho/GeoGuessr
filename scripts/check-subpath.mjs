@@ -18,6 +18,8 @@ try {
   if (broken.length) throw new Error(`Broken images: ${broken.join(', ')}`)
   await page.reload()
   await page.getByText('All approved clues').waitFor()
+  await page.getByRole('button', { name: 'About this clue: Signpost painted black and yellow' }).click()
+  await page.locator('.source-figure img').evaluate(async (image) => { await image.decode() })
   if (failed.length) throw new Error(`Failed requests: ${failed.join(', ')}`)
   console.log('Pages-style /GeoGuessr/ route, refresh, photos and flags loaded without HTTP errors.')
 } finally {
