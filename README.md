@@ -22,7 +22,7 @@ Requires Node 22 and npm. Run `npm ci`, then `npm run dev`. The first visit is E
 
 - `src/data/countries.ts`: 113 current official road-imagery candidates, including limited-road regions as distinct IDs. The full candidate-by-candidate audit is in [`docs/DATA_COVERAGE.md`](docs/DATA_COVERAGE.md); boundary decisions are in [`docs/COVERAGE.md`](docs/COVERAGE.md).
 - `src/data/regions.ts`: mutually exclusive US, Canada and Brazil partitions. A region panel without an active reviewed local rule shows a neutral empty state. India is deliberately a region-data gap while road-car extent and internal partition evidence are checked.
-- `src/data/categories.ts`, `clues.ts`, `rules.ts`: bilingual category tree, observations and sourced heuristic conditions. Rules are separate from React and evaluated from scratch. See [`docs/SCORING.md`](docs/SCORING.md).
+- `src/data/categories.ts`, `clues.ts`, `rules.ts`: bilingual category tree, observations and sourced heuristic conditions. Rules are separate from React and evaluated from scratch. See [`docs/SCORING.md`](docs/SCORING.md). The additional sourced batches are in `yuque-clues.ts` and `yuque-rules.ts`, with research notes in [`docs/YUQUE_REVIEW.md`](docs/YUQUE_REVIEW.md).
 - `src/data/assets.ts`: approved, attributed local real photos only. Photo credits and separate third-party licenses are in [`docs/ASSETS.md`](docs/ASSETS.md). These images are not relicensed by this project's code license.
 - `src/i18n.ts` and each data item's `{ en, zh }`: UI and content translations. Add both languages with every user-facing data change; IDs and score calculation never depend on the display language.
 

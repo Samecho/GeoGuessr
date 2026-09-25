@@ -1,4 +1,5 @@
 import type { Clue, Text2 } from './types'
+import { yuqueClues } from './yuque-clues'
 const t = (en: string, zh: string): Text2 => ({ en, zh })
 export const schemaVersion = 1
 const reviewed = '2026-09-25'
@@ -105,5 +106,6 @@ export const clues: Clue[] = [
     sourceUrls: ['https://www.gesetze-im-internet.de/stvo_2013/BJNR036710013.html','https://www.geocoach.me/maps/027b9391-6ab0-406a-9271-ecf49022e0ae/geocoach-world-bollards-0c9b8d10','https://commons.wikimedia.org/wiki/File:Hectoreflecto_D_26k346.jpg'], reviewed, assetIds: ['black-white-post'], tags: ['post','road'],
   },
 ]
+clues.push(...yuqueClues)
 export const clueById = new Map(clues.map((clue) => [clue.id, clue]))
 

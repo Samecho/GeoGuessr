@@ -95,9 +95,9 @@ if (process.argv.includes('--write-report')) {
     '## Cross-country clues', '',
     ...clues.filter((clue) => rules.filter((rule) => rule.scope === 'country' && rule.targets.length > 1 && [...(rule.when.all || []), ...(rule.when.any || [])].includes(clue.id)).length).map((clue) => `- ${clue.appearance.en} (${clue.id})`), '',
     '## Open gaps', '',
-    '- Most candidates have only broad driving-side support and no country-specific clue profile.',
-    '- Most countries have no reviewed internal region scheme or region rules. Brazil has a coarse scheme without regional scoring rules; India has no published region scheme.',
-    '- Street View car/camera, more reflector-post and pole types, guardrails, terrain, plants, soil and buildings await independently licensed photos and further source review.',
+    '- Many candidates still have only broad driving-side or shared-writing support; rule counts do not mean a country has a deep clue profile.',
+    '- Most countries have no reviewed internal region scheme or region rules. Brazil has two coarse landscape rules in its five-region scheme; India has no published region scheme.',
+    '- Street View car/camera meta and many reflector-post, pole, guardrail, terrain, plant, soil and building variants await independently licensed photos and further source review.',
     '- Approved assets have recorded licenses; additional photos require manual visual and rights review.', '',
   ]
   mkdirSync('docs', { recursive: true })

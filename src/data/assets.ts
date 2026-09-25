@@ -21,6 +21,19 @@ export const assets: Asset[] = [
   a('yellow-rear-plate', 'yellow-rear-plate.jpg', 'Datsun_Cherry_E10_100A_-_Yellow_saloon_rear.jpg', 'Colin Smith', 'CC BY-SA 2.0', ccsa + '2.0/'),
   a('concrete-pole', 'concrete-pole.jpg', 'Power_pole_with_line_anchoring.jpg', 'Matthieu2743', 'CC BY-SA 4.0', ccsa + '4.0/'),
   a('black-white-post', 'black-white-post.jpg', 'Hectoreflecto_D_26k346.jpg', 'Pudding4brains', 'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/'),
+  a('alto-sign', 'alto.jpg', 'ALTO_sign.jpg', 'Dickelbers', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  a('philippine-tricycle', 'tricycle.jpg', 'A_tricycle_on_the_streets_of_Talisay,_Cebu.jpg', 'Øyvind Holmstad', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  a('araucaria', 'araucaria.jpg', 'Araucárias_(31463020692).jpg', 'Rafael Vianna Croffi', 'CC BY 2.0', by + '2.0/'),
+  a('belisha', 'belisha.jpg', 'Belisha_beacon_in_Fetter_Lane_-_geograph.org.uk_-_1802863.jpg', 'Basher Eyre', 'CC BY-SA 2.0', ccsa + '2.0/'),
+  a('caatinga-road', 'caatinga.jpg', 'Estrada_entre_Canudos_e_Jeremoabo_na_Bahia_Road_between_Canudos_and_Jeremoabo_in_Bahia_(12182535453).jpg', 'A. Duarte', 'CC BY-SA 2.0', ccsa + '2.0/'),
+  a('k-market', 'kmarket.jpg', 'K-Market_Inari_retailer_by_Inarintie_in_Inari_village,_Inari,_Lapland,_Finland,_2021_September.jpg', 'Ximonic (Simo Räsänen)', 'CC BY-SA 3.0', ccsa + '3.0/'),
+  a('tamil-road', 'tamil.jpg', 'Karadivavi_road_sign_board_in_Tamil_Nadu_JEG6438.JPG', 'PJeganathan', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  a('hangul-road', 'hangul.jpg', 'Korean_local_line_1011.JPG', 'hyolee2', 'CC BY-SA 3.0', ccsa + '3.0/'),
+  a('lao-stop', 'lao.jpg', 'Luang-Prabang_Laos_Stop-Sign-01.jpg', 'CEphoto, Uwe Aranas', 'CC BY-SA 3.0', ccsa + '3.0/'),
+  a('khmer-road', 'khmer.jpg', 'Road_signs_in_Cambodia._Electricity_Factory_5_km.jpg', 'Dmitry Makeev', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  a('irish-diamond', 'irish.jpg', 'Sign-1020567,_Blanchardstown,_Dublin,_Ireland.jpg', 'Leimanbhradain', 'CC BY-SA 4.0', ccsa + '4.0/'),
+  a('s-market', 'smarket.jpg', 'S_Market_Ranua.jpg', 'Ypsilon from Finland', 'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/'),
+  a('dur-sign', 'dur.jpg', 'Stop_sign,_Beyoğlu_7May23.jpg', 'Mariam elr', 'CC BY-SA 4.0', ccsa + '4.0/'),
 ]
 export const assetById = new Map(assets.map((asset) => [asset.id, asset]))
 

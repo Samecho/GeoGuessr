@@ -12,6 +12,7 @@ export const categories: Category[] = [
   ] },
   { id: 'vehicles', name: t('Vehicles & camera', '车辆与相机'), children: [
     { id: 'plates', name: t('Vehicle plates', '车牌'), selectionMode: 'multiple' },
+    { id: 'road-vehicles', name: t('Road vehicles', '道路车辆'), selectionMode: 'multiple' },
     { id: 'camera', name: t('Street View car & camera', '街景车与相机'), selectionMode: 'multiple' },
   ] },
   { id: 'landscape', name: t('Landscape & built world', '景观与建筑'), children: [

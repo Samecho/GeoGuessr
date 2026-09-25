@@ -1,4 +1,5 @@
 import { countries } from './countries'
+import { yuqueRules } from './yuque-rules'
 import type { Rule, Text2 } from './types'
 
 export const schemaVersion = 1
@@ -40,3 +41,5 @@ export const rules: Rule[] = [
   rule('french-recessed-pole', ['FR'], { all: ['concrete-ladder-pole'] }, 0.7, 'utility-pole-shape', t('A real French example and tutorial description establish presence, not exclusivity or measured frequency.', '法国实拍与教程证明此形态存在，不代表独有或已测频率。'), ['https://www.geocoach.me/theory/region/western-europe','https://commons.wikimedia.org/wiki/File:Power_pole_with_line_anchoring.jpg']),
   rule('slanted-post-germany-swiss', ['DE','CH'], { all: ['slanted-black-post'] }, 0.75, 'roadside-post-shape', t('German sign 620 and a guide covering Germany and Switzerland support this shared shape.', '德国 620 标志规定与德瑞两国指南支持这种共用形态。'), ['https://www.gesetze-im-internet.de/stvo_2013/BJNR036710013.html','https://www.geocoach.me/maps/027b9391-6ab0-406a-9271-ecf49022e0ae/geocoach-world-bollards-0c9b8d10']),
 ]
+
+rules.push(...yuqueRules)
