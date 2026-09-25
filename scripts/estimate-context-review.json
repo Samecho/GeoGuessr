@@ -1,0 +1,415 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-25",
+  "policy": "Every parsed prevalence at or below 0.05 or at or above 0.95 is withheld unless a contextual source review below replaces it. These are estimated visual prevalences, not measured frequencies.",
+  "adjustments": [
+    {
+      "zh": "三脚架相机",
+      "locationId": "loc:northern-mariana-islands",
+      "pPresent": 0.34,
+      "reason": "The source says southern islands have tripod coverage; national occurrence is partial."
+    },
+    {
+      "zh": "RAILROAD CROSSING 字样",
+      "locationId": "loc:united-states",
+      "pPresent": 0.62,
+      "reason": "The source gives these actual words as a United States sign example."
+    },
+    {
+      "zh": "短天线街景车",
+      "locationId": "loc:montenegro",
+      "pPresent": 0.34,
+      "reason": "The source assigns short antenna to the coast and long antenna inland."
+    },
+    {
+      "zh": "德语文字",
+      "locationId": "loc:luxembourg",
+      "pPresent": 0.14,
+      "reason": "The source says German is uncommon on signs, explicitly not absent."
+    },
+    {
+      "zh": "电线杆横杆",
+      "locationId": "loc:cyprus",
+      "pPresent": 0.34,
+      "reason": "One of several pole top variants in the source uses a crossarm."
+    },
+    {
+      "zh": "柏油蛇修补痕",
+      "locationId": "loc:chile",
+      "pPresent": 0.34,
+      "reason": "The source describes tar snakes on a particular road, so country-level support is local."
+    },
+    {
+      "zh": "电线杆贴纸",
+      "locationId": "loc:new-zealand",
+      "pPresent": 0.34,
+      "reason": "The source describes a regional sticker variant and says the white variant is rare."
+    },
+    {
+      "zh": "白色边线",
+      "locationId": "loc:czechia",
+      "pPresent": 0.62,
+      "reason": "The source says the Czech Republic commonly has white solid edge lines without a center line."
+    },
+    {
+      "zh": "白色边线",
+      "locationId": "loc:panama",
+      "pPresent": 0.62,
+      "reason": "The source says solid white edge lines are common in Panama; absence refers to the center line."
+    },
+    {
+      "zh": "红色土壤",
+      "locationId": "loc:rwanda",
+      "pPresent": 0.34,
+      "reason": "The source notes visible red earth along a limited road segment."
+    },
+    {
+      "zh": "松树",
+      "locationId": "loc:ukraine",
+      "pPresent": 0.34,
+      "reason": "The source describes many pines in the western Carpathian area, not the whole country."
+    },
+    {
+      "zh": "电线杆绝缘子",
+      "locationId": "loc:cyprus",
+      "pPresent": 0.62,
+      "reason": "The source lists insulators on Cypriot pole variants; the negation is about one variant."
+    },
+    {
+      "zh": "第三代街景画面",
+      "locationId": "loc:turkey",
+      "pPresent": 0.34,
+      "reason": "The source explicitly discusses third-generation coverage; no antenna is a separate property."
+    },
+    {
+      "zh": "山谷",
+      "locationId": "loc:sweden",
+      "pPresent": 0.34,
+      "reason": "The source contrasts local farm slopes with valleys elsewhere; national evidence is weak."
+    },
+    {
+      "zh": "瑞典语文字",
+      "locationId": "loc:denmark",
+      "pPresent": 0.14,
+      "reason": "The source distinguishes Swedish letters from Danish, but does not claim Swedish is impossible in Denmark."
+    },
+    {
+      "zh": "白色前牌、黄色后牌",
+      "locationId": "loc:united-kingdom",
+      "pPresent": 0.82,
+      "reason": "The source explicitly says UK plates have a white front and yellow rear."
+    },
+    {
+      "zh": "芬兰语文字",
+      "locationId": "loc:finland",
+      "pPresent": 0.62,
+      "reason": "The source's absence statement is limited to Åland; Finnish elsewhere remains supported."
+    },
+    {
+      "zh": "长天线街景车",
+      "locationId": "loc:senegal",
+      "pPresent": 0.34,
+      "reason": "The source limits the long-antenna vehicle to roads west of Diourbel."
+    },
+    {
+      "zh": "拉丁字母",
+      "locationId": "loc:mongolia",
+      "pPresent": 0.34,
+      "reason": "The source says Latin letters can occasionally appear in Mongolia."
+    },
+    {
+      "zh": "白色车牌",
+      "locationId": "loc:saint-pierre-and-miquelon",
+      "pPresent": 0.34,
+      "reason": "The source explicitly lists both white and yellow plates."
+    },
+    {
+      "zh": "Rúa 字样",
+      "locationId": "loc:spain",
+      "pPresent": 0.34,
+      "reason": "The source gives accented Rúa in Galicia, a regional part of Spain."
+    },
+    {
+      "zh": "传统蒙古文",
+      "locationId": "loc:mongolia",
+      "pPresent": 0.34,
+      "reason": "The source says traditional Mongolian script occasionally appears."
+    },
+    {
+      "zh": "白色实线",
+      "locationId": "loc:united-states",
+      "pPresent": 0.34,
+      "reason": "The source describes white edge lines on some California small roads."
+    },
+    {
+      "zh": "多孔电线杆",
+      "locationId": "loc:poland",
+      "pPresent": 0.62,
+      "reason": "The source explicitly describes perforated concrete poles in Poland."
+    },
+    {
+      "zh": "混凝土电线杆",
+      "locationId": "loc:ecuador",
+      "pPresent": 0.82,
+      "reason": "The source says most Ecuadorian utility poles are round concrete; low distinctiveness is a separate issue."
+    },
+    {
+      "zh": "平坦地形",
+      "locationId": "loc:netherlands",
+      "pPresent": 0.82,
+      "reason": "The source explicitly describes the Netherlands as unusually flat."
+    },
+    {
+      "zh": "无天线街景车",
+      "locationId": "loc:ecuador",
+      "pPresent": 0.62,
+      "reason": "The source says fourth-generation Ecuador imagery uses a pickup without a front antenna; generation-limited."
+    },
+    {
+      "zh": "无天线街景车",
+      "locationId": "loc:finland",
+      "pPresent": 0.34,
+      "reason": "The source limits antenna-free third-generation imagery to south-central Finland."
+    },
+    {
+      "zh": "无天线街景车",
+      "locationId": "loc:turkey",
+      "pPresent": 0.34,
+      "reason": "The source says Turkish third-generation imagery has no antenna; generation-limited."
+    },
+    {
+      "zh": "无天线街景车",
+      "locationId": "loc:united-states",
+      "pPresent": 0.34,
+      "reason": "The source discusses antenna-free third-generation imagery in the United States and Canada."
+    },
+    {
+      "zh": "黄色车牌",
+      "locationId": "loc:netherlands",
+      "pPresent": 0.82,
+      "reason": "The Netherlands chapter compares its own yellow plate style to other European countries."
+    },
+    {
+      "zh": "前车牌可见",
+      "locationId": "loc:curacao",
+      "pPresent": 0.82,
+      "reason": "The source says front plates are required but acknowledges a minority without them."
+    },
+    {
+      "zh": "前车牌可见",
+      "locationId": "loc:saint-pierre-and-miquelon",
+      "pPresent": 0.52,
+      "reason": "The source explicitly says some vehicles have front plates and others do not."
+    },
+    {
+      "zh": "湖泊",
+      "locationId": "loc:azores",
+      "pPresent": 0.34,
+      "reason": "The source places lakes on São Miguel only, so presence is regional."
+    },
+    {
+      "zh": "湖泊",
+      "locationId": "loc:liechtenstein",
+      "pPresent": 0.14,
+      "reason": "The source says Liechtenstein has a single lake, not frequent lakes."
+    },
+    {
+      "zh": "湖泊",
+      "locationId": "loc:north-macedonia",
+      "pPresent": 0.34,
+      "reason": "The source singles out Ohrid as a lakeside city; country-level support is local."
+    },
+    {
+      "zh": "左侧通行",
+      "locationId": "loc:ireland",
+      "pPresent": 0.95,
+      "reason": "The source explicitly treats Ireland as a left-driving country in Europe."
+    },
+    {
+      "zh": "茶园",
+      "locationId": "loc:nepal",
+      "pPresent": 0.14,
+      "reason": "The source limits tea plantations to Nepal's far east."
+    },
+    {
+      "zh": "黄色边线",
+      "locationId": "loc-region-b7f50ecfdce7c200",
+      "pPresent": 0.14,
+      "reason": "The source says this is one road in Meghalaya, not a region-wide trait."
+    },
+    {
+      "zh": "DUR 字样",
+      "locationId": "loc:turkey",
+      "pPresent": 0.62,
+      "reason": "The source calls the DUR stop-sign wording distinctive; seeing a stop sign is conditional."
+    },
+    {
+      "zh": "短天线街景车",
+      "locationId": "loc:cambodia",
+      "pPresent": 0.34,
+      "reason": "The source distinguishes a particular antenna spiral, not all short antenna cars."
+    },
+    {
+      "zh": "烟囱",
+      "locationId": "loc:mongolia",
+      "pPresent": 0.14,
+      "reason": "The source describes a single prominent chimney in Choibalsan."
+    },
+    {
+      "zh": "积雪",
+      "locationId": "loc-region-ab0af785d5647330",
+      "pPresent": 0.14,
+      "reason": "The source limits snow-capped peaks to the far north of the region."
+    },
+    {
+      "zh": "红色土壤",
+      "locationId": "loc:vietnam",
+      "pPresent": 0.14,
+      "reason": "The source describes dark red soil on Phú Quốc only."
+    },
+    {
+      "zh": "松树",
+      "locationId": "loc:thailand",
+      "pPresent": 0.34,
+      "reason": "The source limits this pine cue mainly to northern Thailand."
+    },
+    {
+      "zh": "电线杆绝缘子",
+      "locationId": "loc:france",
+      "pPresent": 0.34,
+      "reason": "The source describes insulators on particular French pole-top variants."
+    },
+    {
+      "zh": "电线杆绝缘子",
+      "locationId": "loc:nepal",
+      "pPresent": 0.34,
+      "reason": "The source describes distinctive insulator arrangements, not all insulators."
+    },
+    {
+      "zh": "电线杆绝缘子",
+      "locationId": "loc:thailand",
+      "pPresent": 0.62,
+      "reason": "The source gives a standard local insulator count; the generic cue is moderate."
+    },
+    {
+      "zh": "COUNTY 字样",
+      "locationId": "loc:united-states",
+      "pPresent": 0.14,
+      "reason": "The source limits these county-road signs to Wisconsin and Missouri."
+    },
+    {
+      "zh": "低质量棕色街景画面",
+      "locationId": "loc:nigeria",
+      "pPresent": 0.14,
+      "reason": "The source says Kano has only this coverage, a limited national area."
+    },
+    {
+      "zh": "第二代街景画面",
+      "locationId": "loc:canada",
+      "pPresent": 0.14,
+      "reason": "The source singles out Cambridge Bay for this second-generation non-car coverage."
+    },
+    {
+      "zh": "深色土壤",
+      "locationId": "loc:vanuatu",
+      "pPresent": 0.14,
+      "reason": "The source describes one village on Ambrym, not the country overall."
+    },
+    {
+      "zh": "BERHENTI 字样",
+      "locationId": "loc:malaysia",
+      "pPresent": 0.62,
+      "reason": "The source identifies BERHENTI on Malaysian stop signs; visibility depends on a sign."
+    },
+    {
+      "zh": "菱形警示牌",
+      "locationId": "loc:ireland",
+      "pPresent": 0.62,
+      "reason": "The source treats diamond warning signs as distinctive within Europe, not ubiquitous."
+    },
+    {
+      "zh": "三叉戟杆顶",
+      "locationId": "loc:nepal",
+      "pPresent": 0.34,
+      "reason": "The source identifies a specific Nepali pole-top variant."
+    },
+    {
+      "zh": "英语文字",
+      "locationId": "loc-region-b7f50ecfdce7c200",
+      "pPresent": 0.82,
+      "reason": "The source says Meghalaya signage is almost entirely English."
+    },
+    {
+      "zh": "英语文字",
+      "locationId": "loc:philippines",
+      "pPresent": 0.82,
+      "reason": "The source says English is common on Philippine signs."
+    },
+    {
+      "zh": "英语文字",
+      "locationId": "loc:serbia",
+      "pPresent": 0.62,
+      "reason": "The source notes substantial English signs in cities, not all scenes."
+    },
+    {
+      "zh": "英语文字",
+      "locationId": "loc:united-kingdom",
+      "pPresent": 0.82,
+      "reason": "The source discusses English alongside Welsh markings in Wales."
+    },
+    {
+      "zh": "限速标志",
+      "locationId": "loc:madeira",
+      "pPresent": 0.34,
+      "reason": "The source describes a particular Madeira speed-sign variant on motorways."
+    },
+    {
+      "zh": "法语文字",
+      "locationId": "loc:france",
+      "pPresent": 0.82,
+      "reason": "The source gives a French suffix example; the general language cue is common but not absolute."
+    },
+    {
+      "zh": "绿色模糊画面",
+      "locationId": "loc:hawaii",
+      "pPresent": 0.14,
+      "reason": "The source limits the green blur to an area on Oʻahu."
+    },
+    {
+      "zh": "柱状南洋杉",
+      "locationId": "loc:hawaii",
+      "pPresent": 0.14,
+      "reason": "The source describes these trees on Lānaʻi only."
+    },
+    {
+      "zh": "红底白箭头",
+      "locationId": "loc:canada",
+      "pPresent": 0.34,
+      "reason": "The source limits this chevron style to Québec, not all Canada."
+    },
+    {
+      "zh": "Einbahnstraße 字样",
+      "locationId": "loc:germany",
+      "pPresent": 0.34,
+      "reason": "The source identifies wording on one-way signs; sign visibility is conditional."
+    },
+    {
+      "zh": "摩天大楼",
+      "locationId": "loc:kenya",
+      "pPresent": 0.14,
+      "reason": "The source says Nairobi alone has many skyscrapers."
+    },
+    {
+      "zh": "平坦地形",
+      "locationId": "loc:laos",
+      "pPresent": 0.34,
+      "reason": "The source describes Savannakhet, not all of Laos."
+    },
+    {
+      "zh": "黄白条纹标线",
+      "locationId": "loc:kazakhstan",
+      "pPresent": 0.34,
+      "reason": "The source describes a crossing-marking variant shared with Russia."
+    }
+  ]
+}

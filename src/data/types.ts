@@ -6,7 +6,7 @@ export type RegionScheme = { schemaVersion: number; countryId: string; granulari
 export type Category = { id: string; name: Text2; children: { id: string; name: Text2; selectionMode: 'single' | 'multiple' }[] }
 export type Asset = {
   id: string; path: string; sourceUrl: string; author: string; license: string; licenseUrl: string
-  attribution: string; redistribution: string; reviewed: string; status: 'approved'
+  attribution: string; redistribution: string; reviewed: string; status: 'source-reference'; sourcePath?: string
 }
 export type Clue = {
   id: string; categoryId: string; groupId: string; appearance: Text2; formalName: Text2

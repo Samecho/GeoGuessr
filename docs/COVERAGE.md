@@ -2,7 +2,7 @@
 
 The geographic candidate list is derived from every chapter linked by the local `tuxundoc/index.html` index. The import processed all 133 linked chapters and includes Antarctica. This is a source-library inclusion policy, not a claim that every listed unit has complete Google road coverage or appears in every GeoGuessr map. The user's manual hard scope is the only runtime candidate filter. No candidate is hidden by its rank or missing clue estimates.
 
-Every location has a stable source-derived ID, localized source title and a trace to the chapter HTML and metadata. Where the local text explicitly establishes a parent relationship, the importer may record that relationship; ambiguous parent links are kept in the import audit instead of being silently assumed. The 133 source candidates and per-chapter import counts are in [DATA_COVERAGE.md](DATA_COVERAGE.md). The local archive's 8 GB of images is referenced by path, not copied into the repository or Pages build.
+Every location has a stable source-derived ID, localized source title and a trace to the chapter HTML and metadata. Where the local text explicitly establishes a parent relationship, the importer may record that relationship; ambiguous parent links are kept in the import audit instead of being silently assumed. The 133 source candidates and per-chapter import counts are in [DATA_COVERAGE.md](DATA_COVERAGE.md). The local archive's approximately 8 GB of originals remains ignored and unchanged. Web-sized copies of all 5,860 images are included in the user-directed public Pages test build; image rights are documented separately in ASSETS.md.
 
 Coverage boundaries are therefore intentionally narrow in what they claim:
 

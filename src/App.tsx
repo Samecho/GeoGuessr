@@ -9,6 +9,7 @@ import { estimates, interactions, modelParameters, features, locations, candidat
 import type { Clue, Continent, Observation } from './data/types'
 import { rankCandidates } from './engine/scoring'
 import { RankingChart } from './components/RankingChart'
+import { SourceGallery } from './components/SourceGallery'
 import { ui, type Language } from './i18n'
 import './styles.css'
 
@@ -36,9 +37,11 @@ function App() {
   const [showShareInfo, setShowShareInfo] = useState(false)
   const [gallerySearch, setGallerySearch] = useState('')
   const [galleryLimit, setGalleryLimit] = useState(48)
+  const [photosReady, setPhotosReady] = useState(false)
   const L = ui[language]
 
   useEffect(() => { setPhotoIndex(0) }, [infoId])
+  useEffect(() => { void fetch(`${import.meta.env.BASE_URL}source-images/ready.json`).then((response) => response.ok ? response.json() : null).then((manifest: { convertedCount?: number } | null) => setPhotosReady(manifest?.convertedCount === 5860)).catch(() => setPhotosReady(false)) }, [])
   useEffect(() => { localStorage.setItem('street-clues-language', language); document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en' }, [language])
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') { setInfoId(null); setZoom(false); setShowShareInfo(false) } }
@@ -102,9 +105,9 @@ function App() {
     return { ...current, [id]: { ...observation, certainty: observation.certainty === 'certain' ? 'uncertain' : 'certain' } }
   })
   const matchesQuery = (clue: Clue) => !gallerySearch.trim() || `${clue.appearance.en} ${clue.appearance.zh}`.toLocaleLowerCase().includes(gallerySearch.trim().toLocaleLowerCase())
-  const displayedClues = clues.filter((clue) => clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId)
+  const displayedClues = clues.filter((clue) => photosReady && clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId)
     && (categoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
-  const textOnly = clues.filter((clue) => !clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId) && matchesQuery(clue))
+  const textOnly = clues.filter((clue) => (!photosReady || !clue.assetIds.length) && (categoryId === 'all' || clue.categoryId === categoryId) && matchesQuery(clue))
   const visibleTextOnly = textOnly.slice(0, galleryLimit)
   const infoClue = infoId && infoContent?.id === infoId ? infoContent : undefined
   const openInfo = (clue: Clue) => {
@@ -167,12 +170,13 @@ function App() {
             </button>
             <button type="button" className="info-button" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>
             {chosen && <div className="card-state"><button type="button" className={chosen.mode === 'seen' ? 'state-active' : ''} onClick={() => selectSeen(clue)}>{L.seen}</button>{clue.exclusionAllowed && <button type="button" className={chosen.mode === 'excluded' ? 'state-active' : ''} onClick={() => selectExcluded(clue)}>{L.excluded}</button>}<button type="button" className="certainty-toggle" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></div>}
-            {!chosen && clue.exclusionAllowed && <button type="button" className="card-exclude" onClick={() => selectExcluded(clue)}>{L.excluded}</button>}
+            {!chosen && clue.exclusionAllowed && <button type="button" className="card-exclude" onClick={() => selectExcluded(clue)}><span aria-hidden="true">−</span><span className="sr-only">{L.excluded}</span></button>}
           </article>
         })}</div> : <div className="gallery-empty">{L.noPhotos}</div>}
-        {textOnly.length > 0 && <section className="text-observations"><h3>{L.textOnly}</h3><div className="text-clue-list">{visibleTextOnly.map((clue) => { const chosen = observations[clue.id]; return <div className={`text-clue ${chosen ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>{chosen?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{chosen ? <><button type="button" className={`text-state ${chosen.mode === 'excluded' ? 'active' : ''}`} onClick={() => selectExcluded(clue)}>{L.excluded}</button><button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></> : <button type="button" className="text-state" onClick={() => selectExcluded(clue)}>{L.excluded}</button>}</div> })}</div></section>}
+        {textOnly.length > 0 && <section className="text-observations"><h3>{L.textOnly}</h3><div className="text-clue-list">{visibleTextOnly.map((clue) => { const chosen = observations[clue.id]; return <div className={`text-clue ${chosen ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>{chosen?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{chosen ? <><button type="button" className={`text-state ${chosen.mode === 'excluded' ? 'active' : ''}`} onClick={() => selectExcluded(clue)}>{L.excluded}</button><button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></> : <button type="button" className="text-state text-state-empty" onClick={() => selectExcluded(clue)} aria-label={`${L.excluded}: ${clue.appearance[language]}`} title={L.excluded}>−</button>}</div> })}</div></section>}
         {textOnly.length > galleryLimit && <button type="button" className="load-more" onClick={() => setGalleryLimit((limit) => limit + 48)}>{L.showMore} · {Math.min(textOnly.length - galleryLimit, 48)} / {textOnly.length - galleryLimit}</button>}
         {!displayedClues.length && !textOnly.length && <p className="small-note">{L.categoriesEmpty}</p>}
+        <SourceGallery language={language} countries={countries} ready={photosReady} />
       </section>
 
       <section className={`results-panel ${viewCountry ? 'has-region' : ''}`} aria-label={L.countryResults}>
@@ -195,11 +199,11 @@ function App() {
       </section>
     </main>
 
-    {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{infoClue.assetIds.length > 0 && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}
-      {infoClue.assetIds.length > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{infoClue.assetIds.map((id, index) => <button type="button" key={id} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt="" loading="lazy" /></button>)}</div>}
+    {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{photosReady && infoClue.assetIds.length > 0 && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}
+      {photosReady && infoClue.assetIds.length > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{infoClue.assetIds.map((id, index) => <button type="button" key={id} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt="" loading="lazy" /></button>)}</div>}
       {infoClue.referenceAssetIds?.map((id) => <figure className="source-figure" key={id}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt={L.sourceDiagram} loading="lazy" /><figcaption>{L.sourceDiagram}</figcaption></figure>)}
-      <div className="info-details"><h3>{L.identify}</h3><p>{infoClue.identify[language]}</p><h3>{L.geography}</h3><p>{infoClue.geography[language]}</p><h3>{L.strength}</h3><p>{infoClue.strength[language]}</p><h3>{L.caveat}</h3><p>{infoClue.caveat[language]}</p><h3>{L.sources}</h3><ul>{infoClue.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{new URL(url).hostname}</a></li>)}</ul>{[...infoClue.assetIds, ...(infoClue.referenceAssetIds || [])].map((id) => { const asset = assetById.get(id)!; return <p className="credit" key={id}><strong>{L.asset}:</strong> <a href={asset.sourceUrl} target="_blank" rel="noreferrer">{asset.author}</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.license}</a> · {L.reviewed}: {asset.reviewed}</p> })}<p className="credit">{L.reviewed}: {infoClue.reviewed}</p></div></section></div>}
-    {zoom && infoClue?.assetIds.length && <div className="zoom-backdrop" role="presentation" onClick={() => setZoom(false)}><button type="button" className="zoom-close" onClick={() => setZoom(false)} aria-label={L.close}><X size={24} /></button><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /></div>}
+      <div className="info-details"><h3>{L.identify}</h3><p>{infoClue.identify[language]}</p><h3>{L.geography}</h3><p>{infoClue.geography[language]}</p><h3>{L.strength}</h3><p>{infoClue.strength[language]}</p><h3>{L.caveat}</h3><p>{infoClue.caveat[language]}</p><h3>{L.sources}</h3><ul>{infoClue.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{new URL(url).hostname}</a></li>)}</ul>{(photosReady ? [...infoClue.assetIds, ...(infoClue.referenceAssetIds || [])] : []).map((id) => { const asset = assetById.get(id)!; return <p className="credit" key={id}><strong>{L.asset}:</strong> <a href={asset.sourceUrl} target="_blank" rel="noreferrer">{asset.author}</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.license}</a> · {L.reviewed}: {asset.reviewed}</p> })}<p className="credit">{L.reviewed}: {infoClue.reviewed}</p></div></section></div>}
+    {zoom && photosReady && infoClue?.assetIds.length && <div className="zoom-backdrop" role="presentation" onClick={() => setZoom(false)}><button type="button" className="zoom-close" onClick={() => setZoom(false)} aria-label={L.close}><X size={24} /></button><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /></div>}
   </div>
 }
 export default App

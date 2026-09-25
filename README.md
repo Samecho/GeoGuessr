@@ -1,45 +1,39 @@
 # Street Clues
 
-A browser-only visual clue library for GeoGuessr practice. Pick any visible clue, set confidence or explicit absence, and inspect the live country ranking. Selecting one country reveals its conditional region distribution. The interface, language switch, hard scope selector, clue tree, and charts remain the existing application; the knowledge data and inference model now load from versioned JSON.
+A browser-only GeoGuessr practice aid. Pick any visual observation, mark certainty or a clearly absent feature, choose a geographic scope, and inspect country and conditional region match shares. The existing React interface and deterministic likelihood engine are preserved.
 
-## Run and verify
+## Run
 
-Requires Node.js 22 and npm.
+Node.js 22 is required for the site. Rebuilding the local data and image copies also needs Python 3; install its pinned helpers with `python -m pip install -r requirements-data.txt`.
 
 | Command | Purpose |
 |---|---|
-| `npm ci` | Install locked dependencies |
-| `npm run dev` | Start local development |
-| `npm run build` | Typecheck and build static `dist/` |
-| `npm run preview` | Preview the built site locally |
-| `npm test` | Run deterministic inference tests |
-| `npm run test:e2e` | Run Playwright UI checks (`npx playwright install chromium` first) |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript |
-| `npm run data:validate` | Validate IDs, references, estimates, photos, and local archive paths when present |
-| `npm run data:report` | Validate and regenerate the per-chapter coverage report |
-| `npm run import:tuxundoc` | Re-import all linked local chapters (read-only source) |
+| `npm ci` | Install locked JavaScript dependencies |
+| `npm run dev` | Run the site locally |
+| `npm run import:tuxundoc` | Read all chapters under the ignored, unmodified `tuxundoc/` archive |
+| `npm run data:curate` | Build the playable bilingual library from reviewed phrases, context corrections and image choices |
+| `npm run photos:prepare` | Resize all 5,860 source images into `public/source-images/` without cropping |
+| `npm run data:validate` | Check references, bilingual card wording, reviewed photo mapping, and the complete image set |
+| `npm run data:report` | Validate and regenerate `docs/DATA_COVERAGE.md` |
+| `npm test` | Run inference and data regression tests |
+| `npm run test:e2e` | Run Playwright browser checks |
+| `npm run typecheck`, `npm run lint`, `npm run build` | Verify and build the static site |
+| `npm run preview` | Serve `dist/` locally |
 
-## Data layout
+`npm run build` outputs a static `dist/`; a VM can serve that directory through any ordinary static web server. For a VM root URL, build with `VITE_BASE=/`; for a subpath, set `VITE_BASE=/your-path/`. No runtime API, server function, login, key, or database is required.
 
-`src/data/knowledge/` is the versioned knowledge base. It is split into `locations.json`, `categories.json`, `features.json`, the compact `runtime-features.json`, `facts.json`, `claims.json`, `estimates.json`, `images.json`, `interactions.json`, `regions.json`, `import-progress.json`, `model-parameters.json`, `photo-curation.json`, and the compact `clue-info.json`. Each file has a schema version and stable IDs. The app loads compact inference records up front; `clue-info.json` is fetched only when a user opens a clue info panel. Full source facts, claims and image references remain available for audit but do not enter the first-load JavaScript. The pure engine is in `src/engine/scoring.ts`.
+## Data and provenance
 
-The sole geographic source for this import is the local `tuxundoc/index.html` chapter index and its linked chapter HTML/metadata. The original `tuxundoc/` directory is ignored by Git, read-only to the importer, and excluded from deployment. Every fact traces to a local path, section ID, source element or ordinal, and content hash. The generated [coverage report](docs/DATA_COVERAGE.md) lists all default candidates and each processed chapter. Import accounting is not a manual factual review.
+The **only geographic knowledge source** is the local `tuxundoc/index.html` and its 133 linked chapter HTML/metadata files. The original approximately 8 GB archive is ignored by Git and kept unchanged. `scripts/import_tuxundoc.py` creates a traceable raw extraction (`locations.json`, `facts.json`, `claims.json`, `features.json`, `estimates.json`, `images.json`, `interactions.json`, `regions.json`, `import-progress.json`). An emphasized phrase in prose is only a candidate, not automatically a user-ready observation.
 
-The source currently yields 133 default candidate locations, including Antarctica; a user's selected scope is the only candidate filter. It also yields 5,562 deduplicated clue records, 8,466 source text facts, 8,602 parsed claims, 5,102 probability estimates, and 28 interaction estimates. There are 23 illustrated clue records using 24 separately licensed photo files and 5,539 text-only records. The 5,860 embedded tutorial-image references remain private because image-level redistribution rights could not be established. See [coverage](docs/DATA_COVERAGE.md), [scoring](docs/SCORING.md), [assets](docs/ASSETS.md), and [remaining review work](docs/GAPS.md).
+`scripts/curated-clues.tsv` holds reviewed Chinese and English appearance labels and exact source-phrase mappings. `scripts/manual-fact-clues.json`, `scripts/estimate-context-review.json`, `scripts/interaction-review.json`, and `scripts/photo-review.json` record special fact interpretations, corrected source context, accepted combinations and visually checked card images. `npm run data:curate` generates `playable-*.json` and `source-photo-assets.json`. **Only those playable files drive the UI and scoring**; the larger raw extraction stays available for audit and later review. Unknown source mentions do not become negative evidence. Every active estimate points to a local source fact and is marked as estimated rather than measured.
 
-## Update knowledge
+Current checked output: 133 candidates including Antarctica; 220 selectable bilingual clues (121 with visually reviewed source images, 99 text-only), 598 active country/region estimates, two accepted source combinations, and a separate chapter browser for all 5,860 images. The source images are web-sized copies totaling about 351 MB. The original full-resolution archive is never committed. See [coverage](docs/DATA_COVERAGE.md), [scoring](docs/SCORING.md), [image sources](docs/ASSETS.md), and [open work](docs/GAPS.md).
 
-1. Keep the original `tuxundoc/` archive unchanged.
-2. Run `npm run import:tuxundoc`; it reads each linked chapter's HTML and metadata, records image paths without copying image bytes, and replaces the generated JSON deterministically.
-3. Review `import-progress.json`, source links and excerpts. Unknown mentions stay unknown; they do not create absence estimates.
-4. Edit `photo-curation.json` only for independently redistributable assets with complete attribution, license, source path and a visual match. A photo's capture location is not a geographic claim.
-5. Run `npm run data:validate`, `npm run data:report`, `npm test`, typecheck, lint, Playwright, and build.
+To add a clue, verify the actual visual wording in its chapter, add an exact phrase mapping and bilingual label to `scripts/curated-clues.tsv`, then run `data:curate`. If no parser phrase captures it, cite the relevant fact IDs in `manual-fact-clues.json`. For a photo card, inspect the source image and record the label and chosen instance in `photo-review.json`. To add a location or region, update the source chapter and importer mapping, then verify a complete non-overlapping region scheme before enabling regional percentages. Do not infer an absent feature from a chapter's silence.
 
-The qualitative word bands in `model-parameters.json` are centralized initial probability estimates, not measured prevalence. For newly reviewed data, separate the source fact/relationship from numerical estimates and give each estimate a reason. A valid source URL alone does not establish that a conclusion is correct. See [the scoring model and limits](docs/SCORING.md).
+## Publishing
 
-## GitHub Pages
+`.github/workflows/pages.yml` validates, builds with `/<repository>/` as Vite's base, and deploys the entire `dist/` including all 5,860 web-sized source images to GitHub Pages. In GitHub, set **Settings → Pages → Source** to **GitHub Actions**. The Pages site is publicly reachable during testing; changing the personal repository to private does not itself make its Pages site private. The same static build can later be deployed to a VM by the project owner.
 
-`.github/workflows/pages.yml` validates and builds with the repository subpath as Vite's base, then deploys through GitHub Pages when pushed to `main`. Set **Settings → Pages → Source** to **GitHub Actions**. For a root `username.github.io` repository, use `/` as the base instead. The workflow is a deployment configuration; it does not prove a deploy succeeded. Check the latest Actions run and site URL after pushing.
-
-Third-party photo and font licenses are separate from any license applied to project code. No production server, backend, API key, user account, screenshot upload, OCR, or location lookup is used.
+The original tutorial image author and redistribution rights are not established by the local metadata. Publication here is at the project owner's explicit direction for testing; the project does not claim a third-party license. The code's MIT license does **not** cover source images, flag SVGs or fonts. Image IDs, local source paths and Yuque chapter URLs are recorded in `images.json` and `source-photo-assets.json`; see [ASSETS.md](docs/ASSETS.md).

@@ -20,6 +20,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This license covers project source code and authored documentation. Third-party
-photographs and flag SVGs retain their own licenses; see docs/ASSETS.md and
-public/flags/LICENSE.txt.
+This license covers project source code and authored documentation. Third-party tutorial images, flag SVGs and fonts are excluded from this code license; see docs/ASSETS.md and the license files under public/flags/ and public/fonts/.

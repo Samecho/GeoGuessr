@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "clues": [
+    {
+      "id": "clue-vehicle-no-front-plate",
+      "categoryId": "plates",
+      "appearance": { "en": "Vehicle without a front plate", "zh": "无前牌的车辆" },
+      "reason": "A visual observation about one vehicle, not a claim that every vehicle in the scene lacks a plate. Legal rules are used only as weak proxies except where the source describes visible vehicles.",
+      "estimates": [
+        { "locationId": "loc:puerto-rico", "sourceFactId": "fact-1c0664f49c1a678fdd", "pPresent": 0.72, "reason": "The chapter explicitly says front plates are rarely seen; estimated visual prevalence of no-front-plate vehicles." },
+        { "locationId": "loc:united-states", "sourceFactId": "fact-3a08e4733c09188341", "pPresent": 0.55, "reason": "About half the states do not require front plates; weak country-level estimate because vehicle mix and state sampling are unknown." },
+        { "locationId": "loc:canada", "sourceFactId": "fact-b500573c5526004c68", "pPresent": 0.60, "reason": "Most provinces do not require front plates, with exceptions; weak visual estimate from a legal proxy." },
+        { "locationId": "loc:dominican", "sourceFactId": "fact-8b843fb78fd120da35", "pPresent": 0.60, "reason": "The chapter says front plates are not required; weak visual estimate from a legal proxy." },
+        { "locationId": "loc:saint-pierre-and-miquelon", "sourceFactId": "fact-5ee95e91c6e3f3d5f7", "pPresent": 0.52, "reason": "The chapter directly describes vehicles with and without front plates; near-background estimate because no frequency is given." },
+        { "locationId": "loc:curacao", "sourceFactId": "fact-57eb92e500c561a721", "pPresent": 0.25, "reason": "The chapter says front plates are required but a minority of vehicles lack them; estimated opposition with exceptions." }
+      ]
+    }
+  ]
+}

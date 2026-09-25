@@ -1,18 +1,18 @@
 import type { Asset, Category, Clue, Continent, Country, EvidenceEstimate, InteractionRule, RegionScheme, Text2 } from './types'
 import locationsFile from './knowledge/locations.json'
 import categoriesFile from './knowledge/categories.json'
-import featuresFile from './knowledge/runtime-features.json'
-import estimatesFile from './knowledge/estimates.json'
-import interactionsFile from './knowledge/interactions.json'
+import featuresFile from './knowledge/playable-features.json'
+import estimatesFile from './knowledge/playable-estimates.json'
+import interactionsFile from './knowledge/playable-interactions.json'
 import modelFile from './knowledge/model-parameters.json'
 import regionsFile from './knowledge/regions.json'
-import photoCurationFile from './knowledge/photo-curation.json'
+import sourcePhotoAssetsFile from './knowledge/source-photo-assets.json'
 
 type LocationRecord = { id: string; kind: 'country' | 'territory' | 'region'; name: Text2; parentId: string | null; continent: Continent; candidate: boolean; flagCode?: string; source: { path: string | null; metadataPath: string; url: string; localCode?: string } }
 type FeatureRecord = { id: string; categoryId: string; appearance: Text2; evidenceGroupIds: string[]; assetIds: string[]; translationStatus: string }
-type PhotoCuration = { assets: Asset[]; matches: { assetId: string; featureId: string; basis: string }[] }
+type PhotoAssets = { assets: Asset[] }
 
-export const schemaVersion = 3
+export const schemaVersion = 4
 const en = (value: string): Text2 => ({ en: value, zh: value })
 export const locations = (locationsFile as { locations: LocationRecord[] }).locations
 export const locationById = new Map(locations.map((location) => [location.id, location]))
@@ -39,7 +39,7 @@ export const clues: Clue[] = features.map((feature) => ({
   sourceUrls: [], reviewed: '2026-09-25', assetIds: feature.assetIds || [], referenceAssetIds: [], tags: [feature.categoryId], exclusionAllowed: true,
 }))
 export const clueById = new Map(clues.map((clue) => [clue.id, clue]))
-export const assets: Asset[] = (photoCurationFile as PhotoCuration).assets
+export const assets: Asset[] = (sourcePhotoAssetsFile as PhotoAssets).assets
 export const assetById = new Map(assets.map((asset) => [asset.id, asset]))
 
 export const regionSchemes: RegionScheme[] = (regionsFile as { regionSchemes: RegionScheme[] }).regionSchemes

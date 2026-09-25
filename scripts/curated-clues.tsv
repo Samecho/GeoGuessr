@@ -1,0 +1,271 @@
+# category|Chinese appearance|English appearance|source phrases (semicolon-separated, defaults to Chinese appearance)
+driving|左侧通行|Traffic keeps left|左行;靠左;靠左行驶
+driving|右侧通行|Traffic keeps right|右行;靠右;靠右行驶
+markings|双黄中心线|Double yellow center lines|双黄线;中双黄线
+markings|黄色中心线|Yellow center line|黄色中线;黄色中心线
+markings|白色中心线|White center line|白色中心线
+markings|黄色边线|Yellow edge line|黄色边线;黄色外线
+markings|白色边线|White edge line|白色边线;外白实线
+markings|全白道路标线|All-white road markings|全白线
+markings|全黄道路标线|All-yellow road markings|全黄线
+markings|短虚线|Short dashed road line|短虚线
+markings|双白线|Double white lines|双白线
+markings|鹅卵石路面|Cobblestone road|鹅卵石;鹅卵石路面
+markings|混凝土路面|Concrete road surface|混凝土路面
+markings|未铺装道路|Unpaved road|未铺装路面
+markings|柏油蛇修补痕|Tar snake road repairs|“柏油蛇”
+posts|黑白路桩|Black-and-white roadside bollard|黑白路桩
+posts|白色路桩|White roadside bollard|白色路桩
+posts|楔形路桩|Wedge-shaped roadside bollard|楔形路桩
+posts|柱形路桩|Cylindrical roadside bollard|柱形路桩
+posts|圆形反光片|Round reflector on roadside post|圆形反射块;反射块为圆形
+posts|红白条纹路桩|Red-and-white striped bollard|红白条纹路桩
+posts|黑色条纹路桩|Bollard with black stripes|黑色条纹
+poles|木质电线杆|Wooden utility pole|木质电线杆;木制电线杆
+poles|混凝土电线杆|Concrete utility pole|混凝土杆;圆形混凝土电线杆
+poles|多孔电线杆|Utility pole with holes|多孔电线杆;混凝土多孔杆
+poles|金属电线杆|Metal utility pole|金属电线杆;灰色金属杆
+poles|三叉戟杆顶|Three-pronged pole top|三叉戟杆顶;三叉戟
+poles|双横杆电线杆|Pole with two crossarms|双横杆;两道横杆
+poles|倒三角杆顶|Inverted triangular pole top|倒三角形杆顶
+poles|电线杆贴纸|Sticker on utility pole|贴纸
+poles|黑色电线杆贴纸|Black sticker on utility pole|黑色的电线杆贴纸
+poles|白色电线杆贴纸|White sticker on utility pole|白色贴纸
+poles|电线杆绝缘子|Insulators on utility pole|绝缘子
+poles|电线杆电表|Meter on utility pole|电表
+barriers|钢制护栏|Metal guardrail|钢护栏
+barriers|水泥护栏|Concrete barrier|水泥护栏
+barriers|路缘石|Road curb|路缘石
+signs|菱形警示牌|Diamond-shaped warning sign|菱形警示牌
+signs|黄色菱形警示牌|Yellow diamond warning sign|黄色菱形警示牌
+signs|红色三角警示牌|Red triangular warning sign|红色三角形标志
+signs|黑底黄箭头|Yellow chevron on black|黑底黄箭头
+signs|黄底黑箭头|Black chevron on yellow|黄底黑箭头
+signs|黑底橙箭头|Orange chevron on black|黑底橙箭头
+signs|黑底白箭头|White arrow on black|黑底白箭头
+signs|白底红箭头|Red arrow on white|白底红箭头
+signs|红底白箭头|White arrow on red|红底白箭头
+signs|双语道路标志|Bilingual road sign|双语标志
+signs|黄色灯球人行横道标志|Yellow globe at pedestrian crossing|贝利沙灯;黄色灯泡
+signs|限速标志|Speed limit sign|限速标志
+signs|停止标志|Stop sign|停止标志
+signs|蓝色路标|Blue road sign|蓝色路标
+signs|绿色路标|Green road sign|绿色路标
+signs|指路牌背面涂黑|Black back of direction sign|指路标牌的背面都漆成了黑色
+plates|白色车牌|White vehicle plate|白色车牌
+plates|黄色车牌|Yellow vehicle plate|黄色车牌
+plates|黄色后车牌|Yellow rear plate|黄色后牌
+plates|白色前牌、黄色后牌|White front plate and yellow rear plate|前白后黄
+plates|车牌左侧蓝条|Blue band on left of vehicle plate|左蓝长白;欧盟蓝条;欧洲蓝条
+plates|车牌顶部蓝条|Blue band at top of vehicle plate|顶部带有蓝色条纹;蓝色条纹
+plates|黑底白字车牌|White letters on black plate|黑底白字
+plates|白底蓝字车牌|Blue letters on white plate|白底蓝字
+plates|前车牌可见|Vehicle with a front plate|前车牌;前牌
+plates|后车牌可见|Vehicle with a rear plate|后车牌;后牌
+plates|短车牌|Short vehicle plate|短牌
+road-vehicles|三轮车|Three-wheeled vehicle|三轮车
+road-vehicles|三轮出租车|Three-wheeled taxi|三轮出租车
+road-vehicles|嘟嘟车|Tuk-tuk|嘟嘟车
+road-vehicles|摩托车侧斗|Motorcycle sidecar|摩托车侧斗
+road-vehicles|黄色出租车|Yellow taxi|黄色出租车
+road-vehicles|亮绿色公交车|Bright green bus|亮绿色的公交车
+camera|低视角街景相机|Low Street View camera|低相机;相机低视角;低相机视角
+camera|第三代街景画面|Third-generation Street View imagery|三代街景;第三代街景
+camera|第四代街景画面|Fourth-generation Street View imagery|第四代街景
+camera|第二代街景画面|Second-generation Street View imagery|二代街景;二代
+camera|徒步拍摄街景|Trekker Street View imagery|徒步旅者;徒步相机
+camera|三脚架相机|Tripod camera|三脚架;三脚架相机
+camera|短天线街景车|Street View car with short antenna|短天线
+camera|长天线街景车|Street View car with long antenna|长天线
+camera|无天线街景车|Street View car without antenna|没有天线
+camera|车顶行李架|Visible roof rack on camera car|车顶行李架;车顶架
+camera|蓝色条纹街景车|Street View car with blue stripe|蓝色条纹街景车
+camera|低质量棕色街景画面|Low-quality brown-tinted imagery|shitcam
+camera|街景车圆形马赛克|Circular blur over camera car|圆形马赛克
+terrain|高大陡峭的山|Tall, steep mountains|高大、嶙峋的山;高大陡峭山脉
+terrain|低矮丘陵|Low hills|低矮丘陵
+terrain|狭长山脉|Long, narrow mountain range|狭长山脉
+terrain|平顶山脊|Flat-topped ridge|平顶山脊
+terrain|V 形山谷|V-shaped valley|V形山谷
+terrain|积雪山峰|Snow-capped peaks|山峰积雪
+terrain|平坦地形|Flat terrain|平坦;完全平坦
+terrain|沙丘|Sand dunes|沙丘
+terrain|草原|Grassland|草原;开阔草原
+terrain|盐田|Salt flats|盐田
+terrain|湿地|Wetland|平坦湿地
+terrain|湖泊|Lake|湖泊
+terrain|石墙|Stone wall in landscape|石墙
+terrain|葡萄园|Vineyard|葡萄园
+terrain|橄榄种植园|Olive grove|橄榄种植园
+terrain|温室|Greenhouses|温室
+terrain|农田|Farmland|农田
+plants|棕榈树|Palm trees|棕榈树;棕榈
+plants|仙人掌|Cacti|仙人掌
+plants|松树|Pine trees|松树
+plants|桉树|Eucalyptus trees|桉树
+plants|针叶树|Conifer trees|针叶树
+plants|低矮灌木|Low shrubs|低矮灌木
+plants|干旱灌木丛|Dry thorn scrub|干旱灌木丛
+plants|茶园|Tea plantation|茶园
+plants|甘蔗田|Sugarcane field|甘蔗田;甘蔗
+plants|棉花田|Cotton field|棉花田;棉花
+plants|油棕种植园|Oil palm plantation|油棕种植园
+plants|橡胶树种植园|Rubber plantation|橡胶树种植园
+plants|柑橘种植园|Citrus orchard|柑橘种植园
+plants|水稻田|Rice field|水稻
+plants|巴拉那松|Paraná pine|巴拉那松
+plants|树冠末端叶簇|Leaves clustered at branch tips|枝条末端叶簇;叶子只在枝条末端
+plants|稀树草原|Savanna|稀树草原
+soil|红色土壤|Red soil|红土;红色土壤;红壤
+soil|深色土壤|Dark soil|深色土壤
+soil|沙质土壤|Sandy soil|沙土;干燥沙质土壤
+soil|火山岩|Volcanic rock|火山岩
+soil|石灰岩|Limestone|石灰岩
+buildings|红砖墙|Red brick wall|红砖墙;红砖
+buildings|茅草屋顶|Thatched roof|茅草屋顶
+buildings|平屋顶|Flat roof|平屋顶
+buildings|金属屋顶|Metal roof|金属屋顶
+buildings|屋顶水箱|Rooftop water tank|屋顶水箱
+buildings|白色圆顶|White dome|白色圆顶
+buildings|清真寺|Mosque|清真寺
+buildings|排屋|Row houses|排屋
+buildings|高脚木屋|Raised wooden house|木屋高跷
+buildings|灰色砖屋顶|Gray tile roof|灰色砖屋顶
+buildings|装饰性烟囱|Decorative chimney|装饰性烟囱
+languages|英语文字|English text|英语
+languages|法语文字|French text|法语
+languages|西班牙语文字|Spanish text|西班牙语
+languages|葡萄牙语文字|Portuguese text|葡萄牙语
+languages|德语文字|German text|德语
+languages|荷兰语文字|Dutch text|荷兰语
+languages|阿拉伯语文字|Arabic text|阿拉伯语
+languages|希伯来语文字|Hebrew text|希伯来语
+languages|俄语文字|Russian text|俄语
+languages|韩语文字|Korean text|韩语
+languages|泰语文字|Thai text|泰语
+languages|高棉语文字|Khmer text|高棉语
+languages|老挝语文字|Lao text|老挝语
+languages|越南语文字|Vietnamese text|越南语
+languages|印地语文字|Hindi text|印地语
+languages|泰米尔语文字|Tamil text|泰米尔语
+languages|旁遮普语文字|Punjabi text|旁遮普语
+languages|孟加拉语文字|Bengali text|孟加拉语
+languages|瑞典语文字|Swedish text|瑞典语
+languages|芬兰语文字|Finnish text|芬兰语
+languages|挪威语文字|Norwegian text|挪威语
+languages|丹麦语文字|Danish text|丹麦语
+languages|希腊语文字|Greek text|希腊语
+scripts|西里尔字母|Cyrillic letters|西里尔字母
+scripts|拉丁字母|Latin letters|拉丁字母
+scripts|阿拉伯字形|Arabic script|阿拉伯字母;阿拉伯字形
+scripts|希伯来字母|Hebrew letters|希伯来字母
+scripts|天城文|Devanagari script|天城文
+scripts|泰文字形|Thai script|泰文;泰语文字
+scripts|高棉文字形|Khmer script|高棉文;高棉文字
+scripts|韩文字形|Hangul letters|韩文;韩文字
+scripts|老挝文字形|Lao script|老挝文;老挝文字
+scripts|波浪号字母|Letter with a tilde|带波浪号的字母
+scripts|顶端横线字形|Letters joined by a top line|顶端横线字形
+words|STOP 字样|The word STOP|STOP
+words|ALTO 字样|The word ALTO|“ALTO”;ALTO
+words|PARE 字样|The word PARE|PARE
+words|DUR 字样|The word DUR|DUR
+words|STOPP 字样|The word STOPP|STOPP
+words|RAILROAD CROSSING 字样|RAILROAD CROSSING text|RAILROAD CROSSING
+words|SPEED LIMIT 字样|SPEED LIMIT text|SPEED LIMIT
+words|MAXIMUM 字样|MAXIMUM text|MAXIMUM
+words|Rua 字样|The word Rua|Rua
+words|Jalan 字样|The word Jalan|Jalan
+words|rue 字样|The word rue|rue
+words|calle 字样|The word calle|calle
+words|katu 字样|The word katu|katu
+words|ул 字样|The abbreviation ул|ул
+words|улица 字样|The word улица|улица
+words|Einbahnstraße 字样|Einbahnstraße text|Einbahnstraße
+brands|OXXO 标志|OXXO sign|OXXO
+brands|PEMEX 标志|PEMEX sign|PEMEX
+brands|K-Market 标志|K-Market sign|K-Market
+brands|S-Market 标志|S-Market sign|S-Market
+brands|K-Supermarket 标志|K-Supermarket sign|K-Supermarket
+brands|K-Citymarket 标志|K-Citymarket sign|K-Citymarket
+brands|Buc-ee's 标志|Buc-ee's sign|Buc-ee's
+brands|CASEY'S 标志|CASEY'S sign|CASEY'S
+brands|Hy-Vee 标志|Hy-Vee sign|Hy-Vee
+brands|Kwik Trip 标志|Kwik Trip sign|Kwik Trip
+brands|Publix 标志|Publix sign|Publix
+brands|SHEETZ 标志|SHEETZ sign|SHEETZ
+brands|Shoprite 标志|Shoprite sign|Shoprite
+brands|WaWa 标志|WaWa sign|WaWa
+markings|白色实线|Solid white road line|白色实线
+markings|双实线|Double solid road line|双实线
+markings|黄白条纹标线|Yellow-and-white road stripes|黄白条纹
+markings|橙色道路中线|Orange road center line|橙色道路中线
+markings|红砖铺装路面|Red-brick road surface|红砖铺装路面
+markings|石块铺装路面|Stone-paved road|石块铺装路
+posts|短白色路桩|Short white roadside bollard|短白色路桩
+posts|白色混凝土路桩|White concrete roadside bollard|白色混凝土路桩
+posts|黄色反光板|Yellow roadside reflector|圆形的黄色反光板
+posts|黑色顶部路桩|Bollard with a black top|顶部黑色路桩;顶部为黑色
+poles|圆柱形混凝土杆|Cylindrical concrete utility pole|圆柱型混凝土杆
+poles|灰色杆顶|Gray pole top|灰色杆顶
+poles|电线杆横杆|Utility pole crossarm|横杆
+poles|灰色天线|Gray camera antenna|灰色天线
+poles|电线杆上的金属臂|Metal arm on utility pole|一到两个带有绝缘棒的金属臂
+signs|黑色边框道路标志|Road sign with a black border|黑色边框
+signs|黄色背景道路标志|Road sign with a yellow background|黄色背景标志
+signs|黑白条纹标志杆|Black-and-white striped signpost|黑白条纹
+signs|交通标志上的箭头|Arrow on a road sign|箭头
+signs|黑白行人过路标志|Black-and-white pedestrian crossing sign|黑白相间的路标
+plates|橙色车牌|Orange vehicle plate|橙色车牌
+plates|淡黄色车牌|Pale yellow vehicle plate|淡黄色
+plates|荧光黄车牌|Fluorescent yellow vehicle plate|荧光黄色
+plates|车牌两侧蓝条|Blue bands on both sides of plate|两侧都有蓝色条带
+plates|彩虹图案车牌|Rainbow-pattern vehicle plate|彩虹
+road-vehicles|公交车|Bus|公交车
+road-vehicles|卡车|Truck|卡车
+road-vehicles|出租车|Taxi|出租车
+road-vehicles|摩托车|Motorcycle|摩托车
+camera|街景船只|Street View imagery from a boat|船上街景
+camera|模糊街景画面|Blurred Street View imagery|模糊
+camera|短粗天线|Short thick camera antenna|短粗天线
+camera|白色街景车|White Street View car|白车
+camera|蓝白街景车|Blue-and-white Street View car|蓝白色街景车
+camera|绿色模糊画面|Green-tinted blurred imagery|绿色模糊
+terrain|山脉|Mountain range|山脉
+terrain|高原|Plateau|高原
+terrain|山谷|Valley|山谷
+terrain|海岸|Coastline|海岸
+terrain|雪山|Snow-covered mountain|雪山
+terrain|积雪|Snow on the ground|积雪
+terrain|向日葵田|Sunflower field|向日葵
+terrain|果园|Orchard|果园
+plants|森林|Forest|森林
+plants|桉树林|Eucalyptus woodland|桉树林
+plants|橄榄树|Olive trees|橄榄树
+plants|温带雨林|Temperate rainforest|温带雨林
+plants|山毛榉林|Beech forest|山毛榉林
+plants|树篱|Hedges|树篱
+plants|柱状南洋杉|Columnar Araucaria trees|柱状南洋杉
+plants|稀疏树木|Sparse trees|稀疏树木
+plants|高草|Tall grass|高草
+soil|粉红色土壤|Pink soil|浅粉红土
+soil|黑色沙滩|Black sand beach|黑色的沙滩
+buildings|白色小屋|Small white house|白色小屋
+buildings|木框架房屋|Timber-frame house|木框架
+buildings|瓷砖外墙|Tiled building exterior|瓷砖
+buildings|烟囱|Chimney|烟囱
+buildings|摩天大楼|Skyscraper|摩天大楼
+buildings|公寓楼|Apartment building|公寓楼
+buildings|铁皮屋顶|Corrugated metal roof|铁皮屋顶
+scripts|传统蒙古文|Traditional Mongolian script|传统蒙文
+scripts|奥里雅文字|Odia script|奥里雅文字
+scripts|孟加拉文字|Bengali script|孟加拉文
+words|BERHENTI 字样|The word BERHENTI|BERHENTI
+words|peringatan 字样|The word peringatan|peringatan
+words|rruga 字样|The word rruga|rruga
+words|вулиця 字样|The word вулиця|вулиця
+words|Rúa 字样|The word Rúa|Rúa
+words|COUNTY 字样|The word COUNTY|COUNTY
+brands|Pizza Ranch 标志|Pizza Ranch sign|Pizza Ranch
+brands|Kum & Go 标志|Kum & Go sign|Kum & Go
+brands|piggly wiggly 标志|piggly wiggly sign|piggly wiggly

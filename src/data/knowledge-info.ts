@@ -1,6 +1,6 @@
 import type { Clue, EvidenceEstimate, Text2 } from './types'
 import locationsFile from './knowledge/locations.json'
-import detailUrl from './knowledge/clue-info.json?url'
+import detailUrl from './knowledge/playable-clue-info.json?url'
 
 type Location = { id: string; name: Text2 }
 type ClueDetails = {

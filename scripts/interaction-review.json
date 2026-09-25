@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "approvedSourceFactIds": [
+    "fact-d1197cfe8018194496",
+    "fact-afb75ef443052c925e"
+  ],
+  "withheld": {
+    "fact-0870f9be7f0c4a99b8": "The Italian source combines two blue bands with a specifically short front plate. The playable front-plate clue does not encode shortness, so this joint rule would overstate evidence."
+  }
+}
