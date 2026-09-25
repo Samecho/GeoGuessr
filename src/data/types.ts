@@ -1,16 +1,8 @@
 export type Text2 = { en: string; zh: string }
-export type Continent = 'Europe' | 'Asia' | 'Africa' | 'North America' | 'South America' | 'Oceania'
-export type Country = {
-  id: string
-  name: Text2
-  continent: Continent
-  coverage: 'road' | 'limited-road'
-  coverageNote: Text2
-  coverageSource: string
-  reviewed: string
-}
+export type Continent = 'Europe' | 'Asia' | 'Africa' | 'North America' | 'South America' | 'Oceania' | 'Antarctica'
+export type Country = { id: string; name: Text2; continent: Continent; flagCode?: string; kind: 'country' | 'territory' }
 export type Region = { id: string; name: Text2; coverageSource: string }
-export type RegionScheme = { schemaVersion: 1; countryId: string; granularity: Text2; regions: Region[]; note: Text2 }
+export type RegionScheme = { schemaVersion: number; countryId: string; granularity: Text2; regions: Region[]; note: Text2; complete: boolean }
 export type Category = { id: string; name: Text2; children: { id: string; name: Text2; selectionMode: 'single' | 'multiple' }[] }
 export type Asset = {
   id: string; path: string; sourceUrl: string; author: string; license: string; licenseUrl: string
@@ -20,13 +12,15 @@ export type Clue = {
   id: string; categoryId: string; groupId: string; appearance: Text2; formalName: Text2
   identify: Text2; geography: Text2; strength: Text2; caveat: Text2
   sourceUrls: string[]; reviewed: string; assetIds: string[]; tags: string[]
-  referenceAssetIds?: string[]
-  exclusionAllowed?: boolean
+  referenceAssetIds?: string[]; exclusionAllowed?: boolean
 }
 export type Observation = { clueId: string; mode: 'seen' | 'excluded'; certainty: 'certain' | 'uncertain' }
-export type Rule = {
-  id: string; scope: 'country' | 'region'; targets: string[]; countryId?: string
-  when: { all?: string[]; any?: string[]; excluded?: string[] }
-  weight: number; group: string; relation: 'single' | 'extra' | 'replace'
-  sourceUrls: string[]; rationale: Text2; reviewed: string
+export type EvidenceEstimate = {
+  featureId: string; locationId: string; pPresent: number; band: string
+  basis: string; basisReason: string; status: 'initial-estimate'; measured: false; sourceFactId: string; sourceFactIds?: string[]; claimIds?: string[]
+}
+export type InteractionRule = {
+  id: string; featureIds: string[]; locationId: string; relation: 'interaction'
+  likelihoodRatio: number; certaintyMode: 'minimum'; condition: 'all-seen'
+  sourceFactId: string; rationale: string; measured: false
 }

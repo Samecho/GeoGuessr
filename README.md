@@ -1,39 +1,45 @@
 # Street Clues
 
-A bilingual, browser-only visual clue reference for **practice sessions where outside aids are allowed**. The user freely selects observations, adjusts certainty and geographic scope, and sees a country ranking plus an optional conditional region ranking. There is no account, backend, runtime AI, API key, screenshot reader or location lookup.
+A browser-only visual clue library for GeoGuessr practice. Pick any visible clue, set confidence or explicit absence, and inspect the live country ranking. Selecting one country reveals its conditional region distribution. The interface, language switch, hard scope selector, clue tree, and charts remain the existing application; the knowledge data and inference model now load from versioned JSON.
 
-## Run
+## Run and verify
 
-Requires Node 22 and npm. Run `npm ci`, then `npm run dev`. The first visit is English; the language switch persists in local storage. Observations and hard scope stay in the current browser session. `Clear clues` keeps language and scope.
+Requires Node.js 22 and npm.
 
 | Command | Purpose |
 |---|---|
-| `npm run dev` | Local Vite server |
+| `npm ci` | Install locked dependencies |
+| `npm run dev` | Start local development |
 | `npm run build` | Typecheck and build static `dist/` |
-| `npm run preview` | Inspect the built files locally |
-| `npm test` | Deterministic rule-engine tests |
-| `npm run test:e2e` | Playwright Chromium UI checks (`npx playwright install chromium` first) |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript |
-| `npm run data:validate` | Data references, translations, flags and public asset checks |
-| `npm run data:validate -- --write-report` | Regenerate `docs/DATA_COVERAGE.md` |
+| `npm run preview` | Preview the built site locally |
+| `npm test` | Run deterministic inference tests |
+| `npm run test:e2e` | Run Playwright UI checks (`npx playwright install chromium` first) |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript |
+| `npm run data:validate` | Validate IDs, references, estimates, photos, and local archive paths when present |
+| `npm run data:report` | Validate and regenerate the per-chapter coverage report |
+| `npm run import:tuxundoc` | Re-import all linked local chapters (read-only source) |
 
-## Data and design
+## Data layout
 
-- `src/data/countries.ts`: 113 current official road-imagery candidates, including limited-road regions as distinct IDs. The full candidate-by-candidate audit is in [`docs/DATA_COVERAGE.md`](docs/DATA_COVERAGE.md); boundary decisions are in [`docs/COVERAGE.md`](docs/COVERAGE.md).
-- `src/data/regions.ts`: mutually exclusive US, Canada and Brazil partitions. A region panel without an active reviewed local rule shows a neutral empty state. India is deliberately a region-data gap while road-car extent and internal partition evidence are checked.
-- `src/data/categories.ts`, `clues.ts`, `rules.ts`: bilingual category tree, observations and sourced heuristic conditions. Rules are separate from React and evaluated from scratch. See [`docs/SCORING.md`](docs/SCORING.md). The additional sourced batches are in `yuque-clues.ts` and `yuque-rules.ts`, with research notes in [`docs/YUQUE_REVIEW.md`](docs/YUQUE_REVIEW.md).
-- `src/data/assets.ts`: approved, attributed local real photos only. Photo credits and separate third-party licenses are in [`docs/ASSETS.md`](docs/ASSETS.md). These images are not relicensed by this project's code license.
-- `src/i18n.ts` and each data item's `{ en, zh }`: UI and content translations. Add both languages with every user-facing data change; IDs and score calculation never depend on the display language.
+`src/data/knowledge/` is the versioned knowledge base. It is split into `locations.json`, `categories.json`, `features.json`, the compact `runtime-features.json`, `facts.json`, `claims.json`, `estimates.json`, `images.json`, `interactions.json`, `regions.json`, `import-progress.json`, `model-parameters.json`, `photo-curation.json`, and the compact `clue-info.json`. Each file has a schema version and stable IDs. The app loads compact inference records up front; `clue-info.json` is fetched only when a user opens a clue info panel. Full source facts, claims and image references remain available for audit but do not enter the first-load JavaScript. The pure engine is in `src/engine/scoring.ts`.
 
-To add a country, first verify official **road-car** coverage and record its source, date and extent in `countries.ts` and `docs/COVERAGE.md`; add a local flag SVG under its stable ID. A candidate listing alone does not constitute a researched clue profile. Add an internal scheme only after checking imagery extent and a non-overlapping partition. Add a clue with a plain visual appearance label, its source and an approved asset ID; multiple photos of one feature stay under one clue ID. For any new photo, document its author, original URL, license, license link, attribution and redistribution basis in `assets.ts`; run the validator and visually check the image. Add a rule with a short evidence-based rationale, source, review date, condition, target, group and weight; add a regression test for strong rules. Source URL syntax validation is not factual review.
+The sole geographic source for this import is the local `tuxundoc/index.html` chapter index and its linked chapter HTML/metadata. The original `tuxundoc/` directory is ignored by Git, read-only to the importer, and excluded from deployment. Every fact traces to a local path, section ID, source element or ordinal, and content hash. The generated [coverage report](docs/DATA_COVERAGE.md) lists all default candidates and each processed chapter. Import accounting is not a manual factual review.
+
+The source currently yields 133 default candidate locations, including Antarctica; a user's selected scope is the only candidate filter. It also yields 5,562 deduplicated clue records, 8,466 source text facts, 8,602 parsed claims, 5,102 probability estimates, and 28 interaction estimates. There are 23 illustrated clue records using 24 separately licensed photo files and 5,539 text-only records. The 5,860 embedded tutorial-image references remain private because image-level redistribution rights could not be established. See [coverage](docs/DATA_COVERAGE.md), [scoring](docs/SCORING.md), [assets](docs/ASSETS.md), and [remaining review work](docs/GAPS.md).
+
+## Update knowledge
+
+1. Keep the original `tuxundoc/` archive unchanged.
+2. Run `npm run import:tuxundoc`; it reads each linked chapter's HTML and metadata, records image paths without copying image bytes, and replaces the generated JSON deterministically.
+3. Review `import-progress.json`, source links and excerpts. Unknown mentions stay unknown; they do not create absence estimates.
+4. Edit `photo-curation.json` only for independently redistributable assets with complete attribution, license, source path and a visual match. A photo's capture location is not a geographic claim.
+5. Run `npm run data:validate`, `npm run data:report`, `npm test`, typecheck, lint, Playwright, and build.
+
+The qualitative word bands in `model-parameters.json` are centralized initial probability estimates, not measured prevalence. For newly reviewed data, separate the source fact/relationship from numerical estimates and give each estimate a reason. A valid source URL alone does not establish that a conclusion is correct. See [the scoring model and limits](docs/SCORING.md).
 
 ## GitHub Pages
 
-Live site: [Street Clues](https://samecho.github.io/GeoGuessr/).
+`.github/workflows/pages.yml` validates and builds with the repository subpath as Vite's base, then deploys through GitHub Pages when pushed to `main`. Set **Settings → Pages → Source** to **GitHub Actions**. For a root `username.github.io` repository, use `/` as the base instead. The workflow is a deployment configuration; it does not prove a deploy succeeded. Check the latest Actions run and site URL after pushing.
 
-The committed workflow validates, builds with `VITE_BASE=/<repository-name>/`, uploads `dist/`, and deploys on a push to `main` or a manual run. In the repository's **Settings → Pages**, select **GitHub Actions** as the source. For a `username.github.io` root site, change the workflow's `VITE_BASE` to `/`. The bundle uses relative asset URLs derived from Vite's base path and requires no production Node server. The first live deployment was verified on 2026-09-25.
-
-## Engineering defaults and present limits
-
-Uniform prior among manually scoped candidates; uncertain evidence coefficient 0.38; correlated rule group subsequent contributions 0.25; optional conservative tail mix 1%; one-decimal largest-remainder display rounding; 300 ms rank motion with reduced-motion support. These are engineering defaults, **not measured GeoGuessr map probabilities**. Country and region inference depth is currently uneven. The precise remaining gaps are in [`docs/GAPS.md`](docs/GAPS.md).
+Third-party photo and font licenses are separate from any license applied to project code. No production server, backend, API key, user account, screenshot upload, OCR, or location lookup is used.

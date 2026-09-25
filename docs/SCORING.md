@@ -1,11 +1,31 @@
-# Scoring and interpretation
+# Scoring model
 
-Reviewed 2026-09-25. The visible **Match share / 匹配占比** is a normalized heuristic share over the current hard-scope candidates. It is not a calibrated chance of being correct. No map-sampling frequency is assumed.
+Reviewed 2026-09-25. The chart label **Match share / 匹配占比** means a normalized model share among the currently scoped candidates. It is not calibrated GeoGuessr accuracy or a real map-sampling probability.
 
-For each candidate, the engine starts at the same log score. A rule is active only when its declared `all`, `any` or explicit `excluded` observation conditions are met. An unselected clue contributes nothing. Certain observations use strength 1; uncertain ones use 0.38. A combination takes the weakest necessary observation strength. Positive and negative rule weights have separate rationales; exclusion weights are authored independently from positive weights.
+## Candidate posterior
 
-Within a rule group, the largest absolute active contribution counts in full; additional correlated contributions count at 0.25. A `replace` rule can supersede component rules in that group, while an `extra` rule is an explicitly additional interaction. The current UK yellow rear plate plus left-hand traffic interaction uses `extra` with a small weight. The Yuque expansion adds a few similarly small cross-object interactions (for example a Finnish street-name suffix with a separate warning-sign border); related road-line and script clues share groups so they cannot accumulate at full strength. Photos sharing one clue ID cannot be selected as independent evidence. The entire score is recalculated from the current observation set after each edit, so selection order and history have no effect.
+For candidate location `c` and observations `o`, the engine computes:
 
-Numerically stable softmax converts log scores to shares. A configurable 1% mixture with the uniform in-scope distribution retains a small tail; it is **not** a 1% error measurement or 1% per other candidate. All ranking, Top 5 extraction and Others aggregation use unrounded shares. Largest-remainder rounding makes displayed Top 5 plus Others total exactly 100.0%. When the hard scope contains one country, its country share is 100% by construction; its region distribution is computed separately, conditional on that country. Without an active sourced region rule, the UI shows an empty state instead of a fabricated regional best guess.
+`P(c | o) ∝ P(c) × P(o | c)`
 
-Strong rule weights are deliberately higher than generic driving-side or road-style weights, but none implies legal exclusivity. Country-list size, region count, repeated photos and the current rank never raise a candidate's prior. The tests in `src/engine/scoring.test.ts` and `src/engine/yuque-rules.test.ts` cover scope exclusion, order independence, certainty, explicit exclusion, mixed front-plate observations, related groups, combinations, extreme scores, display rounding and region normalization. They prove implementation behavior, not empirical inference accuracy.
+No reliable sampling prior is present in the local tutorial corpus, so candidates in the active hard scope have a uniform prior. Country list size and the number of recorded subregions do not change it. A one-country scope necessarily has a 100% country result; the region panel independently normalizes `P(region | selected country, observations)`.
+
+The engine derives a report likelihood from each location's estimated feature prevalence `p`: `P(seen | c) = sensitivity*p + (1-specificity)*(1-p)`. Explicitly selecting “not visible in this scene” uses the complementary reporting likelihood. It is not equivalent to leaving the clue unselected. “Uncertain” changes the observation sensitivity and specificity; it does not scale the final percentage. The defaults are centralized in `model-parameters.json`: certain sensitivity/specificity .95/.98, uncertain .68/.78, and shared unknown-feature background .5.
+
+The source text is qualitative, not a measured frequency dataset. Words such as “common”, “sometimes”, and “rare” map to centralized initial estimates (.82, .62, .34, .14); explicit absence maps to .03. These values are estimates with a reason and `measured: false`. They are not statistics or legal guarantees. A missing mention uses the same .5 background for every candidate and therefore is neutral, not negative evidence.
+
+The engine sums log likelihoods and normalizes with log-sum-exp. It has no fixed tail mixture, 99% ceiling, lock rule, or score-history state. A posterior can reach displayed 0% or 100%; display rounding does not affect calculation. Top 5 plus Others are aggregated from all scoped candidates and then rounded to one decimal with largest remainder.
+
+## Dependence and combinations
+
+Each selectable feature has stable identity, source facts, and evidence-group IDs. Multiple correlated observations extracted from one source fact are conservatively represented by the strongest single candidate-relative marginal term; this avoids treating wording, glyphs, and a word from the same sign as independent evidence. Different facts can still contribute independently. Repeated examples of the same feature are a single clue ID.
+
+The importer creates an interaction only when a source paragraph explicitly combines at least two observations. The current interaction LR is a centralized `1.6` initial estimate, marked `measured: false`, and is an extra interaction term rather than a replacement for its components. Uncertain interaction reliability uses the least certain required observation. This conservative parser will miss implicit combinations; it does not invent them.
+
+Explicit absence in a local country chapter is modeled as a low estimated prevalence for that location. A player's “not visible in this scene” report is separately handled by the observation model. `supports`, `opposes`, and `explicit-absence` remain traceable claims; absent or unclassified source wording never becomes an automatic exclusion.
+
+## Limitations
+
+The present estimates are deterministic and auditable, but not empirically calibrated. Parser output and its excerpts require human semantic review, especially where the source uses long emphasized prose. The corpus is Chinese-first: 5,033 of 5,562 current clue labels still need English translation review. Only Brazil has a complete source-supported region partition; six other mentioned sets are partial and are not normalized as if complete. These limits are in [GAPS.md](GAPS.md).
+
+Tests verify the math and UI contracts, not geographic accuracy. The synthetic regression with two equal-prior candidates, six independent likelihood ratios of 1.2 and one 0.001 opposing ratio returns approximately 0.298%; synthetic values are not stored as geographic rules.

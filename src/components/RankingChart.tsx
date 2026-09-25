@@ -9,12 +9,13 @@ type Props = {
   language: Language
   label: (id: string) => string
   flag?: boolean
+  flagCodeFor?: (id: string) => string | undefined
   activeId?: string | null
   onPick?: (id: string) => void
   othersLabel?: string
 }
 
-export function RankingChart({ ranked, language, label, flag = false, activeId, onPick, othersLabel }: Props) {
+export function RankingChart({ ranked, language, label, flag = false, flagCodeFor, activeId, onPick, othersLabel }: Props) {
   const listRef = useRef<HTMLDivElement>(null)
   const previous = useRef(new Map<string, { top: number; left: number; width: number; clone: HTMLElement }>())
   const { top, others } = breakdown(ranked)
@@ -61,7 +62,7 @@ export function RankingChart({ ranked, language, label, flag = false, activeId, 
   return <div className="rank-list" ref={listRef}>
     {top.map((row, index) => {
       const content = <>
-        <span className="rank-identity">{flag && <img className="flag" src={`${import.meta.env.BASE_URL}flags/${row.id.toLowerCase()}.svg`} alt="" />}<span className="rank-name">{label(row.id)}</span></span>
+        <span className="rank-identity">{(() => { const code = flagCodeFor?.(row.id) || (flag && /^[a-z]{2}$/i.test(row.id) ? row.id.toLowerCase() : undefined); return code ? <img className="flag" src={`${import.meta.env.BASE_URL}flags/${code}.svg`} alt="" /> : null })()}<span className="rank-name">{label(row.id)}</span></span>
         <span className="rank-meter"><span className="rank-fill" style={{ width: `${Math.max(1.5, row.share * 100)}%` }} /></span>
         <span className="rank-value">{values[index].toFixed(1)}%</span>
       </>

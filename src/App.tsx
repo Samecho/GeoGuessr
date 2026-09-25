@@ -4,10 +4,10 @@ import { countries, countryById } from './data/countries'
 import { categories } from './data/categories'
 import { clues, clueById } from './data/clues'
 import { assetById } from './data/assets'
-import { regionSchemeByCountry } from './data/regions'
-import { rules } from './data/rules'
+import { regionSchemeByCountry, regionCoverageByCountry } from './data/regions'
+import { estimates, interactions, modelParameters, features, locations, candidateByLocation } from './data/knowledge'
 import type { Clue, Continent, Observation } from './data/types'
-import { conditionStrength, rankCandidates } from './engine/scoring'
+import { rankCandidates } from './engine/scoring'
 import { RankingChart } from './components/RankingChart'
 import { ui, type Language } from './i18n'
 import './styles.css'
@@ -15,7 +15,7 @@ import './styles.css'
 type Scope = { type: 'global' } | { type: 'continent'; continent: Continent } | { type: 'countries'; ids: string[] }
 const continentLabels: Record<Continent, { en: string; zh: string }> = {
   Europe: { en: 'Europe', zh: '欧洲' }, Asia: { en: 'Asia', zh: '亚洲' }, Africa: { en: 'Africa', zh: '非洲' },
-  'North America': { en: 'North America', zh: '北美洲' }, 'South America': { en: 'South America', zh: '南美洲' }, Oceania: { en: 'Oceania', zh: '大洋洲' },
+  'North America': { en: 'North America', zh: '北美洲' }, 'South America': { en: 'South America', zh: '南美洲' }, Oceania: { en: 'Oceania', zh: '大洋洲' }, Antarctica: { en: 'Antarctica', zh: '南极洲' },
 }
 const firstLanguage = (): Language => localStorage.getItem('street-clues-language') === 'zh' ? 'zh' : 'en'
 
@@ -26,6 +26,7 @@ function App() {
   const [openGroups, setOpenGroups] = useState<string[]>(['roads', 'writing'])
   const [categoryId, setCategoryId] = useState('all')
   const [infoId, setInfoId] = useState<string | null>(null)
+  const [infoContent, setInfoContent] = useState<Clue | null>(null)
   const [zoom, setZoom] = useState(false)
   const [photoIndex, setPhotoIndex] = useState(0)
   const [viewCountry, setViewCountry] = useState<string | null>(null)
@@ -33,6 +34,8 @@ function App() {
   const [countrySearch, setCountrySearch] = useState('')
   const [brandFilter, setBrandFilter] = useState('all')
   const [showShareInfo, setShowShareInfo] = useState(false)
+  const [gallerySearch, setGallerySearch] = useState('')
+  const [galleryLimit, setGalleryLimit] = useState(48)
   const L = ui[language]
 
   useEffect(() => { setPhotoIndex(0) }, [infoId])
@@ -47,12 +50,14 @@ function App() {
     (scope.type === 'continent' ? country.continent === scope.continent : scope.ids.includes(country.id))), [scope])
   const scopedIds = useMemo(() => scopedCountries.map((country) => country.id), [scopedCountries])
   const selected = useMemo(() => Object.values(observations), [observations])
-  const countryRanks = useMemo(() => rankCandidates(scopedIds, rules, selected, 'country'), [scopedIds, selected])
+  const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
+  const parentByLocation = useMemo(() => new Map(locations.map((location) => [location.id, location.parentId])), [])
+  const scoringOptions = useMemo(() => ({ model: modelParameters.observationModel, dependenceGroups, interactions, parentByLocation, candidateByLocation }), [dependenceGroups, parentByLocation])
+  const countryRanks = useMemo(() => rankCandidates(scopedIds, estimates, selected, { ...scoringOptions, scope: 'country' }), [scopedIds, selected, scoringOptions])
   const scheme = viewCountry ? regionSchemeByCountry.get(viewCountry) : undefined
-  const hasRegionEvidence = !!(scheme && rules.some((rule) => rule.scope === 'region' && rule.countryId === viewCountry && conditionStrength(rule, new Map(selected.map((o) => [o.clueId, o]))) > 0))
-  const regionRanks = useMemo(() => scheme && hasRegionEvidence
-    ? rankCandidates(scheme.regions.map((region) => region.id), rules, selected, 'region', scheme.countryId)
-    : [], [scheme, hasRegionEvidence, selected])
+  const regionRanks = useMemo(() => scheme
+    ? rankCandidates(scheme.regions.map((region) => region.id), estimates, selected, { ...scoringOptions, scope: 'region', parentId: scheme.countryId })
+    : [], [scheme, selected, scoringOptions])
 
   useEffect(() => {
     const key = scope.type === 'global' ? 'global' : scope.type === 'continent' ? scope.continent : `countries:${[...scope.ids].sort().join(',')}`
@@ -96,10 +101,19 @@ function App() {
     if (!observation) return current
     return { ...current, [id]: { ...observation, certainty: observation.certainty === 'certain' ? 'uncertain' : 'certain' } }
   })
+  const matchesQuery = (clue: Clue) => !gallerySearch.trim() || `${clue.appearance.en} ${clue.appearance.zh}`.toLocaleLowerCase().includes(gallerySearch.trim().toLocaleLowerCase())
   const displayedClues = clues.filter((clue) => clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId)
-    && (categoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)))
-  const textOnly = clues.filter((clue) => !clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId))
-  const infoClue = infoId ? clueById.get(infoId) : undefined
+    && (categoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
+  const textOnly = clues.filter((clue) => !clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId) && matchesQuery(clue))
+  const visibleTextOnly = textOnly.slice(0, galleryLimit)
+  const infoClue = infoId && infoContent?.id === infoId ? infoContent : undefined
+  const openInfo = (clue: Clue) => {
+    setInfoId(clue.id); setInfoContent(clue)
+    void import('./data/knowledge-info').then(async ({ loadClueInfo }) => {
+      const details = await loadClueInfo(clue, estimates)
+      setInfoContent((current) => current?.id === clue.id ? details : current)
+    })
+  }
   const scopeTitle = scope.type === 'global' ? L.global : scope.type === 'continent' ? continentLabels[scope.continent][language] : `${scope.ids.length} ${L.countries.toLowerCase()}`
 
   return <div className="app-shell">
@@ -118,7 +132,7 @@ function App() {
         {(Object.keys(continentLabels) as Continent[]).map((continent) => <button type="button" key={continent} className={`scope-button ${scope.type === 'continent' && scope.continent === continent ? 'chosen' : ''}`} onClick={() => setScope({ type: 'continent', continent })}>{continentLabels[continent][language]}</button>)}
         <details className="country-picker"><summary className={`scope-button ${scope.type === 'countries' ? 'chosen' : ''}`}>{L.custom} <ChevronDown size={14} /></summary>
           <div className="country-picker-popover"><label className="search-field"><Search size={15} /><input type="search" value={countrySearch} onChange={(event) => setCountrySearch(event.target.value)} placeholder={L.searchCountry} aria-label={L.searchCountry} /></label>
-            <div className="country-options">{countries.filter((country) => country.name[language].toLocaleLowerCase().includes(countrySearch.toLocaleLowerCase()) || country.id.toLowerCase().includes(countrySearch.toLowerCase())).map((country) => <label key={country.id} className="country-option"><input type="checkbox" checked={scope.type === 'countries' && scope.ids.includes(country.id)} onChange={() => toggleCountry(country.id)} /><img src={`${import.meta.env.BASE_URL}flags/${country.id.toLowerCase()}.svg`} alt="" /><span>{country.name[language]}</span></label>)}</div>
+            <div className="country-options">{countries.filter((country) => country.name[language].toLocaleLowerCase().includes(countrySearch.toLocaleLowerCase()) || country.id.toLowerCase().includes(countrySearch.toLowerCase())).map((country) => <label key={country.id} className="country-option"><input type="checkbox" checked={scope.type === 'countries' && scope.ids.includes(country.id)} onChange={() => toggleCountry(country.id)} />{country.flagCode ? <img src={`${import.meta.env.BASE_URL}flags/${country.flagCode}.svg`} alt="" /> : <span className="flag-fallback" aria-hidden="true">{country.continent === 'Antarctica' ? '◇' : '•'}</span>}<span>{country.name[language]}</span></label>)}</div>
           </div></details>
       </div>
       {scope.type === 'countries' && <div className="scope-chips">{scope.ids.map((id) => <button type="button" className="scope-chip" key={id} onClick={() => toggleCountry(id)}>{countryById.get(id)?.name[language]} <X size={13} /></button>)}</div>}
@@ -139,8 +153,9 @@ function App() {
       </aside>
 
       <section className="gallery-panel" aria-label={L.gallery}>
-        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{categoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === categoryId)?.name[language]}</h2></div><span className="gallery-count">{displayedClues.length} {language === 'en' ? 'photo clues' : '个图像线索'}</span></div>
+        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{categoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === categoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
         <p className="exclusion-help">{L.exclusionHelp}</p>
+        <label className="search-field clue-search"><Search size={15} /><input type="search" value={gallerySearch} onChange={(event) => { setGallerySearch(event.target.value); setGalleryLimit(48) }} placeholder={L.searchClues} aria-label={L.searchClues} /></label>
         {categoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}
         {displayedClues.length ? <div className="clue-grid">{displayedClues.map((clue) => {
           const asset = assetById.get(clue.assetIds[0])!
@@ -150,12 +165,13 @@ function App() {
               <span className="photo-wrap"><img src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
               <span className="clue-label">{clue.appearance[language]}</span>
             </button>
-            <button type="button" className="info-button" onClick={() => setInfoId(clue.id)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>
+            <button type="button" className="info-button" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>
             {chosen && <div className="card-state"><button type="button" className={chosen.mode === 'seen' ? 'state-active' : ''} onClick={() => selectSeen(clue)}>{L.seen}</button>{clue.exclusionAllowed && <button type="button" className={chosen.mode === 'excluded' ? 'state-active' : ''} onClick={() => selectExcluded(clue)}>{L.excluded}</button>}<button type="button" className="certainty-toggle" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></div>}
             {!chosen && clue.exclusionAllowed && <button type="button" className="card-exclude" onClick={() => selectExcluded(clue)}>{L.excluded}</button>}
           </article>
         })}</div> : <div className="gallery-empty">{L.noPhotos}</div>}
-        {textOnly.length > 0 && <section className="text-observations"><h3>{L.textOnly}</h3><div className="text-clue-list">{textOnly.map((clue) => <div className={`text-clue ${observations[clue.id] ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={observations[clue.id]?.mode === 'seen'}>{observations[clue.id]?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => setInfoId(clue.id)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{observations[clue.id] && <button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{observations[clue.id].certainty === 'certain' ? L.certain : L.uncertain}</button>}</div>)}</div></section>}
+        {textOnly.length > 0 && <section className="text-observations"><h3>{L.textOnly}</h3><div className="text-clue-list">{visibleTextOnly.map((clue) => { const chosen = observations[clue.id]; return <div className={`text-clue ${chosen ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>{chosen?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{chosen ? <><button type="button" className={`text-state ${chosen.mode === 'excluded' ? 'active' : ''}`} onClick={() => selectExcluded(clue)}>{L.excluded}</button><button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></> : <button type="button" className="text-state" onClick={() => selectExcluded(clue)}>{L.excluded}</button>}</div> })}</div></section>}
+        {textOnly.length > galleryLimit && <button type="button" className="load-more" onClick={() => setGalleryLimit((limit) => limit + 48)}>{L.showMore} · {Math.min(textOnly.length - galleryLimit, 48)} / {textOnly.length - galleryLimit}</button>}
         {!displayedClues.length && !textOnly.length && <p className="small-note">{L.categoriesEmpty}</p>}
       </section>
 
@@ -168,12 +184,12 @@ function App() {
         <div className="charts-grid">
           <section className="chart-card"><div className="chart-head"><div><span className="section-kicker">05 / {L.countryResults}</span><h2>{L.countryResults} <button type="button" className="inline-info" aria-label={L.share} onClick={() => setShowShareInfo(!showShareInfo)}><Info size={15} /></button></h2></div><span className="chart-unit">{L.share}</span></div>
             {showShareInfo && <p className="share-explain">{L.aboutShare}</p>}
-            {selected.length ? <RankingChart ranked={countryRanks} language={language} label={(id) => countryById.get(id)?.name[language] || id} flag activeId={viewCountry} onPick={setViewCountry} /> : <div className="chart-empty">{L.noEvidence}</div>}
+            {selected.length || scopedIds.length === 1 ? <RankingChart ranked={countryRanks} language={language} label={(id) => countryById.get(id)?.name[language] || id} flagCodeFor={(id) => countryById.get(id)?.flagCode} activeId={viewCountry} onPick={setViewCountry} /> : <div className="chart-empty">{L.noEvidence}</div>}
             <label className="inspect-select"><span>{L.selectCountry}</span><select value={viewCountry || ''} onChange={(event) => setViewCountry(event.target.value || null)}><option value="">{L.noCountry}</option>{scopedCountries.map((country) => <option key={country.id} value={country.id}>{country.name[language]}</option>)}</select></label>
           </section>
           {viewCountry && <section className="chart-card region-card"><div className="chart-head"><div><span className="section-kicker">06 / {L.regionResults}</span><h2>{countryById.get(viewCountry)?.name[language]}</h2></div><button type="button" className="close-region" onClick={() => setViewCountry(null)} aria-label={L.close}><X size={18} /></button></div>
             <p className="region-caption">{scheme?.granularity[language]} · {L.conditional}</p>
-            {!scheme ? <div className="chart-empty">{L.noRegionScheme}</div> : !hasRegionEvidence ? <div className="chart-empty">{L.noRegionData}</div> : <RankingChart ranked={regionRanks} language={language} label={(id) => scheme.regions.find((region) => region.id === id)?.name[language] || id} othersLabel={language === 'en' ? 'Other regions' : '其他地区'} />}
+            {!scheme ? <div className="chart-empty">{regionCoverageByCountry.get(viewCountry) ? `${L.regionPartial} (${regionCoverageByCountry.get(viewCountry)})` : L.noRegionScheme}</div> : <RankingChart ranked={regionRanks} language={language} label={(id) => scheme.regions.find((region) => region.id === id)?.name[language] || id} othersLabel={language === 'en' ? 'Other regions' : '其他地区'} />}
           </section>}
         </div>
       </section>

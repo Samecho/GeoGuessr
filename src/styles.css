@@ -11,3 +11,5 @@
 
 .exclusion-help{font-size:10px;line-height:1.4;color:#7d9198;margin:0 0 12px}
 .source-figure{margin:16px 0 2px;border:1px solid #dce6e8;border-radius:8px;padding:10px;background:#f6f9f9}.source-figure img{display:block;width:100%;max-height:330px;object-fit:contain}.source-figure figcaption{margin-top:7px;color:#607b83;font-size:11px;line-height:1.45}
+
+.text-state{border:0;border-left:1px solid #dce7e9;background:transparent;color:#71858b;font-size:10px;font-weight:700;padding:7px;white-space:nowrap}.text-state.active{color:#ac694b;background:#fcf1ed}.clue-search{margin:0 0 13px}.load-more{display:block;margin:14px auto;border:1px solid #cbdcde;background:#f7fbfb;color:#356773;border-radius:7px;padding:8px 14px;font-size:11px;font-weight:700}.flag-fallback{display:grid;place-items:center;width:24px;height:18px;color:#91a6ab;flex-shrink:0}

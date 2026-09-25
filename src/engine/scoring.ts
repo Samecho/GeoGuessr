@@ -1,72 +1,116 @@
-import type { Observation, Rule } from '../data/types'
+import type { EvidenceEstimate, InteractionRule, Observation } from '../data/types'
 
 export type Ranked = { id: string; share: number; score: number }
 export type Breakdown = { top: Ranked[]; others: number; all: Ranked[] }
-export const DEFAULT_TAIL_MIX = 0.01
-
-const certainty = (observation: Observation | undefined) =>
-  observation ? (observation.certainty === 'certain' ? 1 : 0.38) : 0
-
-export function conditionStrength(rule: Rule, observations: Map<string, Observation>): number {
-  const all = rule.when.all || []
-  const any = rule.when.any || []
-  const excluded = rule.when.excluded || []
-  if (!all.length && !any.length && !excluded.length) return 0
-  const seen = (id: string) => {
-    const observation = observations.get(id)
-    return observation?.mode === 'seen' ? certainty(observation) : 0
-  }
-  const absent = (id: string) => {
-    const observation = observations.get(id)
-    return observation?.mode === 'excluded' ? certainty(observation) : 0
-  }
-  const mandatory = [...all.map(seen), ...excluded.map(absent)]
-  if (mandatory.some((value) => value === 0)) return 0
-  const alternatives = any.length ? Math.max(...any.map(seen)) : 1
-  if (alternatives === 0) return 0
-  return Math.min(alternatives, ...mandatory)
+export type ObservationModel = {
+  certainSensitivity: number; certainSpecificity: number
+  uncertainSensitivity: number; uncertainSpecificity: number
+  unknownLocationFeature: number
+  uncertainInteractionReliability: number
+}
+export type RankingOptions = {
+  scope?: 'country' | 'region'
+  parentId?: string
+  model?: Partial<ObservationModel>
+  dependenceGroups?: ReadonlyMap<string, readonly string[]>
+  interactions?: readonly InteractionRule[]
+  parentByLocation?: ReadonlyMap<string, string | null>
+  candidateByLocation?: ReadonlyMap<string, boolean>
 }
 
-function scoreTarget(id: string, rules: Rule[], observations: Map<string, Observation>): number {
-  const active = rules.filter((rule) => rule.targets.includes(id))
-    .map((rule) => ({ rule, value: rule.weight * conditionStrength(rule, observations) }))
-    .filter(({ value }) => value !== 0)
-  const replacedGroups = new Set(active.filter(({ rule }) => rule.relation === 'replace').map(({ rule }) => rule.group))
-  const groups = new Map<string, number[]>()
-  let extras = 0
-  for (const { rule, value } of active) {
-    if (rule.relation === 'extra') { extras += value; continue }
-    if (replacedGroups.has(rule.group) && rule.relation !== 'replace') continue
-    const values = groups.get(rule.group) || []
-    values.push(value)
-    groups.set(rule.group, values)
-  }
-  let total = extras
-  for (const values of groups.values()) {
-    values.sort((a, b) => Math.abs(b) - Math.abs(a))
-    total += values[0] + values.slice(1).reduce((sum, value) => sum + value * 0.25, 0)
-  }
-  return total
+export const DEFAULT_MODEL: ObservationModel = {
+  certainSensitivity: 0.95, certainSpecificity: 0.98,
+  uncertainSensitivity: 0.68, uncertainSpecificity: 0.78,
+  unknownLocationFeature: 0.5, uncertainInteractionReliability: 0.55,
+}
+const normalizeModel = (model?: Partial<ObservationModel>): ObservationModel => ({ ...DEFAULT_MODEL, ...model })
+
+function reportProbability(pPresent: number, observation: Observation, model: ObservationModel): number {
+  const p = Math.min(1, Math.max(0, pPresent))
+  const sensitivity = observation.certainty === 'certain' ? model.certainSensitivity : model.uncertainSensitivity
+  const specificity = observation.certainty === 'certain' ? model.certainSpecificity : model.uncertainSpecificity
+  return observation.mode === 'seen'
+    ? sensitivity * p + (1 - specificity) * (1 - p)
+    : (1 - sensitivity) * p + specificity * (1 - p)
 }
 
-/** Independent, order-insensitive calculation. Candidate prior is uniform. */
+function unionFindComponents(observations: Observation[], groups: ReadonlyMap<string, readonly string[]> = new Map()): Observation[][] {
+  const parent = new Map(observations.map((observation) => [observation.clueId, observation.clueId]))
+  const find = (id: string): string => {
+    const current = parent.get(id) || id
+    if (current === id) return id
+    const root = find(current)
+    parent.set(id, root)
+    return root
+  }
+  const join = (a: string, b: string) => {
+    const ra = find(a), rb = find(b)
+    if (ra !== rb) parent.set(ra, rb)
+  }
+  const evidenceToClues = new Map<string, string[]>()
+  for (const observation of observations) for (const evidenceId of groups.get(observation.clueId) || []) {
+    evidenceToClues.set(evidenceId, [...(evidenceToClues.get(evidenceId) || []), observation.clueId])
+  }
+  for (const clueIds of evidenceToClues.values()) for (let i = 1; i < clueIds.length; i++) join(clueIds[0], clueIds[i])
+  const components = new Map<string, Observation[]>()
+  for (const observation of observations) components.set(find(observation.clueId), [...(components.get(find(observation.clueId)) || []), observation])
+  return [...components.values()]
+}
+
+function estimateMap(estimates: EvidenceEstimate[], options: RankingOptions) {
+  const map = new Map<string, number>()
+  const scope = options.scope || 'country'
+  for (const estimate of estimates) {
+    if (scope === 'country' && options.parentByLocation?.get(estimate.locationId) && options.candidateByLocation?.get(estimate.locationId) !== true) continue
+    if (scope === 'region' && options.parentId && options.parentByLocation?.get(estimate.locationId) !== options.parentId) continue
+    map.set(`${estimate.locationId}\u0000${estimate.featureId}`, estimate.pPresent)
+  }
+  return map
+}
+
+/**
+ * Candidate-relative likelihood model. Each location starts with the same prior;
+ * missing feature estimates use the shared background prevalence, never absence.
+ * Unknown-dependence features extracted from one source fact are conservatively
+ * represented by the strongest single marginal term until a joint estimate exists.
+ */
 export function rankCandidates(
-  candidateIds: string[], rules: Rule[], input: Observation[],
-  scope: 'country' | 'region', countryId?: string, tailMix = DEFAULT_TAIL_MIX,
+  candidateIds: string[], estimates: EvidenceEstimate[], input: Observation[], options: RankingOptions = {},
 ): Ranked[] {
-  const ids = [...new Set(candidateIds)].sort()
+  const ids = [...new Set(candidateIds)].sort((a, b) => a.localeCompare(b))
   if (!ids.length) return []
-  const observations = new Map(input.map((observation) => [observation.clueId, observation]))
-  const relevant = rules.filter((rule) => rule.scope === scope && (scope === 'country' || rule.countryId === countryId))
-  const scores = ids.map((id) => scoreTarget(id, relevant, observations))
-  const max = Math.max(...scores)
-  const weights = scores.map((score) => Math.exp(Math.max(-700, Math.min(0, score - max))))
-  const sum = weights.reduce((acc, weight) => acc + weight, 0)
-  const mix = Math.max(0, Math.min(1, tailMix))
-  return ids.map((id, index) => ({
-    id, score: scores[index],
-    share: (1 - mix) * weights[index] / sum + mix / ids.length,
-  })).sort((a, b) => b.share - a.share || a.id.localeCompare(b.id))
+  const observations = [...new Map(input.map((observation) => [observation.clueId, observation])).values()]
+    .sort((a, b) => a.clueId.localeCompare(b.clueId))
+  const model = normalizeModel(options.model)
+  const byFeatureLocation = estimateMap(estimates, options)
+  const components = unionFindComponents(observations, options.dependenceGroups)
+  const activeInteractions = (options.interactions || []).filter((rule) => rule.condition === 'all-seen' && rule.featureIds.length > 1)
+  const scores = ids.map((id) => {
+    let logLikelihood = 0
+    for (const component of components) {
+      const deltas = component.map((observation) => {
+        const p = byFeatureLocation.get(`${id}\u0000${observation.clueId}`) ?? model.unknownLocationFeature
+        const observedLog = Math.log(reportProbability(p, observation, model))
+        const backgroundLog = Math.log(reportProbability(model.unknownLocationFeature, observation, model))
+        return { featureId: observation.clueId, delta: observedLog - backgroundLog }
+      })
+      deltas.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta) || a.featureId.localeCompare(b.featureId))
+      logLikelihood += deltas[0]?.delta || 0
+    }
+    for (const rule of activeInteractions) {
+      if (rule.locationId !== id) continue
+      const selected = rule.featureIds.map((featureId) => observations.find((item) => item.clueId === featureId))
+      if (selected.some((item) => !item || item.mode !== 'seen')) continue
+      const reliability = Math.min(...selected.map((item) => item!.certainty === 'certain' ? 1 : model.uncertainInteractionReliability))
+      logLikelihood += Math.log(rule.likelihoodRatio) * reliability
+    }
+    return { id, score: logLikelihood }
+  })
+  const max = Math.max(...scores.map((item) => item.score))
+  const weights = scores.map((item) => Math.exp(item.score - max))
+  const total = weights.reduce((sum, item) => sum + item, 0)
+  return scores.map((item, index) => ({ id: item.id, score: item.score, share: weights[index] / total }))
+    .sort((a, b) => b.share - a.share || a.id.localeCompare(b.id))
 }
 
 export function breakdown(ranked: Ranked[], topCount = 5): Breakdown {
@@ -74,7 +118,7 @@ export function breakdown(ranked: Ranked[], topCount = 5): Breakdown {
   return { top, others: ranked.slice(topCount).reduce((sum, item) => sum + item.share, 0), all: ranked }
 }
 
-/** Largest-remainder rounding preserves exactly 100.0 display percentage points. */
+/** Largest-remainder rounding preserves 100.0 displayed points without altering inference. */
 export function displayTenths(shares: number[]): number[] {
   if (!shares.length) return []
   const raw = shares.map((share) => Math.max(0, share) * 1000)
@@ -84,4 +128,15 @@ export function displayTenths(shares: number[]): number[] {
     .sort((a, b) => b.fraction - a.fraction || a.index - b.index)
   for (let i = 0; i < left; i++) floors[order[i % order.length].index]++
   return floors.map((value) => value / 10)
+}
+
+/** Pure log-space normalization primitive for synthetic likelihood-ratio regressions. */
+export function posteriorFromLikelihoodRatios(candidateIds: string[], evidenceLrs: Readonly<Record<string, readonly number[]>>): Ranked[] {
+  const ids = [...new Set(candidateIds)].sort((a, b) => a.localeCompare(b))
+  if (!ids.length) return []
+  const scores = ids.map((id) => ({ id, score: (evidenceLrs[id] || []).reduce((sum, lr) => sum + Math.log(lr), 0) }))
+  const max = Math.max(...scores.map((item) => item.score))
+  const weights = scores.map((item) => Math.exp(item.score - max))
+  const total = weights.reduce((sum, item) => sum + item, 0)
+  return scores.map((item, index) => ({ ...item, share: weights[index] / total })).sort((a, b) => b.share - a.share || a.id.localeCompare(b.id))
 }

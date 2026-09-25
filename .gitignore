@@ -3,3 +3,8 @@ dist/
 coverage/
 playwright-report/
 test-results/
+
+tuxundoc/
+
+.tmp/
+__pycache__/

@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "data:validate": "tsx scripts/validate-data.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "data:report": "tsx scripts/validate-data.ts --write-report",
+    "import:tuxundoc": "python scripts/import_tuxundoc.py"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
