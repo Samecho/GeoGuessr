@@ -30,6 +30,8 @@ To add a country, first verify official **road-car** coverage and record its sou
 
 ## GitHub Pages
 
+Live site: [Street Clues](https://samecho.github.io/GeoGuessr/).
+
 The committed workflow validates, builds with `VITE_BASE=/<repository-name>/`, uploads `dist/`, and deploys on a push to `main` or a manual run. In the repository's **Settings → Pages**, select **GitHub Actions** as the source. For a `username.github.io` root site, change the workflow's `VITE_BASE` to `/`. The bundle uses relative asset URLs derived from Vite's base path and requires no production Node server. The first live deployment was verified on 2026-09-25.
 
 ## Engineering defaults and present limits
