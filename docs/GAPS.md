@@ -1,0 +1,10 @@
+# Open content and evidence gaps
+
+Status 2026-09-25. This is a functioning core tool with a **global candidate list**, not a completed global visual meta encyclopedia.
+
+- 113 road-coverage candidates are selectable, but most have only the shared traffic-side rules. Country-specific clues are concentrated in Japan, Thailand, Israel, Canada, the UK, Mexico and a few shared-script/road examples. `DATA_COVERAGE.md` reports per-candidate counts and photo availability. Rule counts include broad shared clues.
+- Only eleven approved photos cover ten photo-backed clues. Four more observations are text-only. Most pole and reflector-post variants, guardrails, Street View car/camera generations, terrain, vegetation, soil, architecture, many road markings, signs and brand families still need **specific verifiable photos** and research. There are no placeholder cards or extracted Street View screenshots.
+- Only US, Canada and Brazil have published region partitions. US and Canada have a handful of weak plate or bilingual local rules; Brazil currently has none. India and most other candidates show a neutral region-data empty state. Individual internal road coverage needs finer audit, especially northern Canada and limited-coverage countries.
+- Rules use sourced presence/law/company-footprint evidence but no measured GeoGuessr likelihood dataset. The Match share has not been statistically calibrated. Travel, historic imagery, bilingual signs, cross-border vehicles and camera generations can defeat otherwise useful clues.
+- Plonk It and GeoTips were researched as tutorials, but their images were not copied; Google Street View screenshots are excluded under [Google Geo Guidelines](https://about.google/brand-resource-center/products-and-services/geo-guidelines/). The next content pass should obtain independently licensed real photos and source each new geographic implication separately.
+- Browser checks cover desktop flows and a Pages-style subpath. Other browsers, mobile polish and exhaustive screen-reader review remain open.
