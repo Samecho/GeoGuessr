@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "categoryId": "signs",
+      "appearanceZh": "蓝白红旗的蓝带上有黄星",
+      "sourceCountry": "canada",
+      "sourceElementPrefix": "b5357d3",
+      "formalName": {
+        "en": "Acadian flag",
+        "zh": "阿卡迪亚旗"
+      },
+      "regionLikelihoods": {
+        "ca:nb": 0.82,
+        "ca:ns": 0.34,
+        "ca:pe": 0.34
+      },
+      "reason": "The Canadian chapter identifies the exact tricolor and star as the Acadian flag, common in its Maritime cultural area and explicitly including northern/eastern New Brunswick. Very low background occurrence and high certain-recognition specificity are engineering estimates for this exact flag design, not measured rates. Nova Scotia and Prince Edward Island remain plausible; cross-border appearances are not impossible.",
+      "tier": "identity"
+    }
+  ]
+}

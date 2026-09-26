@@ -14,6 +14,10 @@ export type Clue = {
   sourceUrls: string[]; reviewed: string; assetIds: string[]; tags: string[]
   referenceAssetIds?: string[]; exclusionAllowed?: boolean
 }
+export type EvidenceProfile = {
+  featureId: string; unknownPrevalence: number; certainSpecificity?: number
+  formalName: Text2; sourceFactId: string; basisReason: string; measured: false
+}
 export type Observation = { clueId: string; mode: 'seen' | 'excluded'; certainty: 'certain' | 'uncertain' }
 export type EvidenceEstimate = {
   featureId: string; locationId: string; pPresent: number; band: string

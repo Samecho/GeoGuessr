@@ -1,4 +1,4 @@
-import type { EvidenceEstimate, InteractionRule, Observation } from '../data/types'
+import type { EvidenceEstimate, EvidenceProfile, InteractionRule, Observation } from '../data/types'
 
 export type Ranked = { id: string; share: number; score: number }
 export type Breakdown = { top: Ranked[]; others: number; all: Ranked[] }
@@ -16,6 +16,7 @@ export type RankingOptions = {
   interactions?: readonly InteractionRule[]
   parentByLocation?: ReadonlyMap<string, string | null>
   candidateByLocation?: ReadonlyMap<string, boolean>
+  evidenceProfiles?: ReadonlyMap<string, EvidenceProfile>
 }
 
 export const DEFAULT_MODEL: ObservationModel = {
@@ -25,10 +26,10 @@ export const DEFAULT_MODEL: ObservationModel = {
 }
 const normalizeModel = (model?: Partial<ObservationModel>): ObservationModel => ({ ...DEFAULT_MODEL, ...model })
 
-function reportProbability(pPresent: number, observation: Observation, model: ObservationModel): number {
+function reportProbability(pPresent: number, observation: Observation, model: ObservationModel, profile?: EvidenceProfile): number {
   const p = Math.min(1, Math.max(0, pPresent))
   const sensitivity = observation.certainty === 'certain' ? model.certainSensitivity : model.uncertainSensitivity
-  const specificity = observation.certainty === 'certain' ? model.certainSpecificity : model.uncertainSpecificity
+  const specificity = observation.certainty === 'certain' ? (profile?.certainSpecificity ?? model.certainSpecificity) : model.uncertainSpecificity
   return observation.mode === 'seen'
     ? sensitivity * p + (1 - specificity) * (1 - p)
     : (1 - sensitivity) * p + specificity * (1 - p)
@@ -89,9 +90,11 @@ export function rankCandidates(
     let logLikelihood = 0
     for (const component of components) {
       const deltas = component.map((observation) => {
-        const p = byFeatureLocation.get(`${id}\u0000${observation.clueId}`) ?? model.unknownLocationFeature
-        const observedLog = Math.log(reportProbability(p, observation, model))
-        const backgroundLog = Math.log(reportProbability(model.unknownLocationFeature, observation, model))
+        const profile = options.evidenceProfiles?.get(observation.clueId)
+        const background = profile?.unknownPrevalence ?? model.unknownLocationFeature
+        const p = byFeatureLocation.get(`${id}\u0000${observation.clueId}`) ?? background
+        const observedLog = Math.log(reportProbability(p, observation, model, profile))
+        const backgroundLog = Math.log(reportProbability(background, observation, model, profile))
         return { featureId: observation.clueId, delta: observedLog - backgroundLog }
       })
       deltas.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta) || a.featureId.localeCompare(b.featureId))

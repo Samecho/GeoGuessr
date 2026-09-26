@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "aliases": [
+    {
+      "categoryId": "signs",
+      "focusedZh": "红底白箭头弯道诱导牌",
+      "canonicalZh": "红底白箭头",
+      "appearance": {
+        "zh": "红底白箭头弯道诱导牌",
+        "en": "White bend arrow on red sign"
+      },
+      "reason": "The original short text clue and the illustrated clue name the same chevron sign, including one shared source paragraph."
+    },
+    {
+      "categoryId": "plants",
+      "focusedZh": "大片甘蔗田",
+      "canonicalZh": "甘蔗田",
+      "appearance": {
+        "zh": "甘蔗田",
+        "en": "Sugarcane field"
+      },
+      "reason": "Field size is an instance of the same visible sugarcane crop, not a separate observation."
+    },
+    {
+      "categoryId": "plates",
+      "focusedZh": "白色前牌和黄色后牌",
+      "canonicalZh": "白色前牌、黄色后牌",
+      "appearance": {
+        "zh": "白色前牌、黄色后牌",
+        "en": "White front plate and yellow rear plate"
+      },
+      "reason": "Chinese punctuation varies, but both rows describe the same front/rear plate color pair."
+    },
+    {
+      "categoryId": "posts",
+      "focusedZh": "圆柱路桩有两道粗黑带",
+      "canonicalZh": "圆柱路桩绕有两道黑色宽带",
+      "appearance": {
+        "zh": "圆柱路桩上有两道宽黑带",
+        "en": "Round bollard with two broad black bands"
+      },
+      "reason": "Both photos show the same two-band cylindrical bollard observation in different Canadian regions."
+    },
+    {
+      "categoryId": "plants",
+      "focusedZh": "沿海甘蔗种植园",
+      "canonicalZh": "沿海甘蔗田",
+      "appearance": {
+        "zh": "沿海甘蔗田",
+        "en": "Coastal sugarcane fields"
+      },
+      "reason": "The two pictured rows show the same crop beside a coast; countries remain separate likelihood targets."
+    },
+    {
+      "categoryId": "plants",
+      "focusedZh": "沿海高耸的柱状南洋杉",
+      "canonicalZh": "柱状南洋杉",
+      "appearance": {
+        "zh": "高耸的柱状南洋杉",
+        "en": "Tall columnar Araucaria trees"
+      },
+      "reason": "The older text observation and pictured coastal instance show the same distinctive tree silhouette; coast remains a source condition."
+    }
+  ]
+}

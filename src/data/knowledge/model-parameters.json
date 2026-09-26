@@ -1,1 +1,54 @@
-{"schemaVersion":3,"parameters":{"qualitativePrevalenceBands":{"exclusive":0.96,"very-common":0.82,"common":0.62,"occasional":0.34,"rare":0.14,"explicit-absence":0.03},"observationModel":{"certainSensitivity":0.95,"certainSpecificity":0.98,"uncertainSensitivity":0.68,"uncertainSpecificity":0.78,"interpretation":"Estimated observation recognition rates; centralized defaults, not measured."},"unknownLocationFeature":"use common background prevalence 0.5; no evidence is neutral relative to the shared background."},"prior":{"kind":"uniform","reason":"No reliable sampling prior is available in the local source corpus."},"combinationInteractionLikelihoodRatio":1.6,"regionalPrior":{"kind":"uniform-over-explicit-complete-scheme","reason":"Only complete source-supported partitions are scored; incomplete regional mentions are retained but not normalized into a fake whole-country distribution."},"dependenceFallback":"For unresolved correlation within one source fact, retain the strongest candidate-relative marginal likelihood term; explicit interaction terms are applied separately.","normalization":"log-sum-exp; no fixed tail mixture or posterior cap"}
+{
+  "schemaVersion": 3,
+  "parameters": {
+    "qualitativePrevalenceBands": {
+      "exclusive": 0.96,
+      "very-common": 0.82,
+      "common": 0.62,
+      "occasional": 0.34,
+      "rare": 0.14,
+      "explicit-absence": 0.03
+    },
+    "observationModel": {
+      "certainSensitivity": 0.95,
+      "certainSpecificity": 0.98,
+      "uncertainSensitivity": 0.68,
+      "uncertainSpecificity": 0.78,
+      "interpretation": "Estimated observation recognition rates; centralized defaults, not measured."
+    },
+    "unknownLocationFeature": "use common background prevalence 0.5; no evidence is neutral relative to the shared background.",
+    "visualSpecificityTiers": {
+      "specific": {
+        "unknownPrevalence": 0.05,
+        "certainSpecificity": 0.995,
+        "interpretation": "Distinct physical form, plausible in several places; engineering prior, not measured."
+      },
+      "distinctive": {
+        "unknownPrevalence": 0.001,
+        "certainSpecificity": 0.999,
+        "interpretation": "Detailed configuration or named sign seen in source; rare shared background, not a uniqueness claim."
+      },
+      "identity": {
+        "unknownPrevalence": 1e-05,
+        "certainSpecificity": 0.99999,
+        "interpretation": "Exact reviewed emblem or identifiable person with a distinctive composite appearance; still allows cross-border and recognition exceptions."
+      },
+      "near-unique": {
+        "unknownPrevalence": 0.0001,
+        "certainSpecificity": 0.9999,
+        "interpretation": "Exact named sign, brand, or plate motif with a source uniqueness or near-uniqueness statement; nonzero cross-border and recognition exceptions remain."
+      }
+    }
+  },
+  "prior": {
+    "kind": "uniform",
+    "reason": "No reliable sampling prior is available in the local source corpus."
+  },
+  "combinationInteractionLikelihoodRatio": 1.6,
+  "regionalPrior": {
+    "kind": "uniform-over-explicit-complete-scheme",
+    "reason": "Only complete source-supported partitions are scored; incomplete regional mentions are retained but not normalized into a fake whole-country distribution."
+  },
+  "dependenceFallback": "For unresolved correlation within one source fact, retain the strongest candidate-relative marginal likelihood term; explicit interaction terms are applied separately.",
+  "normalization": "log-sum-exp; no fixed tail mixture or posterior cap"
+}

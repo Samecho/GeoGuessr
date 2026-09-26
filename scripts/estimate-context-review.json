@@ -238,7 +238,7 @@
       "reason": "The source says this is one road in Meghalaya, not a region-wide trait."
     },
     {
-      "zh": "DUR 字样",
+      "zh": "停止牌写有 DUR",
       "locationId": "loc:turkey",
       "pPresent": 0.62,
       "reason": "The source calls the DUR stop-sign wording distinctive; seeing a stop sign is conditional."
@@ -316,7 +316,7 @@
       "reason": "The source describes one village on Ambrym, not the country overall."
     },
     {
-      "zh": "BERHENTI 字样",
+      "zh": "停止牌写有 BERHENTI",
       "locationId": "loc:malaysia",
       "pPresent": 0.62,
       "reason": "The source identifies BERHENTI on Malaysian stop signs; visibility depends on a sign."

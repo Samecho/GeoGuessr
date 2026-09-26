@@ -17,11 +17,11 @@ const ids = (rows: Row[], name: string) => {
   }
   return seen
 }
-const [locations, categories, rawFeatures, facts, claims, rawEstimates, images, rawInteractions, regions, playable, estimates, interactions, details, assets] = await Promise.all([
+const [locations, categories, rawFeatures, facts, claims, rawEstimates, images, rawInteractions, regions, playable, estimates, interactions, details, assets, profiles] = await Promise.all([
   ['locations.json','locations'],['categories.json','categories'],['features.json','features'],['facts.json','facts'],
   ['claims.json','claims'],['estimates.json','estimates'],['images.json','images'],['interactions.json','interactions'],
   ['regions.json','regionSchemes'],['playable-features.json','features'],['playable-estimates.json','estimates'],
-  ['playable-interactions.json','interactions'],['playable-clue-info.json','clues'],['source-photo-assets.json','assets'],
+  ['playable-interactions.json','interactions'],['playable-clue-info.json','clues'],['source-photo-assets.json','assets'],['playable-evidence-profiles.json','profiles'],
 ].map(([name, key]) => file(name, key)))
 const locationIds = ids(locations, 'location')
 const rawFeatureIds = ids(rawFeatures, 'raw feature')
@@ -32,6 +32,13 @@ ids(rawInteractions, 'raw interaction')
 const playableIds = ids(playable, 'playable clue')
 ids(interactions, 'playable interaction')
 const assetIds = ids(assets, 'source asset')
+const profileIds = new Set<string>()
+for (const profile of profiles) {
+  if (!profile.featureId || profileIds.has(profile.featureId)) errors.push(`evidence profile: duplicate or missing clue ID ${String(profile.featureId)}`)
+  profileIds.add(profile.featureId)
+}
+const tierFile = JSON.parse(await readFile(resolve(dir, 'model-parameters.json'), 'utf8')) as Row
+const tiers = tierFile.parameters?.visualSpecificityTiers || {}
 const categoryIds = new Set(categories.flatMap((group) => group.children.map((child: Row) => child.id)))
 if (locations.filter((row) => row.candidate).length !== 133) errors.push('candidate list no longer matches 133 local chapters')
 if (images.length !== 5860) errors.push('local image index no longer contains 5,860 entries')
@@ -60,7 +67,11 @@ for (const asset of assets) {
 const rawMap = new Map(rawFeatures.map((feature) => [feature.id, feature]))
 const detailIds = new Set(details.map((detail) => detail.featureId))
 if (detailIds.size !== playable.length) errors.push('playable clue details do not match clues')
+const visibleLabels = new Set<string>()
 for (const clue of playable) {
+  const labelKey = `${clue.categoryId}/${clue.appearance?.zh}`
+  if (visibleLabels.has(labelKey)) errors.push(`clue ${clue.id}: duplicate visible observation ${labelKey}`)
+  visibleLabels.add(labelKey)
   const zh = clue.appearance?.zh || '', en = clue.appearance?.en || ''
   if (!categoryIds.has(clue.categoryId) || !zh || !en || /视觉特征|^(?:这种|这些|也许|例如|比如)/.test(zh) || zh.length > 34 || /[\u3400-\u9fff]/.test(en)) errors.push(`clue ${clue.id}: unreviewed wording or category`)
   if ((!clue.sourcePhraseIds?.length && !clue.manualFactIds?.length) || clue.sourcePhraseIds.some((id: string) => !rawFeatureIds.has(id)) || (clue.manualFactIds || []).some((id: string) => !factIds.has(id))) errors.push(`clue ${clue.id}: source phrase or manual fact missing`)
@@ -69,6 +80,19 @@ for (const clue of playable) {
   for (const id of clue.evidenceGroupIds || []) if (!factIds.has(id)) errors.push(`clue ${clue.id}: unknown source fact ${id}`)
   for (const id of clue.sourcePhraseIds) if (!rawMap.get(id)?.factIds.some((factId: string) => clue.evidenceGroupIds.includes(factId))) errors.push(`clue ${clue.id}: phrase/fact mismatch`)
 }
+const playableMap = new Map(playable.map((clue) => [clue.id, clue]))
+for (const profile of profiles) {
+  const clue = playableMap.get(profile.featureId)
+  const tier = tiers[profile.tier]
+  if (!clue || !factIds.has(profile.sourceFactId) || !clue.evidenceGroupIds.includes(profile.sourceFactId) ||
+      !tier || !Number.isFinite(profile.unknownPrevalence) || profile.unknownPrevalence <= 0 || profile.unknownPrevalence >= 1 ||
+      !Number.isFinite(profile.certainSpecificity) || profile.certainSpecificity <= 0 || profile.certainSpecificity >= 1 ||
+      profile.unknownPrevalence !== tier.unknownPrevalence || profile.certainSpecificity !== tier.certainSpecificity ||
+      !profile.formalName?.en || !profile.formalName?.zh || !profile.basisReason || profile.measured !== false) {
+    errors.push(`evidence profile ${profile.featureId}: missing source, tier, or valid probabilities`)
+  }
+}
+for (const asset of assets) if (!playable.some((clue) => clue.assetIds.includes(asset.id))) errors.push(`asset ${asset.id}: not attached to a playable clue`)
 const estimateKeys = new Set<string>()
 for (const row of estimates) {
   const key = `${row.featureId}/${row.locationId}`

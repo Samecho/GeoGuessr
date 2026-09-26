@@ -5,7 +5,8 @@ import { categories } from './data/categories'
 import { clues, clueById } from './data/clues'
 import { assetById } from './data/assets'
 import { regionSchemeByCountry, regionCoverageByCountry } from './data/regions'
-import { estimates, interactions, modelParameters, features, locations, candidateByLocation } from './data/knowledge'
+import { estimates, interactions, modelParameters, features, locations, candidateByLocation, evidenceProfileByClue } from './data/knowledge'
+import { scopedClueIds } from './data/clue-scope'
 import type { Clue, Continent, Observation } from './data/types'
 import { rankCandidates } from './engine/scoring'
 import { RankingChart } from './components/RankingChart'
@@ -55,7 +56,11 @@ function App() {
   const selected = useMemo(() => Object.values(observations), [observations])
   const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
   const parentByLocation = useMemo(() => new Map(locations.map((location) => [location.id, location.parentId])), [])
-  const scoringOptions = useMemo(() => ({ model: modelParameters.observationModel, dependenceGroups, interactions, parentByLocation, candidateByLocation }), [dependenceGroups, parentByLocation])
+  const backgroundByFeature = useMemo(() => new Map([...evidenceProfileByClue].map(([id, profile]) => [id, profile.unknownPrevalence])), [])
+  const scopedRelevance = useMemo(() => scope.type === 'global' ? null : scopedClueIds(scopedIds, estimates, regionSchemeByCountry, parentByLocation, backgroundByFeature), [scope.type, scopedIds, parentByLocation, backgroundByFeature])
+  const availableClues = useMemo(() => scopedRelevance ? clues.filter((clue) => scopedRelevance.has(clue.id)) : clues, [scopedRelevance])
+  const activeCategoryId = categoryId === 'all' || availableClues.some((clue) => clue.categoryId === categoryId) ? categoryId : 'all'
+  const scoringOptions = useMemo(() => ({ model: modelParameters.observationModel, dependenceGroups, interactions, parentByLocation, candidateByLocation, evidenceProfiles: evidenceProfileByClue }), [dependenceGroups, parentByLocation])
   const countryRanks = useMemo(() => rankCandidates(scopedIds, estimates, selected, { ...scoringOptions, scope: 'country' }), [scopedIds, selected, scoringOptions])
   const scheme = viewCountry ? regionSchemeByCountry.get(viewCountry) : undefined
   const regionRanks = useMemo(() => scheme
@@ -105,9 +110,9 @@ function App() {
     return { ...current, [id]: { ...observation, certainty: observation.certainty === 'certain' ? 'uncertain' : 'certain' } }
   })
   const matchesQuery = (clue: Clue) => !gallerySearch.trim() || `${clue.appearance.en} ${clue.appearance.zh}`.toLocaleLowerCase().includes(gallerySearch.trim().toLocaleLowerCase())
-  const displayedClues = clues.filter((clue) => photosReady && clue.assetIds.length && (categoryId === 'all' || clue.categoryId === categoryId)
-    && (categoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
-  const textOnly = clues.filter((clue) => (!photosReady || !clue.assetIds.length) && (categoryId === 'all' || clue.categoryId === categoryId) && matchesQuery(clue))
+  const displayedClues = availableClues.filter((clue) => photosReady && clue.assetIds.length && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId)
+    && (activeCategoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
+  const textOnly = availableClues.filter((clue) => (!photosReady || !clue.assetIds.length) && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId) && matchesQuery(clue))
   const visibleTextOnly = textOnly.slice(0, galleryLimit)
   const infoClue = infoId && infoContent?.id === infoId ? infoContent : undefined
   const openInfo = (clue: Clue) => {
@@ -144,22 +149,22 @@ function App() {
     <main className="workspace">
       <aside className="tree-panel" aria-label={L.library}>
         <div className="panel-heading"><span className="section-kicker">02 / {L.library}</span><h2><BookOpen size={18} /> {L.library}</h2></div>
-        <button type="button" className={`tree-all ${categoryId === 'all' ? 'active' : ''}`} onClick={() => setCategoryId('all')}>{L.allClues}<span>{clues.length}</span></button>
-        {categories.map((category) => {
+        <button type="button" className={`tree-all ${activeCategoryId === 'all' ? 'active' : ''}`} onClick={() => setCategoryId('all')}>{L.allClues}<span>{availableClues.length}</span></button>
+        {categories.filter((category) => category.children.some((child) => availableClues.some((clue) => clue.categoryId === child.id))).map((category) => {
           const open = openGroups.includes(category.id)
           return <div className="tree-group" key={category.id}>
             <button type="button" className="tree-parent" onClick={() => setOpenGroups((current) => open ? current.filter((id) => id !== category.id) : [...current, category.id])} aria-expanded={open}>{open ? <ChevronDown size={16} /> : <ChevronRight size={16} />}<span>{category.name[language]}</span></button>
-            {open && <div className="tree-children">{category.children.map((child) => <button type="button" key={child.id} className={`tree-child ${categoryId === child.id ? 'active' : ''}`} onClick={() => setCategoryId(child.id)}><span>{child.name[language]}</span><small>{clues.filter((clue) => clue.categoryId === child.id).length || '·'}</small></button>)}</div>}
+            {open && <div className="tree-children">{category.children.filter((child) => availableClues.some((clue) => clue.categoryId === child.id)).map((child) => <button type="button" key={child.id} className={`tree-child ${activeCategoryId === child.id ? 'active' : ''}`} onClick={() => setCategoryId(child.id)}><span>{child.name[language]}</span><small>{availableClues.filter((clue) => clue.categoryId === child.id).length}</small></button>)}</div>}
           </div>
         })}
         <div className="tree-foot">{language === 'en' ? 'Local rules · no account · no live API' : '本地规则 · 无需账号 · 无实时 API'}</div>
       </aside>
 
       <section className="gallery-panel" aria-label={L.gallery}>
-        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{categoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === categoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
+        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
         <p className="exclusion-help">{L.exclusionHelp}</p>
         <label className="search-field clue-search"><Search size={15} /><input type="search" value={gallerySearch} onChange={(event) => { setGallerySearch(event.target.value); setGalleryLimit(48) }} placeholder={L.searchClues} aria-label={L.searchClues} /></label>
-        {categoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}
+        {activeCategoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}
         {displayedClues.length ? <div className="clue-grid">{displayedClues.map((clue) => {
           const asset = assetById.get(clue.assetIds[0])!
           const chosen = observations[clue.id]

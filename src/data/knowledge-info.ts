@@ -1,5 +1,6 @@
 import type { Clue, EvidenceEstimate, Text2 } from './types'
 import locationsFile from './knowledge/locations.json'
+import { evidenceProfileByClue } from './knowledge'
 import detailUrl from './knowledge/playable-clue-info.json?url'
 
 type Location = { id: string; name: Text2 }
@@ -40,8 +41,10 @@ export async function loadClueInfo(clue: Clue, estimates: EvidenceEstimate[]): P
     zh.push(`${relationLabel[relation].zh}：${places.map((place) => place.name.zh).join('、')}`)
   }
   const notes = detail?.sourceNotes || []
+  const profile = evidenceProfileByClue.get(clue.id)
   return {
     ...clue,
+    formalName: profile?.formalName || clue.formalName,
     identify: {
       en: notes.length ? 'The original source notes are in Chinese. Open the cited chapter to review their wording and conditions.' : 'The local chapter has no explanatory excerpt for this visual feature.',
       zh: notes.map((note) => `${note.section}：${note.excerpt}`).join(' · ') || '本地章节记录了该视觉特征，但没有对应解释摘录。',
@@ -51,8 +54,8 @@ export async function loadClueInfo(clue: Clue, estimates: EvidenceEstimate[]): P
       zh: zh.join('；') || '尚无可追溯的地点关系。',
     },
     strength: {
-      en: fittedCount ? `${fittedCount} location-specific initial estimate(s); none are measured frequencies.` : 'No location-specific prevalence estimate is available; missing mentions are neutral.',
-      zh: fittedCount ? `${fittedCount} 条地点特定的初始估计；均非实测频率。` : '没有地点特定的出现率估计；资料未提及保持中性。',
+      en: fittedCount ? `${fittedCount} location-specific initial estimate(s); none are measured frequencies.${profile ? ' This exact design uses a source-reviewed rare-feature background and observation-recognition estimate.' : ''}` : 'No location-specific prevalence estimate is available; missing mentions are neutral.',
+      zh: fittedCount ? `${fittedCount} 条地点特定的初始估计；均非实测频率。${profile ? '这一具体外观采用经原文核对的稀有特征背景率与辨认可靠度估计。' : ''}` : '没有地点特定的出现率估计；资料未提及保持中性。',
     },
     caveat: {
       en: 'Qualitative source wording is encoded as centralized initial estimates, not measured frequencies. Unknown locations are not treated as absences; repeated images do not add evidence.',

@@ -1,0 +1,492 @@
+{
+  "schemaVersion": 1,
+  "reviewedDate": "2026-09-25",
+  "entries": [
+    {
+      "categoryId": "words",
+      "appearanceZh": "限速牌写有 MAXIMUM",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.05,
+      "oppositionReason": "The Canadian chapter contrasts American speed-limit wording but does not claim zero exceptions."
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌写有 ARRÊT",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.005,
+      "oppositionReason": "The Canadian chapter calls ARRÊT-only stop signs Quebec-specific; retain a small exception likelihood."
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌同时写 STOP 和 ARRÊT",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.02,
+      "oppositionReason": "The Canadian chapter says this combined stop sign is most common in New Brunswick, not exclusive."
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "Safaricom 店招或广告",
+      "tier": "near-unique"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "红色邮政标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "红黄绿并有黑星的涂装",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "杆底涂蓝且写有 CST",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "整块蓝色车牌",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.005,
+      "oppositionReason": "The Senegal chapter calls solid blue plates unique in African coverage; allow rare exceptions and cross-border vehicles."
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "白色城镇入口牌有粗粉色边框",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车右后视镜与天空裂缝",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "车顶架右端有黑胶带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "车头可见红色矩形涂装",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "白色街景皮卡前方有左倾短天线",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.005,
+      "oppositionReason": "The Namibia chapter contrasts the Oman camera car antenna leaning the other direction."
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "蓝色车顶和银色行李架",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "黑色街景车顶和黑色行李架",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "电杆顶部呈窄 A 形",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.01,
+      "oppositionReason": "The South Africa chapter says this shape is almost limited to Western Cape, with neighboring exceptions."
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "电杆顶部呈宽 A 形",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "三叉戟形电杆顶部",
+      "tier": "distinctive",
+      "oppositionPrevalence": 0.005,
+      "oppositionReason": "The South Africa chapter says this pole top almost only occurs in KwaZulu-Natal."
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "圆柱路桩上有两道宽黑带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "黑灰路桩下方有橙色条纹",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "护栏上细长白杆顶端有红或绿反光板",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "路牌背面有绿白条纹贴纸",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "丁字路口菱形牌外有黄矩形边框",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "前后都是黄底黑字车牌",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "长白前牌与方形黄后牌",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "长车牌底部有绿色",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车右后侧有黑胶带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "可见街景卡车驾驶舱和拖斗",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "普通路牌背面有红方贴纸",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "转弯诱导牌背面有白贴纸",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "红绿灯杆上有三道反光带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "圆形车底模糊和天空光晕",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "车镜打码形成两个尖角",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车车头涉水喉和车顶架",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "带孔混凝土电杆",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车架上有剥落黑胶带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车胶带上有两个白斑",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "灰色街景车配大型涉水喉",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "黑色街景车配小型涉水喉",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车顶有白色胶带",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "低相机位与巨大的圆形车头模糊",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "OXXO 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "PEMEX 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "Buc-ee's 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "Hy-Vee 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "Publix 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "brands",
+      "appearanceZh": "SHEETZ 标志",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "黄色菱形丁字路口标志",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "英语和法语并列路牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "公里标记底部有白色方块",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "限速牌底部黑底白字 km/h",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "限速牌上有 km/h 且无黑色底板",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "细薄且略弯的黑白路桩",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "黄色消防栓位置标记",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "道路两侧的矩形标记",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "道路两侧的菱形标记",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "扁平黄色路边柱",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "电杆上的白色小标签",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "丁字路口标志不带棋盘格",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "护栏木柱顶部呈金字塔形",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "红底白箭头弯道诱导牌",
+      "tier": "specific",
+      "oppositionPrevalence": 0.005,
+      "oppositionReason": "The Canadian chapter says Quebec alone uses this red-white chevron among Canadian provinces."
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "白色前牌、黄色后牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "黑黄相间的警示牌杆",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "白边绿底的方向牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "白底蓝字长车牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "绿底黄路号的方向牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "有凹痕但无孔的混凝土电杆",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "黄色公交站牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "白或橄榄绿的 L 形公交站牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "barriers",
+      "appearanceZh": "黑白条纹路缘石",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "红白相间的柱形路桩",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "黑色路灯顶部装太阳能板",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "电杆上有平行的鸟形绝缘子长杆",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "三个水平交错的绝缘棒",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "poles",
+      "appearanceZh": "杆顶两根斜杆构成尖角",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "黑底白字车牌",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "posts",
+      "appearanceZh": "白色圆顶公里石顶端涂彩色",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌同时有阿拉伯与拉丁字形",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "白色街景车有方形侧镜",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "街景车车头有黑色保险杠",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "白色第四代街景车",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "银车左前方有长天线",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌写有 BERHENTI",
+      "tier": "near-unique"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌写有 DUR",
+      "tier": "near-unique"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "katu 字样",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "peringatan 字样",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "words",
+      "appearanceZh": "RAILROAD CROSSING 字样",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "蓝绿色双语街道牌",
+      "tier": "distinctive"
+    },
+    {
+      "categoryId": "plates",
+      "appearanceZh": "彩虹图案车牌",
+      "tier": "near-unique"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "画面中有灰帽浅蓝衬衫的徒步同伴",
+      "tier": "identity"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "徒步画面里的人穿深蓝 T 恤和黑太阳镜",
+      "tier": "identity"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "暗淡模糊且车尾大面积打码",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "有护送车辆跟随街景车",
+      "tier": "specific"
+    },
+    {
+      "categoryId": "camera",
+      "appearanceZh": "警车在街景车前后跟随",
+      "tier": "specific"
+    }
+  ]
+}

@@ -1,10 +1,11 @@
-import type { Asset, Category, Clue, Continent, Country, EvidenceEstimate, InteractionRule, RegionScheme, Text2 } from './types'
+import type { Asset, Category, Clue, Continent, Country, EvidenceEstimate, EvidenceProfile, InteractionRule, RegionScheme, Text2 } from './types'
 import locationsFile from './knowledge/locations.json'
 import categoriesFile from './knowledge/categories.json'
 import featuresFile from './knowledge/playable-features.json'
 import estimatesFile from './knowledge/playable-estimates.json'
 import interactionsFile from './knowledge/playable-interactions.json'
 import modelFile from './knowledge/model-parameters.json'
+import profileFile from './knowledge/playable-evidence-profiles.json'
 import regionsFile from './knowledge/regions.json'
 import sourcePhotoAssetsFile from './knowledge/source-photo-assets.json'
 
@@ -19,6 +20,8 @@ export const locationById = new Map(locations.map((location) => [location.id, lo
 export const categories = (categoriesFile as { categories: Category[] }).categories
 export const features = (featuresFile as { features: FeatureRecord[] }).features
 export const estimates = (estimatesFile as unknown as { estimates: EvidenceEstimate[] }).estimates
+export const evidenceProfiles = (profileFile as { profiles: EvidenceProfile[] }).profiles
+export const evidenceProfileByClue = new Map(evidenceProfiles.map((profile) => [profile.featureId, profile]))
 export const interactions = (interactionsFile as { interactions: InteractionRule[] }).interactions
 export const candidateByLocation = new Map(locations.map((location) => [location.id, location.candidate]))
 export const modelParameters = (modelFile as { parameters: { qualitativePrevalenceBands: Record<string, number>; observationModel: { certainSensitivity: number; certainSpecificity: number; uncertainSensitivity: number; uncertainSpecificity: number }; [key: string]: unknown } }).parameters

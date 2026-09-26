@@ -3,8 +3,8 @@
 Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.
 
 - 133 candidates and 8466 source text blocks.
-- 494 reviewed bilingual clue labels: 328 with adjacent source images, 166 text only.
-- 1136 active estimates for 456 clue IDs across 217 country/region units. Estimates use qualitative tiers, not measured frequencies.
+- 488 reviewed bilingual clue labels: 325 with adjacent source images, 163 text only.
+- 1132 active estimates for 450 clue IDs across 217 country/region units. Estimates use qualitative tiers, not measured frequencies.
 - 5860 source images converted without cropping; 351.0 MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.
 - 5317 extracted phrase records are retained as raw audit candidates, not displayed or scored.
 
@@ -12,7 +12,7 @@ Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Au
 |---|---:|---|
 | Botswana | 21 | tuxundoc/非洲/botswana/index.html |
 | Egypt | 13 | tuxundoc/非洲/egypt/index.html |
-| Eswatini | 15 | tuxundoc/非洲/eswatini/index.html |
+| Eswatini | 14 | tuxundoc/非洲/eswatini/index.html |
 | Ghana | 21 | tuxundoc/非洲/ghana/index.html |
 | Kenya | 20 | tuxundoc/非洲/kenya/index.html |
 | Lesotho | 13 | tuxundoc/非洲/lesotho/index.html |
@@ -23,7 +23,7 @@ Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Au
 | Réunion | 9 | tuxundoc/非洲/reunion/index.html |
 | Rwanda | 20 | tuxundoc/非洲/rwanda/index.html |
 | Senegal | 15 | tuxundoc/非洲/senegal/index.html |
-| South Africa | 35 | tuxundoc/非洲/south-africa/index.html |
+| South Africa | 34 | tuxundoc/非洲/south-africa/index.html |
 | São Tomé and Príncipe | 9 | tuxundoc/非洲/sao-tome-and-principe/index.html |
 | Tanzania | 9 | tuxundoc/非洲/tanzania/index.html |
 | Tunisia | 20 | tuxundoc/非洲/tunisia/index.html |
@@ -100,7 +100,7 @@ Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Au
 | Serbia | 3 | tuxundoc/欧洲/serbia/index.html |
 | Slovakia | 3 | tuxundoc/欧洲/slovakia/index.html |
 | Slovenia | 2 | tuxundoc/欧洲/slovenia/index.html |
-| Spain | 8 | tuxundoc/欧洲/spain/index.html |
+| Spain | 7 | tuxundoc/欧洲/spain/index.html |
 | Svalbard | 2 | tuxundoc/欧洲/svalbard/index.html |
 | Sweden | 15 | tuxundoc/欧洲/sweden/index.html |
 | Switzerland | 5 | tuxundoc/欧洲/switzerland/index.html |
@@ -108,7 +108,7 @@ Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Au
 | United Kingdom | 6 | tuxundoc/欧洲/united-kingdom/index.html |
 | Alaska | 0 | tuxundoc/北美洲/alaska/index.html |
 | Bermuda | 1 | tuxundoc/北美洲/bermuda/index.html |
-| Canada | 72 | tuxundoc/北美洲/canada/index.html |
+| Canada | 70 | tuxundoc/北美洲/canada/index.html |
 | Costa Rica | 7 | tuxundoc/北美洲/costa_rica/index.html |
 | Dominican Republic | 1 | tuxundoc/北美洲/dominican/index.html |
 | Greenland | 0 | tuxundoc/北美洲/greenland/index.html |
@@ -123,7 +123,7 @@ Updated 2026-09-25. The only geographic source is the local Tuxundoc archive. Au
 | U.S. Virgin Islands | 0 | tuxundoc/北美洲/us-virgin-islands/index.html |
 | United States | 33 | tuxundoc/北美洲/united-states/index.html |
 | American Samoa | 0 | tuxundoc/大洋洲/american-samoa/index.html |
-| Australia | 5 | tuxundoc/大洋洲/australia/index.html |
+| Australia | 4 | tuxundoc/大洋洲/australia/index.html |
 | Christmas Island | 0 | tuxundoc/大洋洲/christmas-island/index.html |
 | Cocos Islands | 1 | tuxundoc/大洋洲/cocos-islands/index.html |
 | Guam | 2 | tuxundoc/大洋洲/guam/index.html |

@@ -169,7 +169,7 @@ scripts|顶端横线字形|Letters joined by a top line|顶端横线字形
 words|STOP 字样|The word STOP|STOP
 words|ALTO 字样|The word ALTO|“ALTO”;ALTO
 words|PARE 字样|The word PARE|PARE
-words|DUR 字样|The word DUR|DUR
+words|停止牌写有 DUR|DUR on a stop sign|DUR
 words|STOPP 字样|The word STOPP|STOPP
 words|RAILROAD CROSSING 字样|RAILROAD CROSSING text|RAILROAD CROSSING
 words|SPEED LIMIT 字样|SPEED LIMIT text|SPEED LIMIT
@@ -260,7 +260,7 @@ buildings|铁皮屋顶|Corrugated metal roof|铁皮屋顶
 scripts|传统蒙古文|Traditional Mongolian script|传统蒙文
 scripts|奥里雅文字|Odia script|奥里雅文字
 scripts|孟加拉文字|Bengali script|孟加拉文
-words|BERHENTI 字样|The word BERHENTI|BERHENTI
+words|停止牌写有 BERHENTI|BERHENTI on a stop sign|BERHENTI
 words|peringatan 字样|The word peringatan|peringatan
 words|rruga 字样|The word rruga|rruga
 words|вулиця 字样|The word вулиця|вулиця

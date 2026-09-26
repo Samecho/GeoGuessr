@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { categories, clues, countries, estimates, features, interactions, locations, regionSchemeByCountry } from './knowledge'
+import { categories, clues, countries, estimates, evidenceProfileByClue, features, interactions, locations, regionSchemeByCountry } from './knowledge'
 import { rankCandidates } from '../engine/scoring'
 
 const clue = (english: string) => clues.find((item) => item.appearance.en === english)
@@ -24,7 +24,8 @@ describe('reviewed local knowledge regressions', () => {
     expect(estimate('White front plate and yellow rear plate', 'loc:united-kingdom')?.pPresent).toBe(0.82)
     expect(estimate('Vehicle with a front plate', 'loc:dominican')).toBeUndefined()
     expect(estimate('The word STOP', 'loc:canada')).toBeUndefined()
-    expect(estimates.filter((item) => item.pPresent <= 0.05)).toHaveLength(0)
+    expect(estimates.filter((item) => item.pPresent <= 0.05).every((item) =>
+      item.pPresent > 0 && ['focused-local-comparison-v1', 'focused-specificity-region-marginal-v1'].includes(item.basis))).toBe(true)
   })
 
   it('only uses reviewed joint evidence with actual matching observations', () => {
@@ -50,6 +51,93 @@ describe('Canada and Africa paragraph review', () => {
     expect(estimates.filter((row) => row.locationId === 'loc:canada').length).toBeGreaterThan(40)
   })
 
+  it('treats the Acadian flag as a rare exact design across countries and a shared Maritime cue within Canada', () => {
+    const flag = clue('Yellow star on blue stripe of tricolor flag')!
+    const selected = [{ clueId: flag.id, mode: 'seen' as const, certainty: 'certain' as const }]
+    const options = { evidenceProfiles: evidenceProfileByClue, parentByLocation, candidateByLocation: new Map(locations.map((place) => [place.id, place.candidate])) }
+    const global = rankCandidates(countries.map((country) => country.id), estimates, selected, { ...options, scope: 'country' })
+    expect(global[0].id).toBe('loc:canada')
+    expect(global[0].share).toBeGreaterThan(0.9)
+    const scheme = regionSchemeByCountry.get('loc:canada')!
+    const regions = rankCandidates(scheme.regions.map((region) => region.id), estimates, selected,
+      { ...options, scope: 'region', parentId: 'loc:canada' })
+    expect(regions[0].id).toBe('loc:canada:region:ca-nb')
+    expect(regions[0].share).toBeGreaterThan(0.5)
+    expect(regions.find((region) => region.id === 'loc:canada:region:ca-ns')!.share).toBeGreaterThan(0.1)
+    expect(regions.reduce((sum, region) => sum + region.share, 0)).toBeCloseTo(1)
+    const unsure = rankCandidates(countries.map((country) => country.id), estimates,
+      [{ clueId: flag.id, mode: 'seen', certainty: 'uncertain' }], { ...options, scope: 'country' })
+    expect(unsure.find((country) => country.id === 'loc:canada')!.share).toBeLessThan(global[0].share)
+  })
+
+  it('lets several independent strong metas dominate weak appearance cues in their supported scope', () => {
+    const options = { evidenceProfiles: evidenceProfileByClue, parentByLocation,
+      candidateByLocation: new Map(locations.map((place) => [place.id, place.candidate])) }
+    const kenyaBrand = clue('Safaricom shop sign or advert')!
+    const global = rankCandidates(countries.map((country) => country.id), estimates,
+      [{ clueId: kenyaBrand.id, mode: 'seen', certainty: 'certain' }], { ...options, scope: 'country' })
+    expect(global[0].id).toBe('loc:kenya')
+    expect(global[0].share).toBeGreaterThan(0.7)
+
+    const africa = countries.filter((country) => country.continent === 'Africa').map((country) => country.id)
+    const bluePlate = clue('Solid blue vehicle plate')!
+    const africaRanks = rankCandidates(africa, estimates,
+      [{ clueId: bluePlate.id, mode: 'seen', certainty: 'certain' }], { ...options, scope: 'country' })
+    expect(africaRanks[0].id).toBe('loc:senegal')
+    expect(africaRanks[0].share).toBeGreaterThan(0.8)
+
+    for (const [countryId, label, expectedRegion] of [
+      ['loc:canada', 'ARRÊT on a stop sign', 'loc:canada:region:ca-qc'],
+      ['loc:south-africa', 'Trident-shaped pole top', 'loc:south-africa:region:za-kzn'],
+    ] as const) {
+      const scheme = regionSchemeByCountry.get(countryId)!
+      const ranks = rankCandidates(scheme.regions.map((region) => region.id), estimates,
+        [{ clueId: clue(label)!.id, mode: 'seen', certainty: 'certain' }],
+        { ...options, scope: 'region', parentId: countryId })
+      expect(ranks[0].id).toBe(expectedRegion)
+      expect(ranks[0].share).toBeGreaterThan(0.85)
+    }
+    const mountains = clue('High continuous mountains')!
+    const weak = rankCandidates(countries.map((country) => country.id), estimates,
+      [{ clueId: mountains.id, mode: 'seen', certainty: 'certain' }], { ...options, scope: 'country' })
+    expect(weak[0].share).toBeLessThan(0.1)
+  })
+
+  it('shows one illustrated clue for each reviewed duplicate visual observation', () => {
+    for (const label of ['White bend arrow on red sign', 'White front plate and yellow rear plate',
+      'Round bollard with two broad black bands', 'Sugarcane field', 'Coastal sugarcane fields']) {
+      const matches = clues.filter((item) => item.appearance.en === label)
+      expect(matches).toHaveLength(1)
+      expect(matches[0].assetIds.length).toBeGreaterThan(0)
+    }
+    expect(clues.some((item) => item.appearance.zh === '红底白箭头')).toBe(false)
+  })
+
+  it('does not match the Turkish stop word inside unrelated place names', () => {
+    const dur = clue('DUR on a stop sign')!
+    expect(dur.assetIds.length).toBeGreaterThan(0)
+    expect(estimate('DUR on a stop sign', 'loc:australia')).toBeUndefined()
+    expect(estimate('DUR on a stop sign', 'loc:spain')).toBeUndefined()
+    const words = ['DUR on a stop sign', 'BERHENTI on a stop sign',
+      'Rainbow-pattern vehicle plate', 'Safaricom shop sign or advert'] as const
+    const targets = ['loc:turkey', 'loc:malaysia', 'loc:hawaii', 'loc:kenya'] as const
+    for (let index = 0; index < words.length; index++) {
+      const selected = [{ clueId: clue(words[index])!.id, mode: 'seen' as const, certainty: 'certain' as const }]
+      const ranks = rankCandidates(countries.map((country) => country.id), estimates, selected,
+        { scope: 'country', parentByLocation, evidenceProfiles: evidenceProfileByClue,
+          candidateByLocation: new Map(locations.map((place) => [place.id, place.candidate])) })
+      expect(ranks[0].id).toBe(targets[index])
+      expect(ranks[0].share).toBeGreaterThan(0.9)
+    }
+    const nunavut = clue('Blue green bilingual street sign')!
+    const scheme = regionSchemeByCountry.get('loc:canada')!
+    const regions = rankCandidates(scheme.regions.map((region) => region.id), estimates,
+      [{ clueId: nunavut.id, mode: 'seen', certainty: 'certain' }],
+      { scope: 'region', parentId: 'loc:canada', parentByLocation, evidenceProfiles: evidenceProfileByClue })
+    expect(regions[0].id).toBe('loc:canada:region:ca-nu')
+    expect(regions[0].share).toBeGreaterThan(0.9)
+  })
+
   it('uses an explicit Canadian and American sign-word contrast', () => {
     const maximum = clue('MAXIMUM on a speed sign')!
     const ranked = rankCandidates(['loc:canada', 'loc:united-states'], estimates,
@@ -72,7 +160,7 @@ describe('Canada and Africa paragraph review', () => {
   it('scores province observations conditionally without changing the country scope', () => {
     const scheme = regionSchemeByCountry.get('loc:canada')!
     expect(scheme.regions).toHaveLength(13)
-    const marker = clue('Round bollard with two black bands')!
+    const marker = clue('Round bollard with two broad black bands')!
     const selected = [{ clueId: marker.id, mode: 'seen' as const, certainty: 'certain' as const }]
     const regionRanks = rankCandidates(scheme.regions.map((region) => region.id), estimates, selected,
       { scope: 'region', parentId: 'loc:canada', parentByLocation })
