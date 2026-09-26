@@ -42,7 +42,7 @@ for country in locations:
 
 report = '''# Canada and Africa focused review
 
-Updated 2026-09-25. Counts below are generated from the current playable data and the paragraph review table. A source block or image counted here is **not** necessarily a usable visual clue. “Active clues” counts any clue with a country or regional likelihood for that place, including shared clues from other chapters. “Focused rows” counts source-backed review decisions; repeated wording can map to one stable clue ID.
+Updated 2026-09-26. Counts below are generated from the current playable data and the paragraph review table. A source block or image counted here is **not** necessarily a usable visual clue. “Active clues” counts any clue with a country or regional likelihood for that place, including shared clues from other chapters. “Focused rows” counts source-backed review decisions; repeated wording can map to one stable clue ID.
 
 The supplied local index defines the requested candidate scope. This table covers every one of its 18 African chapters plus Canada. It reports content depth within that scope, not a broader sovereign-state inventory.
 

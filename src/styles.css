@@ -30,3 +30,13 @@
 
 /* Keep chapter map insets outside selectable thumbnail; the full source is shown in Info. */
 .photo-wrap img.crop-left{object-position:left center}
+
+.scope-region-controls{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap}.scope-region-controls .section-kicker{white-space:nowrap}.scope-region-controls .scope-button{min-height:30px;padding:6px 10px}
+
+.photo-wrap img.crop-top{object-position:center top}
+
+.photo-wrap img.crop-bottom{object-position:center bottom}
+
+.photo-wrap img.crop-top,.photo-wrap img.crop-bottom{scale:1.18}
+.photo-wrap img.crop-top{transform-origin:center top}
+.photo-wrap img.crop-bottom{transform-origin:center bottom}

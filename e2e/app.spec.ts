@@ -7,7 +7,7 @@ const rows = (page: import('@playwright/test').Page, selector = '.chart-card') =
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect(page.getByText('Select any visual clue to compare countries.')).toBeVisible()
-  await expect(page.locator('.gallery-count')).toContainText('325 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
 
   await page.locator('.inspect-select select').selectOption({ label: 'Brazil' })
   await expect(page.locator('.region-card h2')).toHaveText('Brazil')
@@ -37,6 +37,7 @@ const rows = (page: import('@playwright/test').Page, selector = '.chart-card') =
   await expect(page.locator('.region-card h2')).toHaveText('巴西')
   await expect(page.getByText('尚未选择观察。候选初始权重相同，暂不显示最佳国家。')).toBeVisible()
   await page.setViewportSize({ width: 1920, height: 1080 })
+  await page.waitForTimeout(400)
   await page.screenshot({ path: 'test-results/knowledge-brazil-1920.jpg', type: 'jpeg', quality: 55 })
 
   await page.locator('.language-switch').click()
@@ -56,9 +57,9 @@ test('free selection, explicit exclusion, certainty and mutually exclusive traff
   await left.locator('.text-clue-pick').click()
   await expect(left.locator('.text-clue-pick')).toHaveAttribute('aria-pressed', 'true')
   await clueSearch(page).fill('Traffic keeps right')
-  const right = page.locator('.clue-card').filter({ hasText: 'Traffic keeps right' }).first()
-  await right.locator('.clue-main').click()
-  await expect(right.locator('.clue-main')).toHaveAttribute('aria-pressed', 'true')
+  const right = page.locator('.text-clue').filter({ hasText: 'Traffic keeps right' }).first()
+  await right.locator('.text-clue-pick').click()
+  await expect(right.locator('.text-clue-pick')).toHaveAttribute('aria-pressed', 'true')
   await expect(page.locator('.selection-list .selection-chip')).toHaveCount(1)
   await expect(page.locator('.selection-list .selection-name')).toHaveText('Traffic keeps right')
 
@@ -93,7 +94,7 @@ test('scoped match rows remain normalized and Others stays last', async ({ page 
 })
 test('all source photos are browsable by chapter without changing observations', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('325 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
   await page.getByRole('button', { name: 'Browse', exact: true }).click()
   await page.locator('.source-gallery-filter select').selectOption({ label: 'Brazil' })
   await expect(page.locator('.source-gallery .small-note').last()).toContainText('108 images')
@@ -106,7 +107,7 @@ test('all source photos are browsable by chapter without changing observations',
 test('compact screen keeps clue wording and separate info action usable', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('325 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
   await clueSearch(page).fill('ALTO')
   const card = page.locator('.clue-card').filter({ hasText: 'The word ALTO' }).first()
   await expect(card).toBeVisible()
@@ -121,7 +122,7 @@ test('compact screen keeps clue wording and separate info action usable', async 
 test('Canada and African source chapters open conditional regions with reviewed clue photos', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('325 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
   await page.locator('.inspect-select select').selectOption({ label: 'Canada' })
   await expect(page.locator('.region-card h2')).toHaveText('Canada')
   await expect(page.locator('.region-card [data-rank-id]')).toHaveCount(6)
@@ -143,15 +144,17 @@ test('Canada and African source chapters open conditional regions with reviewed 
 
 test('manual geographic scope filters the gallery without discarding selected observations', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('325 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
   await page.getByRole('button', { name: 'Africa', exact: true }).click()
   await clueSearch(page).fill('Safaricom')
   const brand = page.locator('.clue-card').filter({ hasText: 'Safaricom shop sign or advert' })
   await expect(brand).toHaveCount(1)
   await brand.locator('.clue-main').click()
+  await page.getByRole('button', { name: 'Global', exact: true }).click()
   await page.getByRole('button', { name: 'Europe', exact: true }).click()
   await expect(page.locator('.clue-card')).toHaveCount(0)
   await expect(page.locator('.selection-chip')).toHaveCount(1)
+  await page.getByRole('button', { name: 'Global', exact: true }).click()
   await page.locator('.country-picker summary').click()
   await page.getByLabel('Canada', { exact: true }).check()
   await clueSearch(page).fill('Traffic keeps right')
@@ -165,7 +168,7 @@ test('manual geographic scope filters the gallery without discarding selected ob
 
 test('a photographed red chevron appears once and has no duplicate text clue', async ({ page }) => {
   await page.goto('/')
-  await clueSearch(page).fill('White bend arrow on red sign')
+  await clueSearch(page).fill('Single red chevron on broad white sign')
   await expect(page.locator('.clue-card')).toHaveCount(1)
   await expect(page.locator('.text-clue')).toHaveCount(0)
   const image = page.locator('.clue-card .photo-wrap img')
@@ -191,4 +194,39 @@ test('an exact Acadian flag updates both charts without claiming one exclusive p
   expect(newBrunswick).toBeLessThan(90)
   await expect(page.locator('.region-card')).toContainText('Nova Scotia')
   await expect(page.locator('.region-card')).toContainText('Prince Edward Island')
+})
+
+
+test('continent and subregion presets combine as manual hard scopes', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Europe', exact: true }).click()
+  const europeCount = Number((await page.locator('.scope-inline .count-pill').innerText()).trim())
+  await page.getByRole('button', { name: 'Africa', exact: true }).click()
+  const combinedCount = Number((await page.locator('.scope-inline .count-pill').innerText()).trim())
+  expect(combinedCount).toBeGreaterThan(europeCount)
+  await page.getByRole('button', { name: 'Europe', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Africa', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('button', { name: 'Global', exact: true }).click()
+  await page.getByRole('button', { name: 'Southeast Asia', exact: true }).click()
+  await expect(page.getByText('8 candidates')).toBeVisible()
+  await page.getByRole('button', { name: 'East Asia', exact: true }).click()
+  await expect(page.getByText('12 candidates')).toBeVisible()
+  await page.getByRole('button', { name: 'Latin America', exact: true }).click()
+  expect(Number((await page.locator('.scope-inline .count-pill').innerText()).trim())).toBeGreaterThan(12)
+})
+
+
+test('plate-color cards frame the corresponding plate in the shared source montage', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await clueSearch(page).fill('White vehicle plate')
+  const white = page.locator('.clue-card').filter({ hasText: 'White vehicle plate' })
+  await expect(white).toHaveCount(1)
+  await expect(white.locator('.photo-wrap img')).toHaveClass(/crop-top/)
+  await white.screenshot({ path: 'test-results/white-plate-card.jpg', type: 'jpeg', quality: 90 })
+  await clueSearch(page).fill('Yellow vehicle plate')
+  const yellow = page.locator('.clue-card').filter({ hasText: 'Yellow vehicle plate' })
+  await expect(yellow).toHaveCount(1)
+  await expect(yellow.locator('.photo-wrap img')).toHaveClass(/crop-bottom/)
+  await yellow.screenshot({ path: 'test-results/yellow-plate-card.jpg', type: 'jpeg', quality: 90 })
 })

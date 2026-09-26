@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-25",
+  "reviewedAt": "2026-09-26",
   "note": "Primary card photos were checked in contact sheets. Unclear or mismatched photos remain in the chapter archive, but are not used as clue-card examples.",
   "textOnly": [
     "左侧通行",
@@ -23,7 +23,8 @@
     "RAILROAD CROSSING 字样",
     "улица 字样",
     "K-Market 标志",
-    "Buc-ee's 标志"
+    "Buc-ee's 标志",
+    "右侧通行"
   ],
   "preferredIndex": {
     "黄色后车牌": 1,
@@ -36,7 +37,8 @@
     "荷兰语文字": 3,
     "西里尔字母": 3,
     "拉丁字母": 3,
-    "Shoprite 标志": 1
+    "Shoprite 标志": 1,
+    "白底红箭头": 2
   },
   "reviewedPhotoLabels": [
     "右侧通行",
@@ -160,5 +162,10 @@
     "SHEETZ 标志",
     "Shoprite 标志",
     "WaWa 标志"
-  ]
+  ],
+  "cardCrop": {
+    "白色车牌": "top",
+    "黄色车牌": "bottom",
+    "白底蓝字车牌": "top"
+  }
 }

@@ -22,7 +22,7 @@ canada|fa81ec3|posts|黑灰路桩下方有橙色条纹|Black gray bollard with o
 canada|9f69e50|posts|细薄且略弯的黑白路桩|Thin slightly bent black and white bollard|0.62|ca:bc|0:left
 canada|9399db3|posts|护栏上细长白杆顶端有红或绿反光板|Slim white guardrail post with red or green reflector|0.82|ca:qc|0:left
 canada|uc10a7c|posts|黄色消防栓位置标记|Yellow fire hydrant location marker|0.62|ca:qc|0:left
-canada|c2758ad|posts|道路两侧的矩形标记|Rectangular markers along the road edge|0.62|ca:qc|0
+canada|c2758ad|posts|道路两侧的矩形标记|Rectangular markers along the road edge|0.62|ca:qc|4:left
 canada|04e64ef|posts|道路两侧的菱形标记|Diamond markers along the road edge|0.82|ca:on|0:left
 canada|10db162|barriers|圆木柱以三根金属线相连|Round wooden guardrail posts joined by three wires|0.62|ca:on|0:left
 canada|u5ba0e8|posts|扁平黄色路边柱|Flat yellow roadside posts|0.62|ca:nb|0:left
@@ -65,7 +65,7 @@ botswana|u8f3364|terrain|干燥而平坦的灌木地|Dry flat scrubland|0.62||0
 botswana|u27e3f35|markings|黄色边线与白色中线|Yellow edge and white center lines|0.62||0
 botswana|u37463eb|signs|黑黄相间的警示牌杆|Black and yellow striped warning sign pole|0.62||0
 botswana|u7a1419|barriers|路缘或护栏上有黑黄条纹|Black and yellow striped curb or guardrail|0.62||0
-botswana|ub5afdf|signs|红底白箭头弯道诱导牌|White bend arrow on red sign|0.62||
+botswana|ub5afdf|signs|窄竖牌上的红白弯道箭头|Narrow upright red-and-white chevron sign|0.34||0
 botswana|u2d829f|signs|蓝底旧式道路标志|Old style blue road sign|0.34||0
 botswana|u1da891|camera|画面里有随机的局部模糊|Random small patches of image blur|0.62||0
 egypt|84e9e23|camera|低机位徒步街景且无车影|Low-view trekker panorama without car shadow|0.82||
@@ -256,7 +256,7 @@ senegal|84d75601|camera|银车左前方有长天线|Long antenna at left front o
 south-africa|b755e328|plates|车牌模糊后显绿色|Vehicle plate with greenish blur|0.62|za:fs|
 south-africa|b755e328|plates|车牌模糊后显蓝色|Vehicle plate with bluish blur|0.62|za:kzn|
 south-africa|u4fbda46|buildings|远处成片大型发电厂|Several large power stations in view|0.62|za:mp|0:left
-south-africa|u5862888|soil|干旱地貌伴红色土壤|Arid landscape with red soil|0.62|za:nc|0:left
+south-africa|u5862888|soil|干旱地貌伴红色土壤|Arid landscape with red soil|0.62|za:nc|
 south-africa|u2200447|signs|杆上有隐蔽的小广告贴纸|Small discreet ads pasted on utility poles|0.62|za:gp|
 south-africa|u5a50874|terrain|橘黄土壤与干旱灌木山|Orange yellow soil and dry scrub hills|0.62|za:lp|0:left
 tunisia|bd7e036a|road-vehicles|浅绿色跟车|Pale green escort car|0.62|tn:north|0:left
@@ -286,3 +286,13 @@ rwanda|ua48c55c|camera|街景车为黑色皮卡|Black pickup as Street View car|
 rwanda|u2e87e1b|terrain|开阔农田中的缓和丘陵|Open farmland with gentle rolling hills|0.62|rw:northeast|0:left
 rwanda|u3eb0448|markings|鹅卵石铺成的城镇道路|Cobblestone town roads|0.62|rw:south|0:left
 rwanda|u912a773|buildings|高墙围起的豪华别墅群|Luxury villas behind high walls|0.62|rw:kigali|0:left
+
+hungary|e99a4cd7|signs|红底白箭头弯道诱导牌|Broad rectangular red sign with white chevron|0.62||0
+turkey|u4879f1dd|signs|窄竖牌上的红白弯道箭头|Narrow upright red-and-white chevron sign|0.34||0
+vietnam|u698dec4|signs|窄竖牌上的红白弯道箭头|Narrow upright red-and-white chevron sign|0.34||0
+
+turkey|u851fd1e4|signs|白底红箭头弯道诱导牌|Single red chevron on broad white sign|0.62||0
+slovenia|aa40a399|signs|白底红箭头弯道诱导牌|Single red chevron on broad white sign|0.62||0
+jordan|4fc66d33|signs|白牌上的双红色弯道箭头|Two red chevrons on white sign|0.62||0
+bulgaria|ufb7ffa83|signs|白牌上的对向双红色弯道箭头|Opposing red chevrons on white sign|0.62||0
+argentina|e11e1fac|signs|窄竖白牌上的红色弯道箭头|Red chevron on narrow upright white sign|0.82||0

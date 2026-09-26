@@ -62,17 +62,22 @@ for (const asset of assets) {
   if (!image || asset.sourcePath !== image.sourcePath || asset.sourceUrl !== image.chapterSourceUrl || asset.redistribution !== 'user-directed-test-publication') errors.push(`asset ${asset.id}: source mapping or rights status invalid`)
   if (!asset.path?.startsWith('/source-images/') || !existsSync(resolve(root, 'public', asset.path.slice(1)))) errors.push(`asset ${asset.id}: missing converted file`)
   if (!asset.author || !asset.license || !asset.attribution || !asset.reviewed) errors.push(`asset ${asset.id}: incomplete source or rights metadata`)
-  if (asset.cardCrop !== undefined && asset.cardCrop !== 'left') errors.push(`asset ${asset.id}: invalid card crop`)
+  if (asset.cardCrop !== undefined && !['left', 'top', 'bottom'].includes(asset.cardCrop)) errors.push(`asset ${asset.id}: invalid card crop`)
 }
 const rawMap = new Map(rawFeatures.map((feature) => [feature.id, feature]))
 const detailIds = new Set(details.map((detail) => detail.featureId))
 if (detailIds.size !== playable.length) errors.push('playable clue details do not match clues')
 const visibleLabels = new Set<string>()
+const englishLabels = new Set<string>()
 for (const clue of playable) {
   const labelKey = `${clue.categoryId}/${clue.appearance?.zh}`
   if (visibleLabels.has(labelKey)) errors.push(`clue ${clue.id}: duplicate visible observation ${labelKey}`)
   visibleLabels.add(labelKey)
   const zh = clue.appearance?.zh || '', en = clue.appearance?.en || ''
+  const englishKey = `${clue.categoryId}/${en.trim().toLocaleLowerCase('en')}`
+  if (englishLabels.has(englishKey)) errors.push(`clue ${clue.id}: duplicate English observation ${englishKey}`)
+  englishLabels.add(englishKey)
+  if (clue.cardCrop !== undefined && !['left', 'top', 'bottom'].includes(clue.cardCrop)) errors.push(`clue ${clue.id}: invalid card crop`)
   if (!categoryIds.has(clue.categoryId) || !zh || !en || /视觉特征|^(?:这种|这些|也许|例如|比如)/.test(zh) || zh.length > 34 || /[\u3400-\u9fff]/.test(en)) errors.push(`clue ${clue.id}: unreviewed wording or category`)
   if ((!clue.sourcePhraseIds?.length && !clue.manualFactIds?.length) || clue.sourcePhraseIds.some((id: string) => !rawFeatureIds.has(id)) || (clue.manualFactIds || []).some((id: string) => !factIds.has(id))) errors.push(`clue ${clue.id}: source phrase or manual fact missing`)
   for (const id of clue.assetIds || []) if (!assetIds.has(id) || !clue.sourceImageIds?.includes(id)) errors.push(`clue ${clue.id}: image without adjacent source link ${id}`)
@@ -141,7 +146,7 @@ if (errors.length) {
     const byLocation = new Map<string, number>()
     for (const estimate of estimates) byLocation.set(estimate.locationId, (byLocation.get(estimate.locationId) || 0) + 1)
     const rows = locations.filter((row) => row.candidate).map((row) => `| ${row.name.en} | ${byLocation.get(row.id) || 0} | ${row.source.path} |`).join('\n')
-    await writeFile(resolve(root, 'docs/DATA_COVERAGE.md'), `# Data coverage\n\nUpdated 2026-09-25. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.\n\n- ${locations.filter((row) => row.candidate).length} candidates and ${facts.length} source text blocks.\n- ${playable.length} reviewed bilingual clue labels: ${illustrated} with adjacent source images, ${playable.length-illustrated} text only.\n- ${estimates.length} active estimates for ${scored} clue IDs across ${chaptersWithEstimates} country/region units. Estimates use qualitative tiers, not measured frequencies.\n- ${images.length} source images converted without cropping; ${(bytes/1e6).toFixed(1)} MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.\n- ${quarantined} extracted phrase records are retained as raw audit candidates, not displayed or scored.\n\n| Candidate | Active estimate count | Local source chapter |\n|---|---:|---|\n${rows}\n`, 'utf8')
+    await writeFile(resolve(root, 'docs/DATA_COVERAGE.md'), `# Data coverage\n\nUpdated 2026-09-26. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.\n\n- ${locations.filter((row) => row.candidate).length} candidates and ${facts.length} source text blocks.\n- ${playable.length} reviewed bilingual clue labels: ${illustrated} with adjacent source images, ${playable.length-illustrated} text only.\n- ${estimates.length} active estimates for ${scored} clue IDs across ${chaptersWithEstimates} country/region units. Estimates use qualitative tiers, not measured frequencies.\n- ${images.length} source images converted without cropping; ${(bytes/1e6).toFixed(1)} MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.\n- ${quarantined} extracted phrase records are retained as raw audit candidates, not displayed or scored.\n\n| Candidate | Active estimate count | Local source chapter |\n|---|---:|---|\n${rows}\n`, 'utf8')
     console.log('Wrote docs/DATA_COVERAGE.md')
   }
 }

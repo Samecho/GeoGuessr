@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "reviewedDate": "2026-09-26",
+  "corrections": [
+    {
+      "categoryId": "words",
+      "appearanceZh": "停止牌写有 DUR",
+      "keepFactIds": [
+        "fact-59b48658629eb8e9b1"
+      ],
+      "rejectFactIds": [
+        "fact-d7e3fd700736337908",
+        "fact-6fcdf67fa573275dfa",
+        "fact-898073abcd3d409465",
+        "fact-9a227b4a3c3e8774bd"
+      ],
+      "reason": "Only the Turkish stop-sign paragraph describes the visible word DUR. Other matches are substrings of Durban, Durmitor, Extremadura and Madura; they do not describe this word on a sign."
+    },
+    {
+      "categoryId": "driving",
+      "appearanceZh": "右侧通行",
+      "keepFactIds": [
+        "fact-7d721bc2266306a52d",
+        "fact-24519771a7d780d06b",
+        "fact-06a9b44cd00d23a935",
+        "fact-8d0d9e9ddcc9cb1353",
+        "fact-79768cb9c7f4edab97",
+        "fact-2cdcd925b630aa3dd7",
+        "fact-29ab0e262bddefa8ad",
+        "fact-25ae12b778d1dced9b",
+        "fact-6bf5e105ed27d20921",
+        "fact-a4f0b95f25ae694ba4",
+        "fact-65ec528673b2780c90",
+        "fact-f137b22bc172391087"
+      ],
+      "rejectFactIds": [
+        "fact-ddf879acfd1a1c1ce5"
+      ],
+      "reason": "The Thai paragraph asks the reader to compare left and right driving; it does not say Thailand drives right."
+    },
+    {
+      "categoryId": "driving",
+      "appearanceZh": "左侧通行",
+      "keepFactIds": [
+        "fact-a8612e7f4214ff9a1e",
+        "fact-4bd63dbf61936c0c1e",
+        "fact-e113171fd050eb32c2",
+        "fact-85242468cf34639ced",
+        "fact-c923edf14904087808",
+        "fact-3f96f103b6d069d849",
+        "fact-204e1a72fee1fa98de",
+        "fact-49f5a56f32bf423b24",
+        "fact-3fd9ddcb3bbfdcfdbd",
+        "fact-06a9b44cd00d23a935",
+        "fact-68ac4b6cb06a784931",
+        "fact-8d0d9e9ddcc9cb1353",
+        "fact-271fe8b42fdc3b316f",
+        "fact-8ec555a63c1a1976a8",
+        "fact-342f23442d4ab486c6",
+        "fact-01751ca03e0fd22b50",
+        "fact-a4f0b95f25ae694ba4",
+        "fact-3489e9339ea87e275f",
+        "fact-23bba86493d761b302",
+        "fact-cb0124e1d599a09381"
+      ],
+      "rejectFactIds": [
+        "fact-ddf879acfd1a1c1ce5"
+      ],
+      "reason": "The same Thai comparison paragraph does not itself assert Thailand drives left; a separate explicit Thai paragraph supports that relation."
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "红底白箭头",
+      "keepFactIds": [
+        "fact-f1f62b255765cb017b",
+        "fact-d0b7a432a3709d1f66"
+      ],
+      "rejectFactIds": [
+        "fact-d48b2e1014aeeaaa03",
+        "fact-223b4f7980747c832d"
+      ],
+      "reason": "The Turkish, Vietnamese and Botswana images show narrow upright chevrons; the Quebec and Hungarian images show a wider rectangular sign. They must be separate observations."
+    },
+    {
+      "categoryId": "signs",
+      "appearanceZh": "白底红箭头",
+      "keepFactIds": [
+        "fact-53c73711c1e2e27030",
+        "fact-53697a194e27c484d3",
+        "fact-84e00a1c28062f9f86",
+        "fact-50d09e1b961005beb6",
+        "fact-623f234e3d45919e81"
+      ],
+      "rejectFactIds": [
+        "fact-fd82189cdf040c418a",
+        "fact-647acedeab8501d0ce",
+        "fact-4d4997ebecc690e00d"
+      ],
+      "reason": "The source photos differ visibly: Jordan has two same-direction chevrons, Bulgaria has opposing chevrons, and Argentina has a narrow upright single-chevron board. The retained source photos show one broad white board with a single red chevron."
+    }
+  ],
+  "note": "Every correction audits the full source-fact set for one visual clue; rejects are removed from playable facts, card image references and scoring estimates before focused additions."
+}

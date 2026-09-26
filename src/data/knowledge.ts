@@ -10,7 +10,7 @@ import regionsFile from './knowledge/regions.json'
 import sourcePhotoAssetsFile from './knowledge/source-photo-assets.json'
 
 type LocationRecord = { id: string; kind: 'country' | 'territory' | 'region'; name: Text2; parentId: string | null; continent: Continent; candidate: boolean; flagCode?: string; source: { path: string | null; metadataPath: string; url: string; localCode?: string } }
-type FeatureRecord = { id: string; categoryId: string; appearance: Text2; evidenceGroupIds: string[]; assetIds: string[]; translationStatus: string }
+type FeatureRecord = { id: string; categoryId: string; appearance: Text2; evidenceGroupIds: string[]; assetIds: string[]; translationStatus: string; cardCrop?: 'left' | 'top' }
 type PhotoAssets = { assets: Asset[] }
 
 export const schemaVersion = 4
@@ -39,7 +39,7 @@ export const clues: Clue[] = features.map((feature) => ({
   geography: { en: 'Loading supported location relations…', zh: '正在加载地点关系……' },
   strength: en('Initial qualitative estimate; not a measured frequency.'),
   caveat: en('Unknown source mentions are not evidence of absence. Repeated photos do not add evidence.'),
-  sourceUrls: [], reviewed: '2026-09-25', assetIds: feature.assetIds || [], referenceAssetIds: [], tags: [feature.categoryId], exclusionAllowed: true,
+  sourceUrls: [], reviewed: '2026-09-25', assetIds: feature.assetIds || [], cardCrop: feature.cardCrop, referenceAssetIds: [], tags: [feature.categoryId], exclusionAllowed: true,
 }))
 export const clueById = new Map(clues.map((clue) => [clue.id, clue]))
 export const assets: Asset[] = (sourcePhotoAssetsFile as PhotoAssets).assets

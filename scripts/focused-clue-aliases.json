@@ -6,10 +6,10 @@
       "focusedZh": "红底白箭头弯道诱导牌",
       "canonicalZh": "红底白箭头",
       "appearance": {
-        "zh": "红底白箭头弯道诱导牌",
-        "en": "White bend arrow on red sign"
+        "zh": "宽矩形红底白色弯道箭头牌",
+        "en": "Broad rectangular red sign with white chevron"
       },
-      "reason": "The original short text clue and the illustrated clue name the same chevron sign, including one shared source paragraph."
+      "reason": "The Quebec and Hungarian source photos both show a broad, approximately square rectangular red sign with a thick white chevron. Narrow upright examples are a different clue."
     },
     {
       "categoryId": "plants",
@@ -60,6 +60,36 @@
         "en": "Tall columnar Araucaria trees"
       },
       "reason": "The older text observation and pictured coastal instance show the same distinctive tree silhouette; coast remains a source condition."
+    },
+    {
+      "categoryId": "plants",
+      "focusedZh": "成片茶园",
+      "canonicalZh": "茶园",
+      "appearance": {
+        "zh": "茶园",
+        "en": "Tea plantation"
+      },
+      "reason": "Both labels use the identical tea-plantation photo and describe the same visible crop. The focused fact remains linked to the shared clue."
+    },
+    {
+      "categoryId": "signs",
+      "focusedZh": "白底红箭头弯道诱导牌",
+      "canonicalZh": "白底红箭头",
+      "appearance": {
+        "zh": "宽白牌上的单个红色弯道箭头",
+        "en": "Single red chevron on broad white sign"
+      },
+      "reason": "The South African, Philippine, Turkish, Danish and Slovenian photos show a single thick red chevron on a broad white board. Double-chevron and narrow-upright variants remain separate."
+    },
+    {
+      "categoryId": "markings",
+      "focusedZh": "鹅卵石铺成的城镇道路",
+      "canonicalZh": "鹅卵石路面",
+      "appearance": {
+        "zh": "鹅卵石路面",
+        "en": "Cobblestone road"
+      },
+      "reason": "The focused Rwanda clue uses the exact same cobblestone road photo and fact as the generic observation; town location alone is not a different road-surface observation."
     }
   ]
 }

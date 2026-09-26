@@ -6,13 +6,13 @@ export type RegionScheme = { schemaVersion: number; countryId: string; granulari
 export type Category = { id: string; name: Text2; children: { id: string; name: Text2; selectionMode: 'single' | 'multiple' }[] }
 export type Asset = {
   id: string; path: string; sourceUrl: string; author: string; license: string; licenseUrl: string
-  attribution: string; redistribution: string; reviewed: string; status: 'source-reference'; sourcePath?: string; cardCrop?: 'left'
+  attribution: string; redistribution: string; reviewed: string; status: 'source-reference'; sourcePath?: string; cardCrop?: 'left' | 'top' | 'bottom'
 }
 export type Clue = {
   id: string; categoryId: string; groupId: string; appearance: Text2; formalName: Text2
   identify: Text2; geography: Text2; strength: Text2; caveat: Text2
   sourceUrls: string[]; reviewed: string; assetIds: string[]; tags: string[]
-  referenceAssetIds?: string[]; exclusionAllowed?: boolean
+  referenceAssetIds?: string[]; exclusionAllowed?: boolean; cardCrop?: 'left' | 'top' | 'bottom'
 }
 export type EvidenceProfile = {
   featureId: string; unknownPrevalence: number; certainSpecificity?: number

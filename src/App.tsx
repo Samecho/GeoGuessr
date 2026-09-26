@@ -7,18 +7,15 @@ import { assetById } from './data/assets'
 import { regionSchemeByCountry, regionCoverageByCountry } from './data/regions'
 import { estimates, interactions, modelParameters, features, locations, candidateByLocation, evidenceProfileByClue } from './data/knowledge'
 import { scopedClueIds } from './data/clue-scope'
-import type { Clue, Continent, Observation } from './data/types'
+import type { Clue, Observation } from './data/types'
+import { geographicGroups, toggleGroupIds, type GeographicGroup } from './data/geographic-groups'
 import { rankCandidates } from './engine/scoring'
 import { RankingChart } from './components/RankingChart'
 import { SourceGallery } from './components/SourceGallery'
 import { ui, type Language } from './i18n'
 import './styles.css'
 
-type Scope = { type: 'global' } | { type: 'continent'; continent: Continent } | { type: 'countries'; ids: string[] }
-const continentLabels: Record<Continent, { en: string; zh: string }> = {
-  Europe: { en: 'Europe', zh: '欧洲' }, Asia: { en: 'Asia', zh: '亚洲' }, Africa: { en: 'Africa', zh: '非洲' },
-  'North America': { en: 'North America', zh: '北美洲' }, 'South America': { en: 'South America', zh: '南美洲' }, Oceania: { en: 'Oceania', zh: '大洋洲' }, Antarctica: { en: 'Antarctica', zh: '南极洲' },
-}
+type Scope = { type: 'global' } | { type: 'countries'; ids: string[] }
 const firstLanguage = (): Language => localStorage.getItem('street-clues-language') === 'zh' ? 'zh' : 'en'
 
 function App() {
@@ -50,8 +47,7 @@ function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const scopedCountries = useMemo(() => countries.filter((country) => scope.type === 'global' ||
-    (scope.type === 'continent' ? country.continent === scope.continent : scope.ids.includes(country.id))), [scope])
+  const scopedCountries = useMemo(() => countries.filter((country) => scope.type === 'global' || scope.ids.includes(country.id)), [scope])
   const scopedIds = useMemo(() => scopedCountries.map((country) => country.id), [scopedCountries])
   const selected = useMemo(() => Object.values(observations), [observations])
   const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
@@ -68,7 +64,7 @@ function App() {
     : [], [scheme, selected, scoringOptions])
 
   useEffect(() => {
-    const key = scope.type === 'global' ? 'global' : scope.type === 'continent' ? scope.continent : `countries:${[...scope.ids].sort().join(',')}`
+    const key = scope.type === 'global' ? 'global' : `countries:${[...scope.ids].sort().join(',')}`
     const changed = key !== previousScopeKey.current
     setViewCountry((current) => {
       if (current && !scopedIds.includes(current)) return null
@@ -78,6 +74,13 @@ function App() {
     previousScopeKey.current = key
   }, [scope, scopedIds])
 
+  const toggleGroup = (group: GeographicGroup) => {
+    setScope((current) => {
+      const next = toggleGroupIds(current.type === 'countries' ? current.ids : [], group.countryIds)
+      return next.length ? { type: 'countries', ids: next } : { type: 'global' }
+    })
+  }
+  const groupIsSelected = (group: GeographicGroup) => scope.type === 'countries' && group.countryIds.every((id) => scope.ids.includes(id))
   const toggleCountry = (id: string) => {
     setScope((current) => {
       const ids = current.type === 'countries' ? current.ids : []
@@ -122,7 +125,8 @@ function App() {
       setInfoContent((current) => current?.id === clue.id ? details : current)
     })
   }
-  const scopeTitle = scope.type === 'global' ? L.global : scope.type === 'continent' ? continentLabels[scope.continent][language] : `${scope.ids.length} ${L.countries.toLowerCase()}`
+  const exactGroup = scope.type === 'countries' ? geographicGroups.find((group) => group.countryIds.length === scope.ids.length && group.countryIds.every((id) => scope.ids.includes(id))) : undefined
+  const scopeTitle = scope.type === 'global' ? L.global : exactGroup ? exactGroup.name[language] : `${scope.ids.length} ${L.countries.toLowerCase()}`
 
   return <div className="app-shell">
     <header className="topbar">
@@ -137,13 +141,14 @@ function App() {
       <div className="scope-panel-head"><div><span className="section-kicker">01 / {L.scope}</span><h2>{scopeTitle}</h2></div><span className="muted">{scopedIds.length} {L.count}</span></div>
       <div className="scope-controls">
         <button type="button" className={`scope-button ${scope.type === 'global' ? 'chosen' : ''}`} onClick={() => setScope({ type: 'global' })}>{L.global}</button>
-        {(Object.keys(continentLabels) as Continent[]).map((continent) => <button type="button" key={continent} className={`scope-button ${scope.type === 'continent' && scope.continent === continent ? 'chosen' : ''}`} onClick={() => setScope({ type: 'continent', continent })}>{continentLabels[continent][language]}</button>)}
+        {geographicGroups.filter((group) => group.kind === 'continent').map((group) => <button type="button" key={group.id} className={`scope-button ${groupIsSelected(group) ? 'chosen' : ''}`} aria-pressed={groupIsSelected(group)} onClick={() => toggleGroup(group)}>{group.name[language]}</button>)}
         <details className="country-picker"><summary className={`scope-button ${scope.type === 'countries' ? 'chosen' : ''}`}>{L.custom} <ChevronDown size={14} /></summary>
           <div className="country-picker-popover"><label className="search-field"><Search size={15} /><input type="search" value={countrySearch} onChange={(event) => setCountrySearch(event.target.value)} placeholder={L.searchCountry} aria-label={L.searchCountry} /></label>
             <div className="country-options">{countries.filter((country) => country.name[language].toLocaleLowerCase().includes(countrySearch.toLocaleLowerCase()) || country.id.toLowerCase().includes(countrySearch.toLowerCase())).map((country) => <label key={country.id} className="country-option"><input type="checkbox" checked={scope.type === 'countries' && scope.ids.includes(country.id)} onChange={() => toggleCountry(country.id)} />{country.flagCode ? <img src={`${import.meta.env.BASE_URL}flags/${country.flagCode}.svg`} alt="" /> : <span className="flag-fallback" aria-hidden="true">{country.continent === 'Antarctica' ? '◇' : '•'}</span>}<span>{country.name[language]}</span></label>)}</div>
           </div></details>
       </div>
-      {scope.type === 'countries' && <div className="scope-chips">{scope.ids.map((id) => <button type="button" className="scope-chip" key={id} onClick={() => toggleCountry(id)}>{countryById.get(id)?.name[language]} <X size={13} /></button>)}</div>}
+      <div className="scope-region-controls"><span className="section-kicker">{language === 'en' ? 'REGIONAL PRESETS · COMBINE FREELY' : '地区组合 · 可多选'}</span><div className="scope-controls">{geographicGroups.filter((group) => group.kind === 'region').map((group) => <button type="button" key={group.id} className={`scope-button ${groupIsSelected(group) ? 'chosen' : ''}`} aria-pressed={groupIsSelected(group)} onClick={() => toggleGroup(group)}>{group.name[language]}</button>)}</div></div>
+      {scope.type === 'countries' && scope.ids.length <= 12 && <div className="scope-chips">{scope.ids.map((id) => <button type="button" className="scope-chip" key={id} onClick={() => toggleCountry(id)}>{countryById.get(id)?.name[language]} <X size={13} /></button>)}</div>}
     </section>
 
     <main className="workspace">
@@ -170,7 +175,7 @@ function App() {
           const chosen = observations[clue.id]
           return <article className={`clue-card clue-${clue.id} ${chosen ? 'is-selected' : ''}`} key={clue.id}>
             <button type="button" className="clue-main" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>
-              <span className="photo-wrap"><img className={asset.cardCrop === 'left' ? 'crop-left' : undefined} src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
+              <span className="photo-wrap"><img className={clue.cardCrop || asset.cardCrop ? `crop-${clue.cardCrop || asset.cardCrop}` : undefined} src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
               <span className="clue-label">{clue.appearance[language]}</span>
             </button>
             <button type="button" className="info-button" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>

@@ -25,7 +25,7 @@ describe('reviewed local knowledge regressions', () => {
     expect(estimate('Vehicle with a front plate', 'loc:dominican')).toBeUndefined()
     expect(estimate('The word STOP', 'loc:canada')).toBeUndefined()
     expect(estimates.filter((item) => item.pPresent <= 0.05).every((item) =>
-      item.pPresent > 0 && ['focused-local-comparison-v1', 'focused-specificity-region-marginal-v1'].includes(item.basis))).toBe(true)
+      item.pPresent > 0 && ['focused-local-comparison-v1', 'focused-specificity-region-marginal-v1', 'reviewed-driving-side-v1'].includes(item.basis))).toBe(true)
   })
 
   it('only uses reviewed joint evidence with actual matching observations', () => {
@@ -104,13 +104,29 @@ describe('Canada and Africa paragraph review', () => {
   })
 
   it('shows one illustrated clue for each reviewed duplicate visual observation', () => {
-    for (const label of ['White bend arrow on red sign', 'White front plate and yellow rear plate',
+    for (const label of ['Broad rectangular red sign with white chevron', 'Narrow upright red-and-white chevron sign',
+      'Single red chevron on broad white sign', 'Two red chevrons on white sign',
+      'Opposing red chevrons on white sign', 'Red chevron on narrow upright white sign',
+      'Tea plantation', 'White front plate and yellow rear plate',
       'Round bollard with two broad black bands', 'Sugarcane field', 'Coastal sugarcane fields']) {
       const matches = clues.filter((item) => item.appearance.en === label)
       expect(matches).toHaveLength(1)
       expect(matches[0].assetIds.length).toBeGreaterThan(0)
     }
     expect(clues.some((item) => item.appearance.zh === '红底白箭头')).toBe(false)
+  })
+
+  it('uses explicit driving-side facts without making Thailand a right-driving favorite', () => {
+    const right = clue('Traffic keeps right')!
+    expect(right.assetIds).toHaveLength(0)
+    expect(estimate('Traffic keeps right', 'loc:thailand')?.pPresent).toBe(0.03)
+    expect(estimate('Traffic keeps right', 'loc:laos')?.pPresent).toBe(0.97)
+    expect(estimate('Traffic keeps right', 'loc:canada')).toBeUndefined()
+    const ranked = rankCandidates(countries.map((country) => country.id), estimates,
+      [{ clueId: right.id, mode: 'seen', certainty: 'certain' }],
+      { scope: 'country', parentByLocation, evidenceProfiles: evidenceProfileByClue })
+    expect(ranked[0].id).not.toBe('loc:thailand')
+    expect(ranked.find((row) => row.id === 'loc:thailand')!.share).toBeLessThan(0.01)
   })
 
   it('does not match the Turkish stop word inside unrelated place names', () => {
@@ -145,6 +161,25 @@ describe('Canada and Africa paragraph review', () => {
     expect(ranked[0].id).toBe('loc:canada')
     expect(estimate(maximum.appearance.en, 'loc:united-states')?.pPresent).toBeLessThan(0.5)
     expect(ranked.reduce((sum, row) => sum + row.share, 0)).toBeCloseTo(1)
+  })
+
+  it('keeps differently shaped red chevron signs separate and retains frequency comparisons', () => {
+    const broad = clue('Single red chevron on broad white sign')!
+    const double = clue('Two red chevrons on white sign')!
+    const opposing = clue('Opposing red chevrons on white sign')!
+    const narrow = clue('Red chevron on narrow upright white sign')!
+    expect(new Set([broad.id, double.id, opposing.id, narrow.id]).size).toBe(4)
+    expect(estimate(broad.appearance.en, 'loc:denmark')?.pPresent).toBe(0.82)
+    expect(estimate(broad.appearance.en, 'loc:turkey')?.pPresent).toBe(0.62)
+    expect(estimate(broad.appearance.en, 'loc:jordan')).toBeUndefined()
+    expect(estimate(double.appearance.en, 'loc:jordan')?.pPresent).toBe(0.62)
+    expect(estimate(opposing.appearance.en, 'loc:bulgaria')?.pPresent).toBe(0.62)
+    expect(estimate(narrow.appearance.en, 'loc:argentina')?.pPresent).toBe(0.82)
+    const ranked = rankCandidates(['loc:denmark', 'loc:turkey'], estimates,
+      [{ clueId: broad.id, mode: 'seen', certainty: 'certain' }],
+      { scope: 'country', parentByLocation, evidenceProfiles: evidenceProfileByClue })
+    expect(ranked[0].id).toBe('loc:denmark')
+    expect(ranked[0].share).toBeGreaterThan(0.5)
   })
 
   it('uses source-backed opposing comparisons for African visual differences', () => {

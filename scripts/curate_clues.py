@@ -75,6 +75,7 @@ def main():
             'assetIds': displayed_images, 'translationStatus': 'reviewed',
             'sourcePhraseIds': [feature['id'] for feature in matches],
             'sourceImageIds': image_ids,
+            **({'cardCrop': photo_review['cardCrop'][spec['appearance']['zh']]} if spec['appearance']['zh'] in photo_review.get('cardCrop', {}) else {}),
         })
         for feature in matches:
             if feature['id'] in raw_to_curated and raw_to_curated[feature['id']] != spec['id']:

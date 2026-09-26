@@ -47,7 +47,8 @@ def main():
     by_asset = {asset['id']: asset for asset in assets}
     by_clue = {(clue['categoryId'], clue['appearance']['zh']): clue for clue in clues}
     fact_by_id = {fact['id']: fact for fact in facts}
-    for review in json.loads((ROOT / 'scripts/exact-token-source-review.json').read_text(encoding='utf-8'))['corrections']:
+    raw_feature_by_id = {feature['id']: feature for feature in read('features.json', 'features')}
+    for review in json.loads((ROOT / 'scripts/source-fact-corrections.json').read_text(encoding='utf-8'))['corrections']:
         clue = by_clue.get((review['categoryId'], review['appearanceZh']))
         if clue is None or not review.get('reason'):
             raise ValueError(f"Invalid exact-token review: {review['appearanceZh']}")
@@ -57,6 +58,8 @@ def main():
             raise ValueError(f"Exact-token source facts changed: {review['appearanceZh']}")
         clue['evidenceGroupIds'] = [fact_id for fact_id in clue['evidenceGroupIds'] if fact_id in kept]
         clue['manualFactIds'] = [fact_id for fact_id in clue.get('manualFactIds', []) if fact_id in kept]
+        clue['sourcePhraseIds'] = [feature_id for feature_id in clue['sourcePhraseIds']
+                                    if any(fact_id in kept for fact_id in raw_feature_by_id[feature_id]['factIds'])]
         kept_images = {image_id for fact_id in kept for image_id in fact_by_id[fact_id]['imageIds']}
         clue['sourceImageIds'] = [image_id for image_id in clue['sourceImageIds'] if image_id in kept_images]
         clue['assetIds'] = [image_id for image_id in clue['assetIds'] if image_id in kept_images]
@@ -310,6 +313,44 @@ def main():
         if note not in detail['sourceNotes']:
             detail['sourceNotes'].append(note)
         unique_append(detail['sourceUrls'], fact['source']['url'])
+
+    driving_review = json.loads((ROOT / 'scripts/verified-driving-side.json').read_text(encoding='utf-8'))
+    left_p = driving_review['likelihoodForStatedSide']
+    right_p = driving_review['likelihoodForOppositeSide']
+    if not (0 < right_p < 0.5 < left_p < 1):
+        raise ValueError('Invalid reviewed driving-side likelihoods')
+    seen_driving_places = set()
+    for review in driving_review['entries']:
+        target_id, stated_side, fact_id = review['locationId'], review['side'], review['sourceFactId']
+        if target_id not in by_location or target_id in seen_driving_places or stated_side not in ('left', 'right') or fact_id not in fact_by_id:
+            raise ValueError(f'Invalid reviewed driving-side entry: {target_id}')
+        seen_driving_places.add(target_id)
+        fact = fact_by_id[fact_id]
+        for side, appearance in [('left', '左侧通行'), ('right', '右侧通行')]:
+            clue = by_clue[('driving', appearance)]
+            probability = left_p if side == stated_side else right_p
+            key = (clue['id'], target_id)
+            reason = (f"Explicit driving-side statement in {fact['source']['path']}#{fact['source']['elementId']}; "
+                      'opposite side is a nonzero engineering exception estimate for the same road, not a measured frequency.')
+            row = by_estimate.get(key)
+            if row is None:
+                row = {'featureId': clue['id'], 'locationId': target_id, 'claimIds': []}
+                estimates.append(row)
+                by_estimate[key] = row
+            row.update({'pPresent': probability, 'band': 'explicit-driving-side-qualitative-estimate',
+                        'basis': 'reviewed-driving-side-v1', 'basisReason': reason,
+                        'status': 'initial-estimate', 'measured': False,
+                        'sourceFactId': fact_id, 'sourceFactIds': [fact_id]})
+            unique_append(clue['evidenceGroupIds'], fact_id)
+            unique_append(clue.setdefault('manualFactIds', []), fact_id)
+            detail = by_detail[clue['id']]
+            note = {'section': fact['section'], 'excerpt': fact['excerpt'][:240], 'url': fact['source']['url']}
+            if note not in detail['sourceNotes']:
+                detail['sourceNotes'].append(note)
+            unique_append(detail['sourceUrls'], fact['source']['url'])
+            for relation in detail['relations']:
+                detail['relations'][relation] = [place for place in detail['relations'][relation] if place != target_id]
+            unique_append(detail['relations']['supports' if side == stated_side else 'opposes'], target_id)
 
     profiles = []
     for spec in json.loads((ROOT / 'scripts/focused-evidence-profiles.json').read_text(encoding='utf-8'))['profiles']:

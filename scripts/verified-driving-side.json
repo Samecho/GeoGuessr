@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "reviewedDate": "2026-09-26",
+  "note": "Only explicit prose statements about the named target are used. A country not listed remains unknown. Opposite-side likelihoods are nonzero engineering estimates for the same road, not observed frequencies.",
+  "likelihoodForStatedSide": 0.97,
+  "likelihoodForOppositeSide": 0.03,
+  "entries": [
+    {
+      "locationId": "loc:thailand",
+      "side": "left",
+      "sourceFactId": "fact-ffea97034ce0fe9d3a"
+    },
+    {
+      "locationId": "loc:indonesia",
+      "side": "left",
+      "sourceFactId": "fact-d8f1b0417850fe7416"
+    },
+    {
+      "locationId": "loc:malaysia",
+      "side": "left",
+      "sourceFactId": "fact-06a9b44cd00d23a935"
+    },
+    {
+      "locationId": "loc:japan",
+      "side": "left",
+      "sourceFactId": "fact-68ac4b6cb06a784931"
+    },
+    {
+      "locationId": "loc:nepal",
+      "side": "left",
+      "sourceFactId": "fact-23bba86493d761b302"
+    },
+    {
+      "locationId": "loc:bhutan",
+      "side": "left",
+      "sourceFactId": "fact-3fd9ddcb3bbfdcfdbd"
+    },
+    {
+      "locationId": "loc:cyprus",
+      "side": "left",
+      "sourceFactId": "fact-3f96f103b6d069d849"
+    },
+    {
+      "locationId": "loc:malta",
+      "side": "left",
+      "sourceFactId": "fact-204e1a72fee1fa98de"
+    },
+    {
+      "locationId": "loc:ireland",
+      "side": "left",
+      "sourceFactId": "fact-271fe8b42fdc3b316f"
+    },
+    {
+      "locationId": "loc:united-kingdom",
+      "side": "left",
+      "sourceFactId": "fact-93ee124d0c3a23a4bc"
+    },
+    {
+      "locationId": "loc:jersey",
+      "side": "left",
+      "sourceFactId": "fact-61fedf48cdea865c15"
+    },
+    {
+      "locationId": "loc:us-virgin-islands",
+      "side": "left",
+      "sourceFactId": "fact-fa62c50153069afa55"
+    },
+    {
+      "locationId": "loc:lesotho",
+      "side": "left",
+      "sourceFactId": "fact-4bd63dbf61936c0c1e"
+    },
+    {
+      "locationId": "loc:uganda",
+      "side": "left",
+      "sourceFactId": "fact-85242468cf34639ced"
+    },
+    {
+      "locationId": "loc:namibia",
+      "side": "left",
+      "sourceFactId": "fact-b69f9fd6951d76bff7"
+    },
+    {
+      "locationId": "loc:kenya",
+      "side": "left",
+      "sourceFactId": "fact-20378c79cc223667b4"
+    },
+    {
+      "locationId": "loc:south-africa",
+      "side": "left",
+      "sourceFactId": "fact-e113171fd050eb32c2"
+    },
+    {
+      "locationId": "loc:laos",
+      "side": "right",
+      "sourceFactId": "fact-25ae12b778d1dced9b"
+    },
+    {
+      "locationId": "loc:cambodia",
+      "side": "right",
+      "sourceFactId": "fact-f00cdb11717a91a496"
+    },
+    {
+      "locationId": "loc:philippines",
+      "side": "right",
+      "sourceFactId": "fact-79768cb9c7f4edab97"
+    },
+    {
+      "locationId": "loc:vietnam",
+      "side": "right",
+      "sourceFactId": "fact-bf71e018390cbb61eb"
+    },
+    {
+      "locationId": "loc:south-korea",
+      "side": "right",
+      "sourceFactId": "fact-65ec528673b2780c90"
+    },
+    {
+      "locationId": "loc:gibraltar",
+      "side": "right",
+      "sourceFactId": "fact-f137b22bc172391087"
+    },
+    {
+      "locationId": "loc:senegal",
+      "side": "right",
+      "sourceFactId": "fact-a4faf5e9f6ed310933"
+    },
+    {
+      "locationId": "loc:ghana",
+      "side": "right",
+      "sourceFactId": "fact-690cd6d4667f70d68b"
+    },
+    {
+      "locationId": "loc:nigeria",
+      "side": "right",
+      "sourceFactId": "fact-690cd6d4667f70d68b"
+    },
+    {
+      "locationId": "loc:rwanda",
+      "side": "right",
+      "sourceFactId": "fact-6bf5e105ed27d20921"
+    },
+    {
+      "locationId": "loc:jordan",
+      "side": "right",
+      "sourceFactId": "fact-7d721bc2266306a52d"
+    },
+    {
+      "locationId": "loc:united-arab-emirates",
+      "side": "right",
+      "sourceFactId": "fact-7d721bc2266306a52d"
+    },
+    {
+      "locationId": "loc:israel-west-bank",
+      "side": "right",
+      "sourceFactId": "fact-7d721bc2266306a52d"
+    },
+    {
+      "locationId": "loc:india",
+      "side": "left",
+      "sourceFactId": "fact-01751ca03e0fd22b50"
+    }
+  ]
+}
