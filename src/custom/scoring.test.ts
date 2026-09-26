@@ -69,6 +69,31 @@ describe('custom library', () => {
     expect(getShare(conditional, 'loc:canada:region:ca-bc')).toBeCloseTo(10 / (20 + regions.length - 2))
   })
 
+  it('replaces overlapping broad evidence without making a second plate vote', () => {
+    const broad = { ...entry, id: 'custom-broadplate', weights: [{ locationId: 'loc:canada', seenMultiplier: 5, absentMultiplier: 0.8 }] }
+    const detail = { ...entry, id: 'custom-detailplate', supersedesClueIds: [broad.id],
+      weights: [{ locationId: 'loc:canada', seenMultiplier: 20, absentMultiplier: 1 }] }
+    const plateLibrary = parseCustomLibrary({ ...library, clues: [broad, detail] })
+    const ids = ['loc:canada', 'loc:united-states']
+    const broadSeen: Observation = { clueId: broad.id, mode: 'seen', certainty: 'certain' }
+    const detailSeen: Observation = { clueId: detail.id, mode: 'seen', certainty: 'certain' }
+    const detailUnsure: Observation = { ...detailSeen, certainty: 'uncertain' }
+    const single = rankCustomCandidates(ids, plateLibrary, [detailSeen], { kind: 'country' })
+    const both = rankCustomCandidates(ids, plateLibrary, [broadSeen, detailSeen], { kind: 'country' })
+    expect(both).toEqual(single)
+    expect(rankCustomCandidates(ids, plateLibrary, [detailSeen, broadSeen], { kind: 'country' })).toEqual(single)
+    const partly = rankCustomCandidates(ids, plateLibrary, [broadSeen, detailUnsure], { kind: 'country' })
+    const expected = Math.sqrt(5 * 20)
+    expect(getShare(partly, 'loc:canada')).toBeCloseTo(expected / (expected + 1))
+    const broadAbsent: Observation = { ...broadSeen, mode: 'excluded' }
+    const contradictory = rankCustomCandidates(ids, plateLibrary, [broadAbsent, detailSeen], { kind: 'country' })
+    expect(getShare(contradictory, 'loc:canada')).toBeCloseTo((0.8 * 20) / (0.8 * 20 + 1))
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...detail, supersedesClueIds: [detail.id] }] })).toThrow()
+    expect(() => parseCustomLibrary({ ...library, clues: [
+      { ...broad, supersedesClueIds: [detail.id] }, detail,
+    ] })).toThrow()
+  })
+
   it('uses separate clearly absent multipliers and remains finite for extreme valid weights', () => {
     const candidateIds = countries.map((country) => country.id)
     const ranks = rankCustomCandidates(candidateIds, library, [absent], { kind: 'country' })

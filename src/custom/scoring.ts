@@ -15,12 +15,22 @@ export function rankCustomCandidates(candidateIds: readonly string[], library: C
   const clueById = new Map(library.clues.map((clue) => [clue.id, clue]))
   const uniqueObservations = [...new Map(observations.filter((item) => clueById.has(item.clueId)).map((item) => [item.clueId, item])).values()]
     .sort((a, b) => a.clueId.localeCompare(b.clueId))
+  // A detailed observation can replace the broad color observation describing
+  // the same plate. An uncertain detail only replaces its reliability fraction.
+  const supersedingReliability = new Map<string, number>()
+  for (const observation of uniqueObservations) {
+    if (observation.mode !== 'seen') continue
+    for (const broadId of clueById.get(observation.clueId)!.supersedesClueIds || []) {
+      supersedingReliability.set(broadId, Math.max(supersedingReliability.get(broadId) || 0, reliability(observation)))
+    }
+  }
   const effects = uniqueObservations.map((observation) => ({
     observation,
+    scale: Math.max(0, reliability(observation) - (observation.mode === 'seen' ? supersedingReliability.get(observation.clueId) || 0 : 0)),
     targets: new Map(clueById.get(observation.clueId)!.weights.map((row) => [row.locationId, row])),
   }))
-  const logEvidence = (id: string) => effects.reduce((sum, { observation, targets }) =>
-    sum + Math.log(multiplierFor(targets.get(id), observation)) * reliability(observation), 0)
+  const logEvidence = (id: string) => effects.reduce((sum, { observation, scale, targets }) =>
+    sum + Math.log(multiplierFor(targets.get(id), observation)) * scale, 0)
   const scores = ids.map((id) => {
     let score = logEvidence(id)
     if (scope.kind === 'country') {
