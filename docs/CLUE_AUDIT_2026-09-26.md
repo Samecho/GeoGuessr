@@ -22,7 +22,7 @@ The 148 entries previously labelled as opposing evidence were grouped by provena
 
 This pass also checked 23 formerly mixed relations and six unclassified region-derived parent estimates. Five unrelated observation links were removed; source-supported appearances and inferred country parents now have distinct labels. Active estimates no longer carry mixed or unclassified relation labels. This is still not a complete semantic audit of every clue: broad wording/source pairings and visual variants need further manual review. The Info view uses the reviewed per-estimate relation rather than old overlapping raw relation lists.
 
-The current playable library has 489 bilingual clues: 324 illustrated and 165 text-only; 451 carry active likelihood estimates across 1,183 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
+The current playable library has 489 bilingual clues: 324 illustrated and 165 text-only; 451 carry active likelihood estimates across 1,209 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
 
 ## Open review
 
@@ -30,3 +30,9 @@ The current playable library has 489 bilingual clues: 324 illustrated and 165 te
 - Other broad clue families may still combine subtly different country variants. Shared primary-image pairs were inspected for literal duplicates, but the 5,860-image archive has not received a full object-level visual classification.
 - Source prose gives qualitative frequency words; current prevalence tiers and recognition parameters remain estimates. Only cited comparisons should change relative likelihoods. Countries absent from a paragraph remain unknown.
 - The regional preset boundaries are practical manual filters, not evidence or a single authoritative cultural map; users can combine presets and individual candidates.
+
+## Canada scoped-gallery follow-up
+
+The single-country gallery requires region-varying estimates. It previously hid both front-plate observations because only country estimates existed. The Canada chapter's plate-requirement map (`tuxundoc/北美洲/canada/index.html#477af9e7a461eef2f074edc7ff23b68c`, adjacent `images/0013.png`) and its New Brunswick/Newfoundland exceptions (`#u52744c9c`) now support moderate initial estimates across the 13 province/territory regions. Both separate vehicle observations appear in Canada scope and update the conditional region chart. Legal requirements are only a weak proxy for what a random Street View vehicle visibly carries. No-front and front observations can coexist. The gallery also no longer drops cited comparative or low-prevalence evidence solely because it is negative; unknown locations remain unknown in scoring.
+
+Country-only cues with no defensible province split, such as national sign wording, remain hidden in the default single-country **Region clues** view. They are accessible under **All cited clues** with an explanation that they may not change the region chart. The switch avoids inventing provincial frequencies and keeps the original region-focused default. This pass did not claim that all country-only observations have been assigned regional frequencies.

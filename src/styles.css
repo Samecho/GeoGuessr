@@ -40,3 +40,5 @@
 .photo-wrap img.crop-top,.photo-wrap img.crop-bottom{scale:1.18}
 .photo-wrap img.crop-top{transform-origin:center top}
 .photo-wrap img.crop-bottom{transform-origin:center bottom}
+
+.gallery-mode{display:flex;gap:6px;flex-wrap:wrap;margin:-3px 0 12px}.gallery-mode button{border:1px solid #d8e4e7;background:#fff;border-radius:20px;padding:6px 11px;color:#58747e;font-size:11px;font-weight:700}.gallery-mode button.active{background:#dcebed;border-color:#a9cbd0;color:#0c6474}.gallery-mode-note{color:#667f87;font-size:11px;line-height:1.45;margin:-4px 0 12px}

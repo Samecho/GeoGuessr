@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "reviews": [
+    {
+      "featureId": "clue-vehicle-no-front-plate",
+      "countryId": "loc:canada",
+      "mapSourceFactId": "fact-b500573c5526004c68",
+      "exceptionSourceFactId": "fact-d6356d1eef37aaa01d",
+      "regionLikelihoods": {
+        "ca:bc": 0.35,
+        "ca:mb": 0.35,
+        "ca:on": 0.35,
+        "ca:ab": 0.65,
+        "ca:ns": 0.65,
+        "ca:nt": 0.65,
+        "ca:nu": 0.65,
+        "ca:pe": 0.65,
+        "ca:qc": 0.65,
+        "ca:sk": 0.65,
+        "ca:yt": 0.65,
+        "ca:nb": 0.53,
+        "ca:nl": 0.56
+      },
+      "reason": "The source plate map marks British Columbia, Manitoba and Ontario as requiring front plates; New Brunswick stopped requiring them in 2019 and Newfoundland/Labrador still requires them on commercial vehicles. These are deliberately moderate visual-occurrence estimates from a legal-policy proxy, not measured Street View vehicle frequencies."
+    },
+    {
+      "featureId": "clue-e12f45800eae88cb",
+      "countryId": "loc:canada",
+      "mapSourceFactId": "fact-b500573c5526004c68",
+      "exceptionSourceFactId": "fact-d6356d1eef37aaa01d",
+      "regionLikelihoods": {
+        "ca:bc": 0.65,
+        "ca:mb": 0.65,
+        "ca:on": 0.65,
+        "ca:ab": 0.37,
+        "ca:ns": 0.37,
+        "ca:nt": 0.37,
+        "ca:nu": 0.37,
+        "ca:pe": 0.37,
+        "ca:qc": 0.37,
+        "ca:sk": 0.37,
+        "ca:yt": 0.37,
+        "ca:nb": 0.47,
+        "ca:nl": 0.48
+      },
+      "reason": "The source plate map marks British Columbia, Manitoba and Ontario as requiring front plates; nonrequired provinces can still show plates on vehicles. New Brunswick has older imagery from before 2019 and Newfoundland/Labrador commercial vehicles require plates. These are moderate visual-occurrence estimates, not complements of the no-front-plate observation or measured frequencies."
+    }
+  ]
+}

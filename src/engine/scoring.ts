@@ -91,7 +91,7 @@ export function rankCandidates(
   const candidateSet = new Set(ids)
   const supportedMinimum = new Map<string, number>()
   for (const estimate of estimates) {
-    if (!['supports', 'inferred-parent'].includes(estimate.sourceRelation || '') || !candidateSet.has(estimate.locationId)) continue
+    if (!['supports', 'inferred-parent', 'inferred-condition'].includes(estimate.sourceRelation || '') || !candidateSet.has(estimate.locationId)) continue
     const previous = supportedMinimum.get(estimate.featureId)
     supportedMinimum.set(estimate.featureId, previous === undefined ? estimate.pPresent : Math.min(previous, estimate.pPresent))
   }

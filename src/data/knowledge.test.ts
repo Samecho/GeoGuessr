@@ -227,6 +227,28 @@ describe('Canada and Africa paragraph review', () => {
     expect(ranked.reduce((sum, row) => sum + row.share, 0)).toBeCloseTo(1)
   })
 
+  it('uses the cited Canada plate map as a moderate provincial proxy for two distinct vehicles', () => {
+    const scheme = regionSchemeByCountry.get('loc:canada')!
+    const noFront = clue('Vehicle without a front plate')!
+    const front = clue('Vehicle with a front plate')!
+    expect(noFront.id).not.toBe(front.id)
+    for (const item of [noFront, front]) {
+      const regional = scheme.regions.map((region) => estimate(item.appearance.en, region.id)!)
+      expect(regional).toHaveLength(13)
+      expect(regional.every((row) => row.sourceRelation === 'inferred-condition' && row.measured === false)).toBe(true)
+      expect(estimate(item.appearance.en, 'loc:canada')?.pPresent)
+        .toBeCloseTo(regional.reduce((sum, row) => sum + row.pPresent, 0) / regional.length)
+    }
+    expect(estimate(noFront.appearance.en, 'loc:canada:region:ca-ab')!.pPresent)
+      .toBeGreaterThan(estimate(noFront.appearance.en, 'loc:canada:region:ca-bc')!.pPresent)
+    expect(estimate(front.appearance.en, 'loc:canada:region:ca-bc')!.pPresent)
+      .toBeGreaterThan(estimate(front.appearance.en, 'loc:canada:region:ca-ab')!.pPresent)
+    const selected = [noFront, front].map((item) => ({ clueId: item.id, mode: 'seen' as const, certainty: 'certain' as const }))
+    const ranked = rankCandidates(scheme.regions.map((region) => region.id), estimates, selected,
+      { scope: 'region', parentId: 'loc:canada', parentByLocation })
+    expect(ranked.reduce((sum, row) => sum + row.share, 0)).toBeCloseTo(1)
+  })
+
   it('scores province observations conditionally without changing the country scope', () => {
     const scheme = regionSchemeByCountry.get('loc:canada')!
     expect(scheme.regions).toHaveLength(13)

@@ -4,7 +4,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 
 - 133 candidates and 8466 source text blocks.
 - 489 reviewed bilingual clue labels: 324 with adjacent source images, 165 text only.
-- 1183 active estimates for 451 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
+- 1209 active estimates for 451 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
 - 5860 source images converted without cropping; 351.0 MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.
 - 5317 extracted phrase records are retained as raw audit candidates, not displayed or scored.
 

@@ -451,6 +451,62 @@ def main():
                          'sourceFactId': fact_id, 'basisReason': rationale, 'measured': False})
         profiled_ids.add(clue['id'])
 
+    # Provincial plate requirements are source-backed policy facts, but seeing
+    # one particular vehicle is a noisy proxy. Keep the two vehicle observations
+    # separate and marginalize region estimates under the same uniform prior.
+    for review in json.loads((ROOT / 'scripts/reviewed-regional-plate-policy.json').read_text(encoding='utf-8'))['reviews']:
+        country_id = review['countryId']
+        clue = next((item for item in clues if item['id'] == review['featureId']), None)
+        scheme = next((item for item in schemes if item['countryId'] == country_id), None)
+        if clue is None or scheme is None or not scheme['complete'] or not review.get('reason'):
+            raise ValueError(f'Invalid regional plate policy review: {review["featureId"]}')
+        source_ids = [review['mapSourceFactId'], review['exceptionSourceFactId']]
+        if len(set(source_ids)) != 2:
+            raise ValueError(f'Duplicate regional plate policy sources: {review["featureId"]}')
+        if any(fact_id not in fact_by_id or fact_by_id[fact_id]['locationId'] != country_id for fact_id in source_ids):
+            raise ValueError(f'Regional plate policy sources changed: {review["featureId"]}')
+        region_ids = {region['id'] for region in scheme['regions']}
+        values = {region_by_key[key]: value for key, value in review['regionLikelihoods'].items()}
+        if set(values) != region_ids or any(not 0 < value < 1 for value in values.values()):
+            raise ValueError(f'Regional plate policy partition incomplete: {review["featureId"]}')
+        detail = by_detail[clue['id']]
+        detail['relations'].setdefault('inferred-condition', [])
+        for fact_id in source_ids:
+            fact = fact_by_id[fact_id]
+            unique_append(clue['evidenceGroupIds'], fact_id)
+            unique_append(clue.setdefault('manualFactIds', []), fact_id)
+            note = {'section': fact['section'], 'excerpt': fact['excerpt'][:240], 'url': fact['source']['url']}
+            if note not in detail['sourceNotes']:
+                detail['sourceNotes'].append(note)
+            unique_append(detail['sourceUrls'], fact['source']['url'])
+            for image_id in fact['imageIds']:
+                unique_append(clue['sourceImageIds'], image_id)
+        for region_id, probability in values.items():
+            if (clue['id'], region_id) in by_estimate:
+                raise ValueError(f'Duplicate regional plate estimate: {clue["id"]}/{region_id}')
+            fact_id = review['exceptionSourceFactId'] if region_id.endswith((':ca-nb', ':ca-nl')) else review['mapSourceFactId']
+            fact = fact_by_id[fact_id]
+            row = {'featureId': clue['id'], 'locationId': region_id, 'pPresent': probability,
+                   'sourceRelation': 'inferred-condition', 'band': 'reviewed-policy-proxy-estimate',
+                   'basis': 'reviewed-regional-plate-policy-v1',
+                   'basisReason': f"{review['reason']} Cited in {fact['source']['path']}#{fact['source']['elementId']}",
+                   'status': 'initial-estimate', 'measured': False,
+                   'sourceFactId': fact_id, 'sourceFactIds': [fact_id], 'claimIds': []}
+            estimates.append(row)
+            by_estimate[(clue['id'], region_id)] = row
+            unique_append(detail['relations']['inferred-condition'], region_id)
+        parent = by_estimate.get((clue['id'], country_id))
+        if parent is None:
+            raise ValueError(f'Missing parent plate estimate: {clue["id"]}/{country_id}')
+        parent.update({'pPresent': sum(values.values()) / len(values),
+                       'band': 'uniform-region-marginal-estimate',
+                       'basis': 'reviewed-regional-plate-marginal-v1',
+                       'basisReason': review['reason'] + ' Country value is the uniform-region marginal, not a measured sampling prior.',
+                       'sourceRelation': 'supports'})
+        for fact_id in source_ids:
+            unique_append(parent.setdefault('sourceFactIds', [parent['sourceFactId']]), fact_id)
+        unique_append(detail['relations']['supports'], country_id)
+
     # Review source-extraction polarity separately from occurrence estimates.
     # A sentence can say that a feature exists but is rare, or that a variant
     # is rare while its parent visual feature is common. Neither is opposition.

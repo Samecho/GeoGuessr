@@ -26,6 +26,7 @@ const relationLabel: Record<string, Text2> = {
   opposes: { en: 'source opposes', zh: '原文反对' },
   'explicit-absence': { en: 'source explicitly notes absence', zh: '原文明确提到缺少' },
   'inferred-parent': { en: 'parent location inferred from regional source', zh: '由地区原文推及上级地点' },
+  'inferred-condition': { en: 'estimated from cited regional conditions', zh: '根据原文地区条件作出的估计' },
   mixed: { en: 'mixed source context; check excerpt', zh: '原文语境混合，请核对摘录' },
   unclassified: { en: 'location estimate awaiting source-polarity review', zh: '地点估计的原文关系待复核' },
 }
@@ -36,7 +37,7 @@ export async function loadClueInfo(clue: Clue, estimates: EvidenceEstimate[]): P
   const fittedCount = estimates.filter((estimate) => estimate.featureId === clue.id).length
   const en: string[] = []
   const zh: string[] = []
-  for (const relation of ['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'mixed', 'unclassified'] as const) {
+  for (const relation of ['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'inferred-condition', 'mixed', 'unclassified'] as const) {
     const places = estimates.filter((estimate) => estimate.featureId === clue.id && estimate.sourceRelation === relation)
       .map((estimate) => locationById.get(estimate.locationId)).filter((place): place is Location => !!place)
     if (!places.length) continue

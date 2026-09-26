@@ -102,7 +102,7 @@ const detailByFeature = new Map(details.map((detail) => [detail.featureId, detai
 const estimateKeys = new Set<string>()
 for (const row of estimates) {
   const key = `${row.featureId}/${row.locationId}`
-  if (estimateKeys.has(key) || !playableIds.has(row.featureId) || !locationIds.has(row.locationId) || !factIds.has(row.sourceFactId) || !Number.isFinite(row.pPresent) || row.pPresent <= 0 || row.pPresent >= 1 || row.measured !== false || !['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'mixed', 'unclassified'].includes(row.sourceRelation)) errors.push(`playable estimate ${key}: invalid`)
+  if (estimateKeys.has(key) || !playableIds.has(row.featureId) || !locationIds.has(row.locationId) || !factIds.has(row.sourceFactId) || !Number.isFinite(row.pPresent) || row.pPresent <= 0 || row.pPresent >= 1 || row.measured !== false || !['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'inferred-condition', 'mixed', 'unclassified'].includes(row.sourceRelation)) errors.push(`playable estimate ${key}: invalid`)
   estimateKeys.add(key)
   if (row.sourceRelation === 'opposes' && row.pPresent >= 0.5)
     errors.push(`playable estimate ${key}: opposition cannot have majority occurrence likelihood`)
@@ -113,9 +113,29 @@ for (const row of estimates) {
     errors.push(`playable estimate ${key}: source support missing from Info`)
   if (row.sourceRelation === 'inferred-parent' && !sourcePlaces?.['inferred-parent']?.includes(row.locationId))
     errors.push(`playable estimate ${key}: inferred parent missing from Info`)
+  if (row.sourceRelation === 'inferred-condition' && !sourcePlaces?.['inferred-condition']?.includes(row.locationId))
+    errors.push(`playable estimate ${key}: inferred regional condition missing from Info`)
   if (row.sourceRelation === 'opposes' && !sourcePlaces?.opposes?.includes(row.locationId))
     errors.push(`playable estimate ${key}: source opposition missing from Info`)
   for (const id of row.claimIds || []) if (!claimIds.has(id)) errors.push(`playable estimate ${key}: unknown claim ${id}`)
+}
+const plateReviews = JSON.parse(await readFile(resolve(root, 'scripts/reviewed-regional-plate-policy.json'), 'utf8')) as Row
+const estimateByKey = new Map(estimates.map((row) => [`${row.featureId}/${row.locationId}`, row]))
+for (const review of plateReviews.reviews as Row[]) {
+  const values = Object.entries(review.regionLikelihoods as Record<string, number>)
+  if (values.length !== 13 || review.countryId !== 'loc:canada') errors.push(`plate policy ${review.featureId}: incomplete Canadian partition`)
+  for (const [regionKey, probability] of values) {
+    const regionId = `${review.countryId}:region:${regionKey.replaceAll(':', '-')}`
+    const row = estimateByKey.get(`${review.featureId}/${regionId}`)
+    const factId = ['ca:nb', 'ca:nl'].includes(regionKey) ? review.exceptionSourceFactId : review.mapSourceFactId
+    if (!row || row.pPresent !== probability || row.sourceFactId !== factId ||
+        row.sourceRelation !== 'inferred-condition' || row.basis !== 'reviewed-regional-plate-policy-v1')
+      errors.push(`plate policy ${review.featureId}/${regionId}: generated estimate differs from review`)
+  }
+  const country = estimateByKey.get(`${review.featureId}/${review.countryId}`)
+  const average = values.reduce((sum, [, value]) => sum + value, 0) / values.length
+  if (!country || Math.abs(country.pPresent - average) > 1e-12 || country.basis !== 'reviewed-regional-plate-marginal-v1')
+    errors.push(`plate policy ${review.featureId}: country marginal differs from region review`)
 }
 for (const rule of interactions) if (!locationIds.has(rule.locationId) || !factIds.has(rule.sourceFactId) || rule.featureIds.length < 2 || rule.featureIds.some((id: string) => !playableIds.has(id))) errors.push(`interaction ${rule.id}: invalid`)
 const locationMap = new Map(locations.map((location) => [location.id, location]))

@@ -35,6 +35,7 @@ function App() {
   const [showShareInfo, setShowShareInfo] = useState(false)
   const [gallerySearch, setGallerySearch] = useState('')
   const [galleryLimit, setGalleryLimit] = useState(48)
+  const [showAllCountryClues, setShowAllCountryClues] = useState(false)
   const [photosReady, setPhotosReady] = useState(false)
   const L = ui[language]
 
@@ -53,7 +54,8 @@ function App() {
   const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
   const parentByLocation = useMemo(() => new Map(locations.map((location) => [location.id, location.parentId])), [])
   const backgroundByFeature = useMemo(() => new Map([...evidenceProfileByClue].map(([id, profile]) => [id, profile.unknownPrevalence])), [])
-  const scopedRelevance = useMemo(() => scope.type === 'global' ? null : scopedClueIds(scopedIds, estimates, regionSchemeByCountry, parentByLocation, backgroundByFeature), [scope.type, scopedIds, parentByLocation, backgroundByFeature])
+  const canChooseCountryClues = scope.type === 'countries' && scopedIds.length === 1 && regionSchemeByCountry.get(scopedIds[0])?.complete === true
+  const scopedRelevance = useMemo(() => scope.type === 'global' ? null : scopedClueIds(scopedIds, estimates, regionSchemeByCountry, parentByLocation, backgroundByFeature, showAllCountryClues), [scope.type, scopedIds, parentByLocation, backgroundByFeature, showAllCountryClues])
   const availableClues = useMemo(() => scopedRelevance ? clues.filter((clue) => scopedRelevance.has(clue.id)) : clues, [scopedRelevance])
   const activeCategoryId = categoryId === 'all' || availableClues.some((clue) => clue.categoryId === categoryId) ? categoryId : 'all'
   const scoringOptions = useMemo(() => ({ model: modelParameters.observationModel, dependenceGroups, interactions, parentByLocation, candidateByLocation, evidenceProfiles: evidenceProfileByClue }), [dependenceGroups, parentByLocation])
@@ -167,6 +169,11 @@ function App() {
 
       <section className="gallery-panel" aria-label={L.gallery}>
         <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
+        {canChooseCountryClues && <div className="gallery-mode" role="group" aria-label={L.countryClueMode}>
+          <button type="button" className={!showAllCountryClues ? 'active' : ''} aria-pressed={!showAllCountryClues} onClick={() => setShowAllCountryClues(false)}>{L.regionClues}</button>
+          <button type="button" className={showAllCountryClues ? 'active' : ''} aria-pressed={showAllCountryClues} onClick={() => setShowAllCountryClues(true)}>{L.allCitedCountryClues}</button>
+        </div>}
+        {canChooseCountryClues && showAllCountryClues && <p className="gallery-mode-note">{L.allCitedCountryCluesHelp}</p>}
         <p className="exclusion-help">{L.exclusionHelp}</p>
         <label className="search-field clue-search"><Search size={15} /><input type="search" value={gallerySearch} onChange={(event) => { setGallerySearch(event.target.value); setGalleryLimit(48) }} placeholder={L.searchClues} aria-label={L.searchClues} /></label>
         {activeCategoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}

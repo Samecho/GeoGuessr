@@ -2,7 +2,7 @@ export type Language = 'en' | 'zh'
 export const ui = {
   en: {
     subtitle: 'Visual clue practice companion', scope: 'Geographic scope', global: 'Global', continents: 'Continents', countries: 'Countries',
-    custom: 'Custom countries', allClues: 'All clues', library: 'Clue library', selected: 'Selected observations', clear: 'Clear clues',
+    custom: 'Custom countries', countryClueMode: 'Single-country clue view', regionClues: 'Region clues', allCitedCountryClues: 'All cited clues', allCitedCountryCluesHelp: 'Includes country clues without a reviewed regional split; these may leave the region chart unchanged.', allClues: 'All clues', library: 'Clue library', selected: 'Selected observations', clear: 'Clear clues',
     noSelected: 'Select any visual clue to compare countries.', gallery: 'Visual examples', noPhotos: 'No reviewed clue-card photo in this category yet.',
     textOnly: 'Text-only clues · no matching photo has passed visual review', exclusionHelp: 'Clearly absent means you checked the visible object or road area and the feature is missing.', seen: 'Seen', excluded: 'Clearly absent', certain: 'Certain', uncertain: 'Not sure',
     info: 'About this clue', identify: 'How to recognize', geography: 'Where it applies', strength: 'Evidence strength', caveat: 'Look-alikes & limits',
@@ -19,7 +19,7 @@ export const ui = {
   },
   zh: {
     subtitle: '街景视觉线索练习工具', scope: '地理范围', global: '全球', continents: '大洲', countries: '国家',
-    custom: '组合国家', allClues: '全部线索', library: '线索分类', selected: '已选观察', clear: '清空线索',
+    custom: '组合国家', countryClueMode: '单国线索视图', regionClues: '地区线索', allCitedCountryClues: '本国全部有来源线索', allCitedCountryCluesHelp: '包含尚无已核验地区差异的国家级线索；选择后地区图可能不变。', allClues: '全部线索', library: '线索分类', selected: '已选观察', clear: '清空线索',
     noSelected: '自由选择任意视觉线索，即可比较国家。', gallery: '真实图片实例', noPhotos: '此分类暂无目视核对通过的图卡。',
     textOnly: '纯文字线索 · 尚无目视核对通过的配图', exclusionHelp: '明确未出现仅用于可观察范围内已看清且确实没有该特征的对象或道路。', seen: '看到', excluded: '明确未出现', certain: '确定', uncertain: '不太确定',
     info: '线索说明', identify: '如何辨认', geography: '适用地区', strength: '证据强弱', caveat: '易混淆与限制',
