@@ -10,6 +10,8 @@ When a detailed card describes the same visible object as a broader card, JSON m
 
 For a country, the country-level multipliers are combined with each region’s joint evidence, then the region likelihoods are averaged once, with unconfigured regions at 1×. This uses the existing uniform region prior and avoids giving countries with many regions an automatic advantage. The region chart displays the normalized region multipliers conditional on the inspected country. A country-only weight affects country ranking but cancels within its region chart. Only countries with a complete mutually exclusive regional scheme offer region targets; other countries can still receive country weights.
 
+Imported JSON may optionally set `cardCrop` to `left-half`, `right-half`, `top-half`, or `bottom-half` for a comparison photo. This focuses the clue card on the relevant plate while keeping the original image bytes intact in the exported JSON; the enlarged source view shows the full comparison. The field requires an embedded image and is preserved when the clue is edited.
+
 The browser saves the personal library in IndexedDB. Export downloads a versioned JSON file containing all clue labels, weights and embedded image data. Import validates the schema and **merges by stable clue ID**, replacing matching IDs while keeping unrelated local entries. Deleting a clue offers an immediate Undo action. Export regularly for a portable backup; browser storage may be cleared independently of this site.
 
 Example structure (image omitted; remove `supersedesClueIds` unless that broad clue exists):

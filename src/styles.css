@@ -90,3 +90,11 @@
 .custom-form-actions .custom-save:hover{background:#0e5c6c;color:white}
 @media(max-width:1180px){.custom-editor-grid{grid-template-columns:190px minmax(0,1fr)}.custom-form-columns{grid-template-columns:1fr}.custom-clue-list{max-height:500px}}
 @media(max-width:760px){.topbar{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 14px}.library-tabs{order:3;width:100%;justify-content:center}.library-tabs button{flex:1}.custom-toolbar{padding:0 12px}.custom-editor{margin:10px 12px;padding:15px}.custom-editor-head{display:block}.custom-editor-actions{margin-top:12px}.custom-editor-grid{grid-template-columns:1fr}.custom-clue-list{border-right:0;border-bottom:1px solid #e8eff0;padding:0 0 12px;max-height:220px}.custom-form-row{grid-template-columns:1fr}.custom-form-columns{grid-template-columns:1fr}.custom-target-add{grid-template-columns:1fr 1fr}.custom-target-add button{grid-column:1/-1}.custom-weight-row{grid-template-columns:1fr 1fr}.custom-weight-row strong{grid-column:1/-1}.custom-weight-row button{justify-self:end}}
+
+/* Keep comparison plates intact in JSON while showing only the matching example on a card. */
+.photo-wrap img.crop-left-half,.photo-wrap img.crop-right-half{position:absolute;top:0;width:200%;height:100%;max-width:none;object-fit:cover}
+.photo-wrap img.crop-left-half{left:0;object-position:left center}
+.photo-wrap img.crop-right-half{left:-100%;object-position:right center}
+.photo-wrap img.crop-top-half,.photo-wrap img.crop-bottom-half{position:absolute;left:0;width:100%;height:200%;max-width:none;object-fit:cover}
+.photo-wrap img.crop-top-half{top:0;object-position:center top}
+.photo-wrap img.crop-bottom-half{top:-100%;object-position:center bottom}

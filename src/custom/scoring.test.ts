@@ -19,6 +19,10 @@ const getShare = (rows: ReturnType<typeof rankCustomCandidates>, id: string) => 
 describe('custom library', () => {
   it('validates versioned JSON and rejects untrusted targets, duplicate IDs and SVG images', () => {
     expect(parseCustomLibrary(library)).toEqual(library)
+    const focused = { ...entry, imageDataUrl: 'data:image/png;base64,YQ==', cardCrop: 'left-half' }
+    expect(parseCustomLibrary({ ...library, clues: [focused] }).clues[0].cardCrop).toBe('left-half')
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...focused, cardCrop: 'center' }] })).toThrow()
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, cardCrop: 'left-half' }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [entry, entry] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, weights: [{ locationId: 'loc:unknown', seenMultiplier: 2, absentMultiplier: 1 }] }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, imageDataUrl: 'data:image/svg+xml;base64,PHN2Zz4=' }] })).toThrow()

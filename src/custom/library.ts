@@ -6,7 +6,7 @@ export const CUSTOM_KIND = 'street-clues-custom-library'
 export const MAX_CUSTOM_CLUES = 500
 export const MAX_IMAGE_DATA_LENGTH = 5_000_000
 export type CustomWeight = { locationId: string; seenMultiplier: number; absentMultiplier: number }
-export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; weights: CustomWeight[]; supersedesClueIds?: string[] }
+export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; weights: CustomWeight[]; supersedesClueIds?: string[]; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
 export type CustomLibrary = { schemaVersion: 1; kind: typeof CUSTOM_KIND; clues: CustomClue[] }
 export const emptyCustomLibrary = (): CustomLibrary => ({ schemaVersion: CUSTOM_SCHEMA_VERSION, kind: CUSTOM_KIND, clues: [] })
 
@@ -36,6 +36,9 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
       new Set(raw.supersedesClueIds).size !== raw.supersedesClueIds.length)) {
       throw new Error(`Invalid superseded clue IDs in clue ${index + 1}.`)
     }
+    if (raw.cardCrop !== undefined && (!['left-half', 'right-half', 'top-half', 'bottom-half'].includes(String(raw.cardCrop)) || !raw.imageDataUrl)) {
+      throw new Error(`Invalid image focus in clue ${index + 1}.`)
+    }
     if (raw.imageDataUrl !== undefined && (typeof raw.imageDataUrl !== 'string' || raw.imageDataUrl.length > MAX_IMAGE_DATA_LENGTH || !imagePattern.test(raw.imageDataUrl))) {
       throw new Error(`Invalid image in clue ${index + 1}. Use PNG, JPEG or WebP.`)
     }
@@ -50,7 +53,8 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
     })
     return { id: raw.id, categoryId: raw.categoryId, appearance: { en: raw.appearance.en.trim(), zh: raw.appearance.zh.trim() },
       ...(raw.imageDataUrl ? { imageDataUrl: raw.imageDataUrl } : {}), weights,
-      ...(raw.supersedesClueIds ? { supersedesClueIds: raw.supersedesClueIds as string[] } : {}) }
+      ...(raw.supersedesClueIds ? { supersedesClueIds: raw.supersedesClueIds as string[] } : {}),
+      ...(raw.cardCrop ? { cardCrop: raw.cardCrop as CustomClue['cardCrop'] } : {}) }
   })
   const byId = new Map(clues.map((clue) => [clue.id, clue]))
   const visiting = new Set<string>()
@@ -77,6 +81,7 @@ export function customClueToCard(item: CustomClue): Clue {
     strength: { en: 'Custom likelihood multipliers; not measured geographic frequencies.', zh: '自定义似然乘数；不是实测地理频率。' },
     caveat: { en: 'Unspecified places stay at 1×. An absent observation uses its separate absent multiplier.', zh: '未设置的地点保持 1×。明确未出现时使用单独的缺失乘数。' },
     sourceUrls: [], reviewed: '', assetIds: item.imageDataUrl ? [item.id] : [], tags: [item.categoryId], exclusionAllowed: true,
+    cardCrop: item.cardCrop,
   }
 }
 
