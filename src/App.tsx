@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { BookOpen, Check, ChevronDown, ChevronRight, Globe2, Info, RotateCcw, Search, X, ZoomIn } from 'lucide-react'
 import { countries, countryById } from './data/countries'
 import { categories } from './data/categories'
-import { clues, clueById } from './data/clues'
+import { clues } from './data/clues'
 import { assetById } from './data/assets'
 import { regionSchemeByCountry, regionCoverageByCountry } from './data/regions'
 import { estimates, interactions, modelParameters, features, locations, candidateByLocation, evidenceProfileByClue } from './data/knowledge'
@@ -13,6 +13,9 @@ import { rankCandidates } from './engine/scoring'
 import { RankingChart } from './components/RankingChart'
 import { SourceGallery } from './components/SourceGallery'
 import { ui, type Language } from './i18n'
+import { CustomLibraryEditor } from './custom/CustomLibraryEditor'
+import { customClueToCard, emptyCustomLibrary, loadCustomLibrary, saveCustomLibrary, type CustomLibrary } from './custom/library'
+import { customClueRelevant, rankCustomCandidates } from './custom/scoring'
 import './styles.css'
 
 type Scope = { type: 'global' } | { type: 'countries'; ids: string[] }
@@ -21,7 +24,19 @@ const firstLanguage = (): Language => localStorage.getItem('street-clues-languag
 function App() {
   const [language, setLanguage] = useState<Language>(firstLanguage)
   const [scope, setScope] = useState<Scope>({ type: 'global' })
-  const [observations, setObservations] = useState<Record<string, Observation>>({})
+  const [libraryMode, setLibraryMode] = useState<'official' | 'custom'>('official')
+  const [officialObservations, setOfficialObservations] = useState<Record<string, Observation>>({})
+  const [customObservations, setCustomObservations] = useState<Record<string, Observation>>({})
+  const [customLibrary, setCustomLibrary] = useState<CustomLibrary>(emptyCustomLibrary)
+  const [customLoaded, setCustomLoaded] = useState(false)
+  const [customStorageError, setCustomStorageError] = useState('')
+  const [customSaveStatus, setCustomSaveStatus] = useState<'loading' | 'saving' | 'saved' | 'error'>('loading')
+  const [showCustomEditor, setShowCustomEditor] = useState(true)
+  const saveQueue = useRef<Promise<void>>(Promise.resolve())
+  const saveVersion = useRef(0)
+  const [observations, setObservations] = libraryMode === 'official'
+    ? [officialObservations, setOfficialObservations] as const
+    : [customObservations, setCustomObservations] as const
   const [openGroups, setOpenGroups] = useState<string[]>(['roads', 'writing'])
   const [categoryId, setCategoryId] = useState('all')
   const [infoId, setInfoId] = useState<string | null>(null)
@@ -39,6 +54,21 @@ function App() {
   const [photosReady, setPhotosReady] = useState(false)
   const L = ui[language]
 
+  useEffect(() => {
+    let active = true
+    void loadCustomLibrary().then((value) => { if (active) setCustomLibrary(value) })
+      .catch((error: unknown) => { if (active) { setCustomStorageError(error instanceof Error ? error.message : String(error)); setCustomSaveStatus('error') } })
+      .finally(() => { if (active) setCustomLoaded(true) })
+    return () => { active = false }
+  }, [])
+  useEffect(() => {
+    if (!customLoaded || customStorageError) return
+    const version = ++saveVersion.current
+    setCustomSaveStatus('saving')
+    saveQueue.current = saveQueue.current.catch(() => {}).then(() => saveCustomLibrary(customLibrary))
+    void saveQueue.current.then(() => { if (version === saveVersion.current) setCustomSaveStatus('saved') })
+      .catch((error: unknown) => { setCustomStorageError(error instanceof Error ? error.message : String(error)); setCustomSaveStatus('error') })
+  }, [customLibrary, customLoaded, customStorageError])
   useEffect(() => { setPhotoIndex(0) }, [infoId])
   useEffect(() => { void fetch(`${import.meta.env.BASE_URL}source-images/ready.json`).then((response) => response.ok ? response.json() : null).then((manifest: { convertedCount?: number } | null) => setPhotosReady(manifest?.convertedCount === 5860)).catch(() => setPhotosReady(false)) }, [])
   useEffect(() => { localStorage.setItem('street-clues-language', language); document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en' }, [language])
@@ -50,20 +80,39 @@ function App() {
 
   const scopedCountries = useMemo(() => countries.filter((country) => scope.type === 'global' || scope.ids.includes(country.id)), [scope])
   const scopedIds = useMemo(() => scopedCountries.map((country) => country.id), [scopedCountries])
-  const selected = useMemo(() => Object.values(observations), [observations])
+  const customCards = useMemo(() => customLibrary.clues.map(customClueToCard), [customLibrary])
+  const activeClues = libraryMode === 'official' ? clues : customCards
+  const activeClueById = useMemo(() => new Map(activeClues.map((clue) => [clue.id, clue])), [activeClues])
+  const customImages = useMemo(() => new Map(customLibrary.clues.map((clue) => [clue.id, clue.imageDataUrl || ''])), [customLibrary])
+  const selected = useMemo(() => Object.values(observations).filter((item) => activeClueById.has(item.clueId)), [observations, activeClueById])
+  const applyCustomLibrary = (next: CustomLibrary) => {
+    setCustomLibrary(next)
+    const ids = new Set(next.clues.map((clue) => clue.id))
+    setCustomObservations((current) => Object.fromEntries(Object.entries(current).filter(([id]) => ids.has(id))))
+  }
+  const imageForClue = (clue: Clue) => libraryMode === 'custom' ? customImages.get(clue.id) || '' :
+    clue.assetIds.length && photosReady ? `${import.meta.env.BASE_URL}${assetById.get(clue.assetIds[0])!.path.slice(1)}` : ''
   const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
   const parentByLocation = useMemo(() => new Map(locations.map((location) => [location.id, location.parentId])), [])
   const backgroundByFeature = useMemo(() => new Map([...evidenceProfileByClue].map(([id, profile]) => [id, profile.unknownPrevalence])), [])
   const canChooseCountryClues = scope.type === 'countries' && scopedIds.length === 1 && regionSchemeByCountry.get(scopedIds[0])?.complete === true
-  const scopedRelevance = useMemo(() => scope.type === 'global' ? null : scopedClueIds(scopedIds, estimates, regionSchemeByCountry, parentByLocation, backgroundByFeature, showAllCountryClues), [scope.type, scopedIds, parentByLocation, backgroundByFeature, showAllCountryClues])
-  const availableClues = useMemo(() => scopedRelevance ? clues.filter((clue) => scopedRelevance.has(clue.id)) : clues, [scopedRelevance])
+  const scopedRelevance = useMemo(() => libraryMode !== 'official' || scope.type === 'global' ? null : scopedClueIds(scopedIds, estimates, regionSchemeByCountry, parentByLocation, backgroundByFeature, showAllCountryClues), [libraryMode, scope.type, scopedIds, parentByLocation, backgroundByFeature, showAllCountryClues])
+  const availableClues = useMemo(() => libraryMode === 'custom'
+    ? customCards.filter((clue) => scope.type === 'global' || customClueRelevant(customLibrary.clues.find((item) => item.id === clue.id)!, scopedIds))
+    : scopedRelevance ? clues.filter((clue) => scopedRelevance.has(clue.id)) : clues,
+  [libraryMode, scope.type, scopedIds, customCards, customLibrary, scopedRelevance])
   const activeCategoryId = categoryId === 'all' || availableClues.some((clue) => clue.categoryId === categoryId) ? categoryId : 'all'
   const scoringOptions = useMemo(() => ({ model: modelParameters.observationModel, dependenceGroups, interactions, parentByLocation, candidateByLocation, evidenceProfiles: evidenceProfileByClue }), [dependenceGroups, parentByLocation])
-  const countryRanks = useMemo(() => rankCandidates(scopedIds, estimates, selected, { ...scoringOptions, scope: 'country' }), [scopedIds, selected, scoringOptions])
+  const countryRanks = useMemo(() => libraryMode === 'custom'
+    ? rankCustomCandidates(scopedIds, customLibrary, selected, { kind: 'country' })
+    : rankCandidates(scopedIds, estimates, selected, { ...scoringOptions, scope: 'country' }),
+  [libraryMode, scopedIds, selected, scoringOptions, customLibrary])
   const scheme = viewCountry ? regionSchemeByCountry.get(viewCountry) : undefined
   const regionRanks = useMemo(() => scheme
-    ? rankCandidates(scheme.regions.map((region) => region.id), estimates, selected, { ...scoringOptions, scope: 'region', parentId: scheme.countryId })
-    : [], [scheme, selected, scoringOptions])
+    ? libraryMode === 'custom'
+      ? rankCustomCandidates(scheme.regions.map((region) => region.id), customLibrary, selected, { kind: 'region', countryId: scheme.countryId })
+      : rankCandidates(scheme.regions.map((region) => region.id), estimates, selected, { ...scoringOptions, scope: 'region', parentId: scheme.countryId })
+    : [], [scheme, selected, scoringOptions, libraryMode, customLibrary])
 
   useEffect(() => {
     const key = scope.type === 'global' ? 'global' : `countries:${[...scope.ids].sort().join(',')}`
@@ -95,7 +144,7 @@ function App() {
       const next = { ...current }
       if (next[clue.id]?.mode === 'seen') { delete next[clue.id]; return next }
       const subcategory = categories.flatMap((category) => category.children).find((child) => child.id === clue.categoryId)
-      if (subcategory?.selectionMode === 'single') clues.filter((candidate) => candidate.categoryId === clue.categoryId).forEach((candidate) => { delete next[candidate.id] })
+      if (subcategory?.selectionMode === 'single') activeClues.filter((candidate) => candidate.categoryId === clue.categoryId).forEach((candidate) => { delete next[candidate.id] })
       next[clue.id] = { clueId: clue.id, mode: 'seen', certainty: current[clue.id]?.certainty || 'certain' }
       return next
     })
@@ -115,13 +164,25 @@ function App() {
     return { ...current, [id]: { ...observation, certainty: observation.certainty === 'certain' ? 'uncertain' : 'certain' } }
   })
   const matchesQuery = (clue: Clue) => !gallerySearch.trim() || `${clue.appearance.en} ${clue.appearance.zh}`.toLocaleLowerCase().includes(gallerySearch.trim().toLocaleLowerCase())
-  const displayedClues = availableClues.filter((clue) => photosReady && clue.assetIds.length && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId)
-    && (activeCategoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
-  const textOnly = availableClues.filter((clue) => (!photosReady || !clue.assetIds.length) && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId) && matchesQuery(clue))
+  const displayedClues = availableClues.filter((clue) => !!imageForClue(clue) && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId)
+    && (libraryMode === 'custom' || activeCategoryId !== 'brands' || brandFilter === 'all' || clue.tags.includes(brandFilter)) && matchesQuery(clue))
+  const textOnly = availableClues.filter((clue) => !imageForClue(clue) && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId) && matchesQuery(clue))
   const visibleTextOnly = textOnly.slice(0, galleryLimit)
   const infoClue = infoId && infoContent?.id === infoId ? infoContent : undefined
+  const infoImage = infoClue ? libraryMode === 'custom' ? customImages.get(infoClue.id) || '' :
+    photosReady && infoClue.assetIds.length ? `${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}` : '' : ''
   const openInfo = (clue: Clue) => {
     setInfoId(clue.id); setInfoContent(clue)
+    if (libraryMode === 'custom') {
+      const item = customLibrary.clues.find((candidate) => candidate.id === clue.id)
+      if (item) {
+        const names = new Map([...countries.map((country) => [country.id, country.name] as const),
+          ...[...regionSchemeByCountry.values()].flatMap((scheme) => scheme.regions.map((region) => [region.id, region.name] as const))])
+        const list = (lang: Language) => item.weights.map((row) => `${names.get(row.locationId)?.[lang] || row.locationId}: ${row.seenMultiplier}× / ${row.absentMultiplier}×`).join('; ')
+        setInfoContent({ ...clue, geography: { en: list('en'), zh: list('zh') } })
+      }
+      return
+    }
     void import('./data/knowledge-info').then(async ({ loadClueInfo }) => {
       const details = await loadClueInfo(clue, estimates)
       setInfoContent((current) => current?.id === clue.id ? details : current)
@@ -133,6 +194,10 @@ function App() {
   return <div className="app-shell">
     <header className="topbar">
       <div className="brand"><span className="brand-mark"><Globe2 size={21} strokeWidth={2.2} /></span><span><strong>Street Clues</strong><small>{L.subtitle}</small></span></div>
+      <nav className="library-tabs" aria-label={language === 'en' ? 'Clue library source' : '线索题库来源'}>
+        <button type="button" className={libraryMode === 'official' ? 'active' : ''} aria-pressed={libraryMode === 'official'} onClick={() => { setLibraryMode('official'); setCategoryId('all'); setGallerySearch(''); setInfoId(null) }}>{language === 'en' ? 'Official library' : '官方题库'}</button>
+        <button type="button" className={libraryMode === 'custom' ? 'active' : ''} aria-pressed={libraryMode === 'custom'} onClick={() => { setLibraryMode('custom'); setCategoryId('all'); setGallerySearch(''); setInfoId(null) }}>{language === 'en' ? 'My library' : '我的题库'}</button>
+      </nav>
       <div className="top-actions">
         <div className="scope-inline"><span className="eyebrow">{L.scope}</span><span className="scope-current">{scopeTitle} <span className="count-pill">{scopedIds.length}</span></span></div>
         <button type="button" className="language-switch" onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')} aria-label={language === 'en' ? 'Switch to Simplified Chinese' : '切换到英语'}>{language === 'en' ? '简体中文' : 'English'}</button>
@@ -153,6 +218,8 @@ function App() {
       {scope.type === 'countries' && scope.ids.length <= 12 && <div className="scope-chips">{scope.ids.map((id) => <button type="button" className="scope-chip" key={id} onClick={() => toggleCountry(id)}>{countryById.get(id)?.name[language]} <X size={13} /></button>)}</div>}
     </section>
 
+    {libraryMode === 'custom' && <div className="custom-toolbar"><button type="button" onClick={() => setShowCustomEditor(!showCustomEditor)} aria-expanded={showCustomEditor}>{showCustomEditor ? (language === 'en' ? 'Hide editor' : '收起编辑器') : (language === 'en' ? 'Edit my library' : '编辑我的题库')}</button><span>{customStorageError ? (language === 'en' ? `Local save failed: ${customStorageError}` : `本地保存失败：${customStorageError}`) : customSaveStatus === 'saving' ? (language === 'en' ? 'Saving locally…' : '正在保存到本地……') : customSaveStatus === 'saved' ? (language === 'en' ? 'Saved in this browser' : '已保存在本浏览器') : (language === 'en' ? 'Loading local library…' : '正在读取本地题库……')}</span></div>}
+    {libraryMode === 'custom' && customLoaded && showCustomEditor && <CustomLibraryEditor library={customLibrary} onChange={applyCustomLibrary} language={language} />}
     <main className="workspace">
       <aside className="tree-panel" aria-label={L.library}>
         <div className="panel-heading"><span className="section-kicker">02 / {L.library}</span><h2><BookOpen size={18} /> {L.library}</h2></div>
@@ -168,43 +235,43 @@ function App() {
       </aside>
 
       <section className="gallery-panel" aria-label={L.gallery}>
-        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? L.all : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
-        {canChooseCountryClues && <div className="gallery-mode" role="group" aria-label={L.countryClueMode}>
+        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? (libraryMode === 'custom' ? (language === 'en' ? 'My clues' : '我的线索') : L.all) : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
+        {libraryMode === 'official' && canChooseCountryClues && <div className="gallery-mode" role="group" aria-label={L.countryClueMode}>
           <button type="button" className={!showAllCountryClues ? 'active' : ''} aria-pressed={!showAllCountryClues} onClick={() => setShowAllCountryClues(false)}>{L.regionClues}</button>
           <button type="button" className={showAllCountryClues ? 'active' : ''} aria-pressed={showAllCountryClues} onClick={() => setShowAllCountryClues(true)}>{L.allCitedCountryClues}</button>
         </div>}
-        {canChooseCountryClues && showAllCountryClues && <p className="gallery-mode-note">{L.allCitedCountryCluesHelp}</p>}
+        {libraryMode === 'official' && canChooseCountryClues && showAllCountryClues && <p className="gallery-mode-note">{L.allCitedCountryCluesHelp}</p>}
         <p className="exclusion-help">{L.exclusionHelp}</p>
         <label className="search-field clue-search"><Search size={15} /><input type="search" value={gallerySearch} onChange={(event) => { setGallerySearch(event.target.value); setGalleryLimit(48) }} placeholder={L.searchClues} aria-label={L.searchClues} /></label>
-        {activeCategoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}
+        {libraryMode === 'official' && activeCategoryId === 'brands' && <div className="brand-filters" aria-label={language === 'en' ? 'Visual filter' : '视觉筛选'}>{['all','red','yellow','wordmark'].map((tag) => <button type="button" className={brandFilter === tag ? 'active' : ''} key={tag} onClick={() => setBrandFilter(tag)}>{tag === 'all' ? L.allClues : tag === 'red' ? (language === 'en' ? 'Red' : '红色') : tag === 'yellow' ? (language === 'en' ? 'Yellow' : '黄色') : (language === 'en' ? 'Wordmark' : '文字标志')}</button>)}</div>}
         {displayedClues.length ? <div className="clue-grid">{displayedClues.map((clue) => {
-          const asset = assetById.get(clue.assetIds[0])!
+          const asset = libraryMode === 'official' ? assetById.get(clue.assetIds[0]) : undefined
           const chosen = observations[clue.id]
           return <article className={`clue-card clue-${clue.id} ${chosen ? 'is-selected' : ''}`} key={clue.id}>
             <button type="button" className="clue-main" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>
-              <span className="photo-wrap"><img className={clue.cardCrop || asset.cardCrop ? `crop-${clue.cardCrop || asset.cardCrop}` : undefined} src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
+              <span className="photo-wrap"><img className={clue.cardCrop || asset?.cardCrop ? `crop-${clue.cardCrop || asset?.cardCrop}` : undefined} src={imageForClue(clue)} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
               <span className="clue-label">{clue.appearance[language]}</span>
             </button>
             <button type="button" className="info-button" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>
             {chosen && <div className="card-state"><button type="button" className={chosen.mode === 'seen' ? 'state-active' : ''} onClick={() => selectSeen(clue)}>{L.seen}</button>{clue.exclusionAllowed && <button type="button" className={chosen.mode === 'excluded' ? 'state-active' : ''} onClick={() => selectExcluded(clue)}>{L.excluded}</button>}<button type="button" className="certainty-toggle" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></div>}
             {!chosen && clue.exclusionAllowed && <button type="button" className="card-exclude" onClick={() => selectExcluded(clue)}><span aria-hidden="true">−</span><span className="sr-only">{L.excluded}</span></button>}
           </article>
-        })}</div> : <div className="gallery-empty">{L.noPhotos}</div>}
-        {textOnly.length > 0 && <section className="text-observations"><h3>{L.textOnly}</h3><div className="text-clue-list">{visibleTextOnly.map((clue) => { const chosen = observations[clue.id]; return <div className={`text-clue ${chosen ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>{chosen?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{chosen ? <><button type="button" className={`text-state ${chosen.mode === 'excluded' ? 'active' : ''}`} onClick={() => selectExcluded(clue)}>{L.excluded}</button><button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></> : <button type="button" className="text-state text-state-empty" onClick={() => selectExcluded(clue)} aria-label={`${L.excluded}: ${clue.appearance[language]}`} title={L.excluded}>−</button>}</div> })}</div></section>}
+        })}</div> : <div className="gallery-empty">{libraryMode === 'custom' ? (language === 'en' ? 'No illustrated custom clues in this view.' : '当前视图没有带图的自定义线索。') : L.noPhotos}</div>}
+        {textOnly.length > 0 && <section className="text-observations"><h3>{libraryMode === 'custom' ? (language === 'en' ? 'Clues without an image' : '未添加图片的线索') : L.textOnly}</h3><div className="text-clue-list">{visibleTextOnly.map((clue) => { const chosen = observations[clue.id]; return <div className={`text-clue ${chosen ? 'is-selected' : ''}`} key={clue.id}><button type="button" className="text-clue-pick" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>{chosen?.mode === 'seen' && <Check size={14} />}{clue.appearance[language]}</button><button type="button" className="text-clue-info" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={15} /></button>{chosen ? <><button type="button" className={`text-state ${chosen.mode === 'excluded' ? 'active' : ''}`} onClick={() => selectExcluded(clue)}>{L.excluded}</button><button type="button" className="text-certainty" onClick={() => toggleCertainty(clue.id)}>{chosen.certainty === 'certain' ? L.certain : L.uncertain}</button></> : <button type="button" className="text-state text-state-empty" onClick={() => selectExcluded(clue)} aria-label={`${L.excluded}: ${clue.appearance[language]}`} title={L.excluded}>−</button>}</div> })}</div></section>}
         {textOnly.length > galleryLimit && <button type="button" className="load-more" onClick={() => setGalleryLimit((limit) => limit + 48)}>{L.showMore} · {Math.min(textOnly.length - galleryLimit, 48)} / {textOnly.length - galleryLimit}</button>}
         {!displayedClues.length && !textOnly.length && <p className="small-note">{L.categoriesEmpty}</p>}
-        <SourceGallery language={language} countries={countries} ready={photosReady} />
+        {libraryMode === 'official' && <SourceGallery language={language} countries={countries} ready={photosReady} />}
       </section>
 
       <section className={`results-panel ${viewCountry ? 'has-region' : ''}`} aria-label={L.countryResults}>
         <div className="results-top"><div><span className="section-kicker">04 / {L.selected}</span><h2>{L.selected} <span className="count-pill dark">{selected.length}</span></h2></div><button type="button" className="clear-button" onClick={() => setObservations({})} disabled={!selected.length}><RotateCcw size={14} /> {L.clear}</button></div>
         {selected.length ? <div className="selection-list">{selected.map((observation) => {
-          const clue = clueById.get(observation.clueId)!
+          const clue = activeClueById.get(observation.clueId)!
           return <div className="selection-chip" key={observation.clueId}><span className={`selection-mode ${observation.mode === 'excluded' ? 'negative' : ''}`}>{observation.mode === 'seen' ? L.seen : L.excluded}</span><span className="selection-name">{clue.appearance[language]}</span><button type="button" onClick={() => toggleCertainty(clue.id)}>{observation.certainty === 'certain' ? L.certain : L.uncertain}</button><button type="button" className="remove-selection" onClick={() => setObservations((current) => { const next = { ...current }; delete next[clue.id]; return next })} aria-label={`${L.close}: ${clue.appearance[language]}`}><X size={14} /></button></div>
         })}</div> : <p className="selection-empty">{L.noSelected}</p>}
         <div className="charts-grid">
           <section className="chart-card"><div className="chart-head"><div><span className="section-kicker">05 / {L.countryResults}</span><h2>{L.countryResults} <button type="button" className="inline-info" aria-label={L.share} onClick={() => setShowShareInfo(!showShareInfo)}><Info size={15} /></button></h2></div><span className="chart-unit">{L.share}</span></div>
-            {showShareInfo && <p className="share-explain">{L.aboutShare}</p>}
+            {showShareInfo && <p className="share-explain">{libraryMode === 'custom' ? (language === 'en' ? 'Match share from your location likelihood multipliers under a uniform candidate prior. It is not a direct percentage adjustment or calibrated accuracy.' : '按你设定的地点似然乘数与候选均匀先验计算匹配占比；不是直接增减百分点，也不是校准后的正确率。') : L.aboutShare}</p>}
             {selected.length || scopedIds.length === 1 ? <RankingChart ranked={countryRanks} language={language} label={(id) => countryById.get(id)?.name[language] || id} flagCodeFor={(id) => countryById.get(id)?.flagCode} activeId={viewCountry} onPick={setViewCountry} /> : <div className="chart-empty">{L.noEvidence}</div>}
             <label className="inspect-select"><span>{L.selectCountry}</span><select value={viewCountry || ''} onChange={(event) => setViewCountry(event.target.value || null)}><option value="">{L.noCountry}</option>{scopedCountries.map((country) => <option key={country.id} value={country.id}>{country.name[language]}</option>)}</select></label>
           </section>
@@ -216,11 +283,11 @@ function App() {
       </section>
     </main>
 
-    {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{photosReady && infoClue.assetIds.length > 0 && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}
-      {photosReady && infoClue.assetIds.length > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{infoClue.assetIds.map((id, index) => <button type="button" key={id} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt="" loading="lazy" /></button>)}</div>}
-      {infoClue.referenceAssetIds?.map((id) => <figure className="source-figure" key={id}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt={L.sourceDiagram} loading="lazy" /><figcaption>{L.sourceDiagram}</figcaption></figure>)}
-      <div className="info-details"><h3>{L.identify}</h3><p>{infoClue.identify[language]}</p><h3>{L.geography}</h3><p>{infoClue.geography[language]}</p><h3>{L.strength}</h3><p>{infoClue.strength[language]}</p><h3>{L.caveat}</h3><p>{infoClue.caveat[language]}</p><h3>{L.sources}</h3><ul>{infoClue.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{new URL(url).hostname}</a></li>)}</ul>{(photosReady ? [...infoClue.assetIds, ...(infoClue.referenceAssetIds || [])] : []).map((id) => { const asset = assetById.get(id)!; return <p className="credit" key={id}><strong>{L.asset}:</strong> <a href={asset.sourceUrl} target="_blank" rel="noreferrer">{asset.author}</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.license}</a> · {L.reviewed}: {asset.reviewed}</p> })}<p className="credit">{L.reviewed}: {infoClue.reviewed}</p></div></section></div>}
-    {zoom && photosReady && infoClue?.assetIds.length && <div className="zoom-backdrop" role="presentation" onClick={() => setZoom(false)}><button type="button" className="zoom-close" onClick={() => setZoom(false)} aria-label={L.close}><X size={24} /></button><img src={`${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}`} alt={infoClue.appearance[language]} /></div>}
+    {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{infoImage && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={infoImage} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}
+      {libraryMode === 'official' && photosReady && infoClue.assetIds.length > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{infoClue.assetIds.map((id, index) => <button type="button" key={id} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt="" loading="lazy" /></button>)}</div>}
+      {libraryMode === 'official' && infoClue.referenceAssetIds?.map((id) => <figure className="source-figure" key={id}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt={L.sourceDiagram} loading="lazy" /><figcaption>{L.sourceDiagram}</figcaption></figure>)}
+      <div className="info-details"><h3>{L.identify}</h3><p>{infoClue.identify[language]}</p><h3>{L.geography}</h3><p>{infoClue.geography[language]}</p><h3>{L.strength}</h3><p>{infoClue.strength[language]}</p><h3>{L.caveat}</h3><p>{infoClue.caveat[language]}</p>{libraryMode === 'official' && <><h3>{L.sources}</h3><ul>{infoClue.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{new URL(url).hostname}</a></li>)}</ul>{(photosReady ? [...infoClue.assetIds, ...(infoClue.referenceAssetIds || [])] : []).map((id) => { const asset = assetById.get(id)!; return <p className="credit" key={id}><strong>{L.asset}:</strong> <a href={asset.sourceUrl} target="_blank" rel="noreferrer">{asset.author}</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.license}</a> · {L.reviewed}: {asset.reviewed}</p> })}<p className="credit">{L.reviewed}: {infoClue.reviewed}</p></>}</div></section></div>}
+    {zoom && infoImage && infoClue && <div className="zoom-backdrop" role="presentation" onClick={() => setZoom(false)}><button type="button" className="zoom-close" onClick={() => setZoom(false)} aria-label={L.close}><X size={24} /></button><img src={infoImage} alt={infoClue.appearance[language]} /></div>}
   </div>
 }
 export default App
