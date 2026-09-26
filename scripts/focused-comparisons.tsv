@@ -1,0 +1,18 @@
+# source chapter|source element prefix|clue category|exact Chinese clue label|target (location ID, africa-except:slug, or scheme-except:key)|estimated P(feature present|target)|reason
+canada|u0d5ad77|words|限速牌写有 MAXIMUM|loc:united-states|0.14|The chapter explicitly contrasts US SPEED LIMIT wording with Canadian MAXIMUM signs.
+canada|ue664ab8|camera|圆形车底模糊和天空光晕|loc:united-states|0.14|The chapter states generation-two Street View is rare in the United States.
+canada|ue502a86|signs|黄色菱形丁字路口标志|loc:united-states|0.14|The chapter contrasts the US rectangular T-junction sign.
+canada|u8d2bea6|markings|单黄中心线|loc:united-states|0.34|The chapter says double yellow is more common in the United States; single yellow remains possible.
+canada|u1f8fd19|brands|红色邮政标志|loc:united-states|0.14|The chapter contrasts a blue US postal emblem with Canada's red emblem.
+canada|u4891669|words|停止牌同时写 STOP 和 ARRÊT|scheme-except:ca:nb|0.14|The chapter says this combined stop sign is rare in other Canadian provinces, not absent.
+canada|688a4d0|words|停止牌写有 ARRÊT|scheme-except:ca:qc|0.14|The chapter describes ARRÊT-only stop signs as Quebec-specific; allow exceptions.
+canada|a855330|signs|红底白箭头弯道诱导牌|scheme-except:ca:qc|0.14|The chapter explicitly says other Canadian provinces use yellow-black chevrons.
+canada|u15fc385|markings|双黄中心线|loc:canada:region:ca-on|0.34|The chapter says Ontario favors single yellow in the east but double yellow also occurs.
+botswana|uce89061|plates|白色前牌和黄色后牌|loc:south-africa,loc:eswatini,loc:lesotho|0.14|The chapter says Botswana alone commonly has yellow rear plates in southern Africa; other countries remain possible.
+eswatini|u83215d1|terrain|绿色树丘与路旁金色长草|loc:lesotho|0.14|The chapter contrasts Lesotho's bare hills and lack of long roadside grass.
+lesotho|u3496ffc|terrain|山地里的低矮短草|loc:eswatini|0.14|The chapter contrasts Eswatini's taller grass.
+namibia|ue641478|camera|白色街景皮卡前方有左倾短天线|loc:oman|0.14|The chapter explicitly contrasts Oman's right-leaning antenna.
+senegal|d9b5a439|plates|整块蓝色车牌|africa-except:senegal|0.14|The chapter states solid blue plates are unique among African coverage; allow exceptions.
+south-africa|u9d1a0f5|camera|第二代街景画面|africa-mainland-except:south-africa|0.14|The chapter states generation-two road panoramas are unique to South Africa on mainland Africa; conservative exception probability.
+south-africa|ucbbebb9|poles|电杆顶部呈窄 A 形|scheme-except:za:wc|0.14|The chapter says this form is almost exclusive to Western Cape, with rare neighboring exceptions.
+south-africa|u9219c7c|poles|三叉戟形电杆顶部|scheme-except:za:kzn|0.14|The chapter says this form is nearly exclusive to KwaZulu-Natal; allow exceptions.

@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "sourcePolicy": "Partitions cover the locations discussed by the chapter. Unmeasured map sampling within each partition uses a uniform prior.",
+  "schemes": [
+    {
+      "countryId": "loc:canada",
+      "granularity": {
+        "en": "Provinces and territories",
+        "zh": "省与地区"
+      },
+      "regions": [
+        [
+          "ca:ab",
+          "Alberta",
+          "阿尔伯塔省"
+        ],
+        [
+          "ca:bc",
+          "British Columbia",
+          "不列颠哥伦比亚省"
+        ],
+        [
+          "ca:mb",
+          "Manitoba",
+          "马尼托巴省"
+        ],
+        [
+          "ca:nb",
+          "New Brunswick",
+          "新不伦瑞克省"
+        ],
+        [
+          "ca:nl",
+          "Newfoundland and Labrador",
+          "纽芬兰与拉布拉多省"
+        ],
+        [
+          "ca:ns",
+          "Nova Scotia",
+          "新斯科舍省"
+        ],
+        [
+          "ca:nt",
+          "Northwest Territories",
+          "西北地区"
+        ],
+        [
+          "ca:nu",
+          "Nunavut",
+          "努纳武特地区"
+        ],
+        [
+          "ca:on",
+          "Ontario",
+          "安大略省"
+        ],
+        [
+          "ca:pe",
+          "Prince Edward Island",
+          "爱德华王子岛省"
+        ],
+        [
+          "ca:qc",
+          "Quebec",
+          "魁北克省"
+        ],
+        [
+          "ca:sk",
+          "Saskatchewan",
+          "萨斯喀彻温省"
+        ],
+        [
+          "ca:yt",
+          "Yukon",
+          "育空地区"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:south-africa",
+      "granularity": {
+        "en": "Provinces",
+        "zh": "省"
+      },
+      "regions": [
+        [
+          "za:ec",
+          "Eastern Cape",
+          "东开普省"
+        ],
+        [
+          "za:fs",
+          "Free State",
+          "自由邦"
+        ],
+        [
+          "za:gp",
+          "Gauteng",
+          "豪登省"
+        ],
+        [
+          "za:kzn",
+          "KwaZulu-Natal",
+          "夸祖鲁-纳塔尔省"
+        ],
+        [
+          "za:lp",
+          "Limpopo",
+          "林波波省"
+        ],
+        [
+          "za:mp",
+          "Mpumalanga",
+          "姆普马兰加省"
+        ],
+        [
+          "za:nc",
+          "Northern Cape",
+          "北开普省"
+        ],
+        [
+          "za:nw",
+          "North West",
+          "西北省"
+        ],
+        [
+          "za:wc",
+          "Western Cape",
+          "西开普省"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:egypt",
+      "granularity": {
+        "en": "Two documented coverage areas",
+        "zh": "资料记载的两个覆盖区域"
+      },
+      "regions": [
+        [
+          "eg:cairo",
+          "Cairo and Giza area",
+          "开罗与吉萨一带"
+        ],
+        [
+          "eg:alexandria",
+          "Alexandria area",
+          "亚历山大一带"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:lesotho",
+      "granularity": {
+        "en": "Lowland and highland coverage",
+        "zh": "低地与高地覆盖"
+      },
+      "regions": [
+        [
+          "ls:lowland",
+          "Lowlands",
+          "低地"
+        ],
+        [
+          "ls:highland",
+          "Highlands",
+          "高地"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:sao-tome-and-principe",
+      "granularity": {
+        "en": "Islands",
+        "zh": "岛屿"
+      },
+      "regions": [
+        [
+          "st:sao-tome",
+          "São Tomé",
+          "圣多美岛"
+        ],
+        [
+          "st:principe",
+          "Príncipe",
+          "普林西比岛"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:uganda",
+      "granularity": {
+        "en": "Capital area and documented parks",
+        "zh": "首都区域与资料记载的国家公园"
+      },
+      "regions": [
+        [
+          "ug:capital",
+          "Kampala and Entebbe",
+          "坎帕拉与恩德培"
+        ],
+        [
+          "ug:kidepo",
+          "Kidepo Valley",
+          "基代波"
+        ],
+        [
+          "ug:murchison",
+          "Murchison Falls",
+          "默奇森瀑布"
+        ],
+        [
+          "ug:kibale",
+          "Kibale",
+          "基巴莱"
+        ],
+        [
+          "ug:mburo",
+          "Lake Mburo",
+          "姆布罗湖"
+        ],
+        [
+          "ug:semuliki",
+          "Semuliki",
+          "塞穆利基"
+        ],
+        [
+          "ug:elgon",
+          "Mount Elgon",
+          "埃尔贡山"
+        ],
+        [
+          "ug:queen-elizabeth",
+          "Queen Elizabeth",
+          "伊丽莎白女王"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:botswana",
+      "granularity": {
+        "en": "Broad west/east zones",
+        "zh": "东西部粗分区"
+      },
+      "regions": [
+        [
+          "bw:west",
+          "West",
+          "西部"
+        ],
+        [
+          "bw:east",
+          "East",
+          "东部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:eswatini",
+      "granularity": {
+        "en": "Broad west/central/east zones",
+        "zh": "西部、中部、东部粗分区"
+      },
+      "regions": [
+        [
+          "sz:west",
+          "West highlands",
+          "西部高地"
+        ],
+        [
+          "sz:central",
+          "Central wooded hills",
+          "中部林地山丘"
+        ],
+        [
+          "sz:east",
+          "East lowlands",
+          "东部低地"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:ghana",
+      "granularity": {
+        "en": "Broad north/south zones",
+        "zh": "南北粗分区"
+      },
+      "regions": [
+        [
+          "gh:north",
+          "North",
+          "北部"
+        ],
+        [
+          "gh:south",
+          "South",
+          "南部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:kenya",
+      "granularity": {
+        "en": "Broad west/east zones",
+        "zh": "东西部粗分区"
+      },
+      "regions": [
+        [
+          "ke:west",
+          "West",
+          "西部"
+        ],
+        [
+          "ke:east",
+          "East",
+          "东部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:namibia",
+      "granularity": {
+        "en": "Broad north/south zones",
+        "zh": "南北粗分区"
+      },
+      "regions": [
+        [
+          "na:north",
+          "North",
+          "北部"
+        ],
+        [
+          "na:south",
+          "South",
+          "南部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:nigeria",
+      "granularity": {
+        "en": "Broad north/central/south zones",
+        "zh": "北中南粗分区"
+      },
+      "regions": [
+        [
+          "ng:north",
+          "North",
+          "北部"
+        ],
+        [
+          "ng:central",
+          "Central belt",
+          "中部地带"
+        ],
+        [
+          "ng:south",
+          "South",
+          "南部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:reunion",
+      "granularity": {
+        "en": "Coast and interior",
+        "zh": "沿海与内陆"
+      },
+      "regions": [
+        [
+          "re:coast",
+          "Coastal area",
+          "沿海地区"
+        ],
+        [
+          "re:interior",
+          "Interior highlands",
+          "内陆高地"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:senegal",
+      "granularity": {
+        "en": "North and south of Gambia",
+        "zh": "冈比亚以北和以南"
+      },
+      "regions": [
+        [
+          "sn:north",
+          "North of Gambia",
+          "冈比亚以北"
+        ],
+        [
+          "sn:south",
+          "South of Gambia",
+          "冈比亚以南"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:tanzania",
+      "granularity": {
+        "en": "Documented coverage areas",
+        "zh": "资料记载的覆盖区域"
+      },
+      "regions": [
+        [
+          "tz:kilimanjaro",
+          "Kilimanjaro",
+          "乞力马扎罗山"
+        ],
+        [
+          "tz:gombe",
+          "Gombe and Lake Tanganyika",
+          "贡贝与坦噶尼喀湖"
+        ],
+        [
+          "tz:border",
+          "Kenya border spillover",
+          "肯尼亚边境越境街景"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:tunisia",
+      "granularity": {
+        "en": "Broad north/central/south zones",
+        "zh": "北中南粗分区"
+      },
+      "regions": [
+        [
+          "tn:north",
+          "North",
+          "北部"
+        ],
+        [
+          "tn:central",
+          "Central coast",
+          "中部海岸"
+        ],
+        [
+          "tn:south",
+          "South",
+          "南部"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:madagascar",
+      "granularity": {
+        "en": "Documented geographic coverage clusters",
+        "zh": "资料记载的地理覆盖区"
+      },
+      "regions": [
+        [
+          "mg:northwest",
+          "Northwest coast and islands",
+          "西北海岸及岛屿"
+        ],
+        [
+          "mg:menabe",
+          "Menabe and central-west coast",
+          "梅纳贝及中西部海岸"
+        ],
+        [
+          "mg:southwest",
+          "Southwest coast",
+          "西南海岸"
+        ],
+        [
+          "mg:highlands",
+          "Central and southern highlands",
+          "中南部高地"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:mali",
+      "granularity": {
+        "en": "Documented panorama clusters",
+        "zh": "资料记载的全景地点群"
+      },
+      "regions": [
+        [
+          "ml:timbuktu",
+          "Timbuktu mosques",
+          "廷巴克图清真寺群"
+        ],
+        [
+          "ml:niono",
+          "Niono mosque",
+          "尼奥诺清真寺"
+        ],
+        [
+          "ml:gao",
+          "Gao mosque",
+          "加奥清真寺"
+        ],
+        [
+          "ml:djenne-mopti",
+          "Djenné and Mopti mosques",
+          "杰内与莫普提清真寺"
+        ],
+        [
+          "ml:bamako",
+          "Bamako mosque",
+          "巴马科清真寺"
+        ],
+        [
+          "ml:canyon",
+          "Sangha area canyon",
+          "桑加一带峡谷"
+        ]
+      ]
+    },
+    {
+      "countryId": "loc:rwanda",
+      "granularity": {
+        "en": "Broad documented areas",
+        "zh": "资料记载的粗区域"
+      },
+      "regions": [
+        [
+          "rw:kigali",
+          "Kigali area",
+          "基加利一带"
+        ],
+        [
+          "rw:northwest",
+          "Northwest volcanic area",
+          "西北火山区"
+        ],
+        [
+          "rw:northeast",
+          "Northeast grasslands",
+          "东北草地"
+        ],
+        [
+          "rw:west",
+          "Western forests and tea areas",
+          "西部森林茶区"
+        ],
+        [
+          "rw:south",
+          "South and remaining central area",
+          "南部及其余中部"
+        ]
+      ]
+    }
+  ]
+}

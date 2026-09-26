@@ -13,6 +13,7 @@
     "data:validate": "tsx scripts/validate-playable.ts",
     "test:e2e": "playwright test",
     "data:report": "tsx scripts/validate-playable.ts --write-report",
+    "data:focus-report": "python scripts/report_focused_review.py",
     "import:tuxundoc": "python scripts/import_tuxundoc.py",
     "data:curate": "python scripts/curate_clues.py",
     "photos:prepare": "python scripts/prepare_source_images.py"

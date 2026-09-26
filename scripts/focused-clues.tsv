@@ -1,0 +1,288 @@
+# slug|source element prefix|category|Chinese visible appearance|English visible appearance|estimated p when seen in source location|region ID suffix (optional)|reviewed image index (optional)
+# Every row names a local HTML block. Probability is an initial qualitative estimate, not a measured frequency.
+canada|f1baa2a|words|centre 或 colour 拼写|The spelling centre or colour|0.62||
+canada|f1baa2a|words|km/h 速度单位|Speed shown in km/h|0.82||
+canada|93ccf5f|camera|圆形车底模糊和天空光晕|Circular car blur with a sky halo|0.62||
+canada|ucc8e4e|camera|车镜打码形成两个尖角|Two pointed bumps in mirror blur|0.62||
+canada|u0d0d7c|camera|低相机位与巨大的圆形车头模糊|Low camera view with a large round front blur|0.34||0
+canada|6ecc754|signs|黄色菱形丁字路口标志|Yellow diamond T-junction sign|0.82||0
+canada|2d05f3b|words|限速牌写有 MAXIMUM|MAXIMUM on a speed sign|0.82||0
+canada|a623ed7|markings|单黄中心线|Single yellow center line|0.62||0
+canada|84fb351|brands|红色邮政标志|Red postal emblem|0.62||
+canada|63734db|signs|无文字的铁路道口或让行牌|Wordless rail crossing or yield sign|0.62||0
+canada|u52744c|plates|无前牌的车辆|Vehicle without a front plate|0.60||
+canada|u4b8b05|languages|法语文字|French text|0.62|ca:qc|
+canada|u4b8b05|signs|英语和法语并列路牌|English and French on one sign|0.62|ca:nb|
+canada|u622eaec|signs|公里标记底部有白色方块|White square at the foot of a kilometer marker|0.82|ca:on|
+canada|u3c1d9e|signs|限速牌底部黑底白字 km/h|Black km/h panel under a speed sign|0.82|ca:on|
+canada|u145187|signs|限速牌上有 km/h 且无黑色底板|km/h on speed sign without a black panel|0.62|ca:bc|
+canada|2ec3f3e|posts|圆柱路桩绕有两道黑色宽带|Round bollard with two black bands|0.82|ca:ab|0:left
+canada|u990747|posts|路桩两道黑带之间有黄带|Yellow band between two black bollard bands|0.34|ca:ab|0:left
+canada|fa81ec3|posts|黑灰路桩下方有橙色条纹|Black gray bollard with orange lower band|0.62|ca:mb|0:left
+canada|9f69e50|posts|细薄且略弯的黑白路桩|Thin slightly bent black and white bollard|0.62|ca:bc|0:left
+canada|9399db3|posts|护栏上细长白杆顶端有红或绿反光板|Slim white guardrail post with red or green reflector|0.82|ca:qc|0:left
+canada|uc10a7c|posts|黄色消防栓位置标记|Yellow fire hydrant location marker|0.62|ca:qc|0:left
+canada|c2758ad|posts|道路两侧的矩形标记|Rectangular markers along the road edge|0.62|ca:qc|0
+canada|04e64ef|posts|道路两侧的菱形标记|Diamond markers along the road edge|0.82|ca:on|0:left
+canada|10db162|barriers|圆木柱以三根金属线相连|Round wooden guardrail posts joined by three wires|0.62|ca:on|0:left
+canada|u5ba0e8|posts|扁平黄色路边柱|Flat yellow roadside posts|0.62|ca:nb|0:left
+canada|u327f5f|posts|圆柱路桩有两道粗黑带|Round bollard with two thick black bands|0.62|ca:nt|0:left
+canada|u8c856f|poles|变压器朝向道路|Pole transformer facing the road|0.62|ca:bc|0:left
+canada|u4b9a55|poles|变压器与道路成斜角安装|Pole transformer set diagonally to the road|0.62|ca:pe|
+canada|66541e9|poles|杆顶两侧与顶部各有绝缘子|Insulators on both sides and top of a pole|0.62|ca:on|0:left
+canada|150edc3|poles|杆顶绝缘子支臂略向上斜|Slightly upward sloping insulator arm|0.62|ca:qc|0:left
+canada|3d19dbe|poles|电杆黑黄竖标签带小 Q|Black and yellow pole label with a small Q|0.34|ca:qc|0:left
+canada|uccd6f6|poles|电杆上的白色小标签|Small white label on utility pole|0.62|ca:pe|0:left
+canada|bbdb61d|poles|相邻电杆绝缘子左右交替|Alternating insulator arrangement on adjacent poles|0.62|ca:sk|
+canada|edce4dc|signs|丁字路口标志不带棋盘格|T-junction sign without a checkerboard pattern|0.62|ca:qc|0:left
+canada|cd216b1|signs|丁字路口菱形牌外有黄矩形边框|Yellow rectangular border around a diamond T sign|0.82|ca:nl|0
+canada|d34262a|signs|路牌背面为绿色|Green back of a road sign|0.34|ca:bc|0:left
+canada|b9d7713|signs|路牌背面有绿白条纹贴纸|Green and white striped sticker on sign back|0.34|ca:mb|0:left
+canada|7234b20|signs|路牌上有白色三角形|White triangle on a road sign|0.34|ca:sk|0:left
+canada|d2d57c6|markings|黄色中心线间夹一段短白线|Short white segment between yellow center lines|0.34|ca:sk|0:left
+canada|688a4d0|words|停止牌写有 ARRÊT|ARRÊT on a stop sign|0.82|ca:qc|0:left
+canada|0e9fc52|words|停止牌同时写 STOP 和 ARRÊT|STOP and ARRÊT on one stop sign|0.62|ca:nb|0:left
+canada|u96d5d6|posts|护栏木柱顶部呈金字塔形|Pyramid top on a wooden guardrail post|0.62|ca:nl|
+canada|04c3dcb|posts|消防栓旁有菱形标记|Diamond marker next to a fire hydrant|0.62|ca:nl|0
+canada|18b648d|posts|橙黑条纹交通锥|Orange and black striped traffic cone|0.62|ca:on|
+canada|uace380|posts|橙白条纹交通锥|Orange and white striped traffic cone|0.62|ca:qc|
+canada|a855330|signs|红底白箭头弯道诱导牌|White bend arrow on red sign|0.82|ca:qc|0:left
+canada|ude536a|poles|短而弯曲的路灯灯臂|Short curved streetlamp arm|0.62|ca:ns|0:left
+canada|ea78c67|terrain|高耸连绵的山脉|High continuous mountains|0.62|ca:bc|0:left
+canada|69949f2|terrain|棕色草坡与稀疏松树林|Brown grassy hills with scattered pines|0.62|ca:bc|0:left
+canada|53c8f11|terrain|平坦且少树的农田草原|Flat treeless agricultural prairie|0.62|ca:sk|0:left
+canada|fd67239|plants|明亮的黄色油菜花田|Bright yellow canola fields|0.62|ca:sk|0:left
+canada|3505979|terrain|草原中的贫瘠河谷丘陵|Barren river valley hills in prairie|0.62|ca:sk|0:left
+canada|4c5b898|plants|白树干且秋叶亮黄的白杨|White trunk and bright yellow autumn aspen|0.62|ca:mb|0:left
+canada|2bf9372|soil|森林旁大片裸露基岩|Exposed bedrock beside forest|0.62|ca:on|0:left
+canada|4e3b360|soil|红色土壤|Red soil|0.62|ca:pe|0:left
+canada|f2f06dd|plants|圣诞树形的香脂冷杉|Christmas tree shaped balsam fir|0.62|ca:nl|0:left
+canada|113e7c3|buildings|路旁八角形木板垃圾箱|Octagonal roadside wooden bin|0.62|ca:nl|0:left
+canada|b5357d3|signs|蓝白红旗的蓝带上有黄星|Yellow star on blue stripe of tricolor flag|0.62|ca:nb|0:left
+botswana|uc01c83|camera|无天线的白色街景车|White Street View car without antenna|0.82||
+botswana|u29369d|plates|白色前牌和黄色后牌|White front plate and yellow rear plate|0.82||0
+botswana|u8f3364|terrain|干燥而平坦的灌木地|Dry flat scrubland|0.62||0
+botswana|u27e3f35|markings|黄色边线与白色中线|Yellow edge and white center lines|0.62||0
+botswana|u37463eb|signs|黑黄相间的警示牌杆|Black and yellow striped warning sign pole|0.62||0
+botswana|u7a1419|barriers|路缘或护栏上有黑黄条纹|Black and yellow striped curb or guardrail|0.62||0
+botswana|ub5afdf|signs|红底白箭头弯道诱导牌|White bend arrow on red sign|0.62||
+botswana|u2d829f|signs|蓝底旧式道路标志|Old style blue road sign|0.34||0
+botswana|u1da891|camera|画面里有随机的局部模糊|Random small patches of image blur|0.62||0
+egypt|84e9e23|camera|低机位徒步街景且无车影|Low-view trekker panorama without car shadow|0.82||
+egypt|4330e09|buildings|大型砂岩历史建筑|Large historic sandstone building|0.62||0
+egypt|8820c34|scripts|带连接线与点的阿拉伯字形|Connected Arabic letter shapes with dots|0.62||0
+egypt|f35ece8|buildings|成排巨大的方形石柱|Rows of massive square stone pillars|0.62|eg:cairo|
+egypt|c092ca7|buildings|阶梯形金字塔及脚手架|Stepped pyramid with scaffolding|0.62|eg:cairo|
+egypt|3726f8f|buildings|整齐砂岩砌成的巨大城墙|Massive wall of neatly cut sandstone|0.62|eg:cairo|
+egypt|3124358|buildings|带十字架的修道院尖顶|Monastery spires bearing crosses|0.62|eg:alexandria|
+eswatini|7255bae|terrain|绿色树丘与路旁金色长草|Green wooded hills with long golden roadside grass|0.82||0
+eswatini|a6defd9|poles|深棕木电杆侧装绝缘子|Dark brown wooden pole with side insulators|0.62||0
+eswatini|ad2a028|camera|无天线的白色街景车|White Street View car without antenna|0.82||0
+eswatini|972f986|plates|长车牌底部有绿色|Long vehicle plate with green lower edge|0.62||0
+eswatini|277d40d|buildings|混凝土公交候车亭|Concrete bus shelter|0.62||0
+eswatini|66de869|terrain|高山草地长着金色长草|Highland meadow with long golden grass|0.62|sz:west|0:left
+eswatini|6b921f8|terrain|深绿树木覆盖的高山|Deep green tree-covered mountain|0.62|sz:central|0:left
+eswatini|c7cbeb3|terrain|平坦地形且远处有山|Flat terrain with distant mountains|0.62|sz:east|0:left
+ghana|u097823|camera|车顶架右端有黑胶带|Black tape on the right end of a roof rack|0.82||
+ghana|ue8e996|camera|车头可见红色矩形涂装|Red rectangular paint visible on car hood|0.82||
+ghana|ba2cd9a|plates|白牌与黄牌车辆同框|White and yellow plated vehicles together|0.62||0
+ghana|58812c6|road-vehicles|橙黄轮罩的多色出租车|Multicolored taxi with orange yellow wheel covers|0.82||0
+ghana|c5b9346|markings|道路只用白色标线|White road lines without yellow|0.62||0
+ghana|ub089984|poles|木电杆的金属横杆装三个绝缘子|Three insulators on metal crossarm of wooden pole|0.62||0
+ghana|61eff3c|signs|红黄绿并有黑星的涂装|Red yellow green paint with a black star|0.62||0
+ghana|48b1006|posts|黑白相间的城市路杆|Black and white painted urban posts|0.62||0
+ghana|dd52518|terrain|干燥少树的疏林草原|Dry sparsely wooded savanna|0.62|gh:north|0:left
+kenya|0ae37e7|camera|街景车车头涉水喉和车顶架|Snorkel and roof rack on Street View car|0.82||
+kenya|fabb215|plates|长白前牌与方形黄后牌|Long white front plate and square yellow rear plate|0.82||0
+kenya|f8caf5c|brands|Safaricom 店招或广告|Safaricom shop sign or advert|0.82||0
+kenya|e076db2|markings|白色边线与黄色中线|White edge lines and yellow center line|0.62||0
+kenya|8015ecb|signs|白边绿底的方向牌|Green direction sign with white border|0.62||0
+kenya|432cf5a|road-vehicles|有彩绘车身的面包车|Decorated minibus|0.62||0
+kenya|9b76c55|plants|高而窄且树皮光滑的桉树|Tall slim eucalyptus with smooth bark|0.62||0
+kenya|ff4456c|terrain|白色沙质海岸与棕榈|White sandy coast with palms|0.62|ke:east|0:left
+lesotho|00fe689|camera|无天线的白色街景车|White Street View car without antenna|0.82||0
+lesotho|0daec489|terrain|裸露平顶山与水平岩层|Bare flat-topped mountain with horizontal strata|0.82||0
+lesotho|u6b8a112|plates|白底蓝字长车牌|Long white plate with blue characters|0.82||
+lesotho|5a60ed2|buildings|茅草顶圆形小屋|Round hut with thatched roof|0.62||0
+lesotho|b54416c|plants|路旁的龙舌兰状植物|Agave-like roadside plant|0.62||0
+lesotho|964528c|terrain|山地里的低矮短草|Short grass on mountain slopes|0.62||0
+lesotho|6b3fc786|road-vehicles|披着条纹羊毛毯的人|Person wearing a striped wool blanket|0.62||0
+lesotho|9472f0f|terrain|平缓道路旁远处的桌状山|Distant table mountains beside flatter road|0.62|ls:lowland|
+lesotho|bc5304d|terrain|公路紧贴绿色高山山腰|Road clinging to green high mountainside|0.62|ls:highland|0:left
+madagascar|ub50016|camera|船上拍摄的全景|Panorama captured from a boat|0.62||
+madagascar|udf50aa|plants|树干极宽的猴面包树|Baobab with very wide trunk|0.82|mg:menabe|0
+madagascar|u3ea5e06|terrain|光滑沙滩与成片棕榈|Smooth beach with many palms|0.62|mg:menabe|0
+madagascar|ub6360c|soil|深红色土路|Deep red dirt road|0.62|mg:menabe|
+madagascar|uef08f9|terrain|陡峭巨大的孤立岩山|Steep giant isolated rock massif|0.62|mg:highlands|0
+madagascar|u649b9b|road-vehicles|黄色蓝色船头与巨大船帆|Yellow blue boat bow and a large sail|0.62|mg:southwest|0
+mali|c843c4a|camera|三脚架拍摄的轻微动态模糊全景|Tripod panorama with slight motion blur|0.82||0
+mali|e31bb5b|buildings|泥砖清真寺外墙插有木棍|Mudbrick mosque with projecting wooden beams|0.82||
+mali|e31bb5b|buildings|泥墙室内铺有祈祷地毯|Prayer carpets inside mud-walled room|0.62||
+mali|49f0268|terrain|清真寺外的干旱沙地|Dry sandy surroundings of a mosque|0.62||
+namibia|u45b1ac|plates|前后都是黄底黑字车牌|Yellow plates with black text front and rear|0.82||
+namibia|uc220f6|camera|白色街景皮卡前方有左倾短天线|White Street View pickup with short left-leaning antenna|0.82||0
+namibia|u742dcc|markings|白色中线与单根黄色边线|White center and single yellow edge lines|0.62||0
+namibia|ua4bc170|signs|绿底黄路号的方向牌|Green direction sign with yellow route number|0.62||0
+namibia|uec9daca|posts|路边小石头路桩|Small stone roadside bollard|0.62||0
+namibia|ub11cc5|other|路口的圆形金属垃圾桶|Round metal bin at a road junction|0.62||0
+namibia|uc7c7c8d|plants|公路两侧高大繁盛的树木|Tall lush trees on both sides of road|0.62|na:north|0:left
+namibia|ubd7cbdb|terrain|高大的粉色沙丘|Tall pink sand dunes|0.62|na:south|0:left
+nigeria|uc2232dc|camera|可见街景卡车驾驶舱和拖斗|Visible Street View truck cab and trailer|0.82||
+nigeria|u532de2a|camera|警车在街景车前后跟随|Police car escorting Street View car|0.82||0
+nigeria|u8ba071|plates|短车牌带绿色调|Short vehicle plate with green tint|0.62||0
+nigeria|u8f0535|poles|有凹痕但无孔的混凝土电杆|Dented concrete pole without holes|0.62||0
+nigeria|u2acf7d|markings|磨损且无标线的柏油路|Worn asphalt road without lines|0.62||0
+nigeria|uedcd6c|buildings|单层房屋有陡斜金属屋顶|Single story house with steep metal roof|0.62||0
+nigeria|ue071df|plants|路旁有大量干草垛|Many roadside haystacks|0.62||0:left
+reunion|ua00f512|camera|街景车右后侧有黑胶带|Black tape on right rear of Street View car|0.82||0
+reunion|uf423753|terrain|热带绿山紧邻海岸道路|Tropical green mountains beside coastal road|0.62|re:coast|0
+reunion|u7abdc50|signs|黄色公交站牌|Yellow bus stop sign|0.62||
+reunion|u669844|signs|白或橄榄绿的 L 形公交站牌|White or olive L-shaped bus stop sign|0.62||
+reunion|u8426f43|soil|棕红火山土和白色路边石|Brown red volcanic soil with white roadside stones|0.62|re:interior|0:left
+rwanda|uc3a8aba|plates|白色前牌和黄色后牌|White front plate and yellow rear plate|0.82||
+rwanda|u5354807|camera|可见第四代街景皮卡和相机架|Visible fourth-generation pickup and camera rack|0.82||0
+rwanda|ud3a3de|buildings|砖墙上的通风花砖|Ventilation bricks in a wall|0.62||0
+rwanda|ub645db|posts|红白相间的柱形路桩|Red white striped cylindrical bollard|0.62||0
+rwanda|u5e35fb|barriers|黑白条纹路缘石|Black and white striped curb|0.62||0
+rwanda|u8d1e7e|road-vehicles|摩托车手戴红盔穿红背心|Motorcyclist in red helmet and vest|0.62||0
+rwanda|u0a25b3|plants|成片茶园|Tea plantation|0.62|rw:west|0:left
+sao-tome-and-principe|ucb4a59|camera|暗淡模糊且车尾大面积打码|Dim blurry panorama with large rear blur|0.82||
+sao-tome-and-principe|ub5f15e|languages|葡萄牙语文字|Portuguese text|0.62||0
+sao-tome-and-principe|ub8e2f3|poles|带孔混凝土电杆|Perforated concrete utility pole|0.62||
+sao-tome-and-principe|u6953c62|plants|热带雨林中的香蕉树|Banana plants in rainforest|0.62||0
+sao-tome-and-principe|u3f6494|poles|杆底涂蓝且写有 CST|Blue-bottomed pole with CST letters|0.62||
+sao-tome-and-principe|u6d9391|road-vehicles|亮黄色出租车或小巴|Bright yellow taxi or minibus|0.62||0
+sao-tome-and-principe|u91e621|camera|蓝色车顶和银色行李架|Blue vehicle roof with silver rack rails|0.62|st:principe|0:left
+sao-tome-and-principe|ubc36f8|camera|黑色街景车顶和黑色行李架|Black Street View roof and black rack|0.62|st:sao-tome|0:left
+senegal|d9b5a43|plates|整块蓝色车牌|Solid blue vehicle plate|0.82||
+senegal|431f794|camera|街景车右后视镜与天空裂缝|Right mirror of Street View car and sky rift|0.82||0
+senegal|9bd7509|posts|白色红顶公里标|White kilometer marker with red cap|0.62||0
+senegal|10746dd|signs|白色城镇入口牌有粗粉色边框|White town entry sign with thick pink outline|0.82||0
+senegal|ffb4c38|poles|黑色路灯顶部装太阳能板|Black streetlamp with solar panel on top|0.62||0
+senegal|3742462|road-vehicles|橙黄出租车带黑色挡泥板|Orange yellow taxi with black fenders|0.62||0
+senegal|e042f87|terrain|干燥且少树的平坦草原|Dry flat grassland with sparse trees|0.62|sn:north|0:left
+south-africa|446a427|markings|两实一虚的三重白色中线|Three white center lines two solid one dashed|0.82||0
+south-africa|75b25d8|poles|电杆上有平行的鸟形绝缘子长杆|Parallel bird-like insulator arms on a pole|0.82||0
+south-africa|2cb1941|signs|绿底黄路号的方向牌|Green direction sign with yellow route number|0.62||0
+south-africa|6132723|signs|白底红箭头弯道诱导牌|Red bend arrow on white sign|0.62||0
+south-africa|u813bea|camera|蓝色车身与车顶天线|Blue Street View car with roof antenna|0.62||
+south-africa|ucbbebb|poles|电杆顶部呈窄 A 形|Narrow A-shaped pole top|0.62|za:wc|
+south-africa|u6233107|poles|电杆顶部呈宽 A 形|Wide A-shaped pole top|0.62|za:ec|0:left
+south-africa|u9219c7|poles|三叉戟形电杆顶部|Trident-shaped pole top|0.82|za:kzn|0
+south-africa|ue7a128|poles|三个水平交错的绝缘棒|Three staggered horizontal insulator bars|0.62|za:mp|
+south-africa|u09e02d|poles|杆顶两根斜杆构成尖角|Two angled arms form a point at pole top|0.62|za:lp|0:left
+south-africa|u25d048|signs|普通路牌背面有红方贴纸|Red square sticker on ordinary sign back|0.62|za:ec|0:left
+south-africa|u7e72d2|signs|转弯诱导牌背面有白贴纸|White sticker on bend sign back|0.62|za:wc|0:left
+south-africa|ud18496|markings|带粉红色调的粗颗粒沥青|Coarse pink-tinted asphalt|0.62|za:lp|0:left
+south-africa|u877d76|poles|电杆顶部有巨大鸟巢|Giant bird nest atop a utility pole|0.62|za:nc|0:left
+south-africa|u2bcf60|terrain|陡峭尖锐而少树的岩山|Steep sharp rocky mountains with few trees|0.62|za:wc|0:left
+south-africa|u2cce23|plants|山谷里的葡萄园|Vineyards in a mountain valley|0.62|za:wc|0:left
+south-africa|uacdd0b|plants|沿海甘蔗田|Coastal sugarcane fields|0.62|za:kzn|0:left
+south-africa|uf40b8f|plants|沿海高耸的柱状南洋杉|Tall columnar coastal Norfolk pines|0.62|za:ec|0:left
+south-africa|u4e2642|signs|红绿灯杆上有三道反光带|Three reflective bands on traffic light pole|0.62|za:gp|
+tanzania|e3f9dc8|camera|公园里的第三代徒步街景|Third-generation trekker panorama in a park|0.62|tz:gombe|
+tanzania|c821c0b|camera|高山上的三脚架街景|Tripod panorama on a mountain|0.62|tz:kilimanjaro|
+tanzania|2bbb436|terrain|深灰高山岩石和常年积雪|Dark gray alpine rock and permanent snow|0.62|tz:kilimanjaro|0:left
+tanzania|f305742|terrain|阴暗茂密的雨林与黑猩猩|Dark dense rainforest with chimpanzees|0.62|tz:gombe|
+tanzania|27e2f92|road-vehicles|像素化的橄榄绿白色小船|Pixelated olive green and white boat|0.62|tz:gombe|
+tunisia|eb44258|plates|黑底白字车牌|White characters on black plate|0.82||
+tunisia|c4bf10e|camera|有护送车辆跟随街景车|Escort vehicle follows Street View car|0.82||0
+tunisia|c548392|camera|黑色街景车有细长天线|Black Street View car with slim antenna|0.62||
+tunisia|bf0d551|plants|干燥土地上整齐排列的橄榄树|Rows of olive trees on dry ground|0.62|tn:central|0
+tunisia|363880a|signs|白底路牌上阿拉伯和拉丁文字并列|Arabic and Latin text on white road sign|0.62||0
+tunisia|07c7f64|buildings|门窗涂成鲜明的蓝色|Door or window painted vivid blue|0.62||0
+tunisia|acc70fd|barriers|红白条纹路缘石|Red and white striped curb|0.62||0
+tunisia|9e13071|posts|白色圆顶公里石顶端涂彩色|White domed kilometer stone with colored top|0.62||0
+tunisia|u21af4c|words|停止牌同时有阿拉伯与拉丁字形|Arabic and Latin writing on stop sign|0.62||0
+uganda|87bc114|plates|白色前牌和黄色后牌|White front plate and yellow rear plate|0.82||0
+uganda|d6319dc|camera|白色街景车有方形侧镜|White Street View car with square side mirror|0.82|ug:capital|0:left
+uganda|d897a35|buildings|小型单层房屋有带刺高墙|Low houses behind barbed high walls|0.62|ug:capital|0:left
+uganda|7ac50e0|road-vehicles|出租车侧面有蓝色块状图案|Taxi with blue block patterns on its sides|0.82|ug:capital|0:left
+uganda|e1b6d02|camera|街景车车头有黑色保险杠|Black front bumper on Street View car|0.62||0
+uganda|89ef5b2|terrain|完全干黄的草地和灌木|Completely dry yellow grass and scrub|0.62|ug:mburo|0:left
+uganda|e89f4f3|camera|潮湿森林街景镜头有水滴|Water drops on humid forest panorama|0.62|ug:semuliki|0:left
+uganda|ba35dbf|plants|高大分枝的多肉植物|Tall branching succulent|0.62|ug:queen-elizabeth|0:left
+canada|9e96d858|terrain|无植被的裸岩和冰川|Bare rock and glacier with no vegetation|0.62|ca:nu|0:left
+canada|56c1ab53|signs|蓝绿色双语街道牌|Blue green bilingual street sign|0.62|ca:nu|0:left
+canada|01445fa9|terrain|北方丘陵与稀矮针叶树|Northern hills with short sparse conifers|0.62|ca:yt|0:left
+canada|u15fc385|markings|双黄中心线|Double yellow center lines|0.62|ca:ns|0:left
+canada|e9345364|terrain|浓密森林里的高地|Forested highlands|0.62|ca:ns|0:left
+botswana|ub57bec1|soil|坚硬多石的红土和疏树|Hard stony red soil with sparse trees|0.62|bw:east|0:left
+botswana|u1690b49|soil|异常洁白的干沙土|Very pale dry sandy soil|0.62|bw:west|0:left
+botswana|u32bea70|camera|阴天拍摄的沙漠公路|Overcast panorama on a desert road|0.34||
+botswana|u666de9f|plants|平行公路的橙色叶树|Orange-leaved trees lining a road|0.34||
+egypt|ecb52b48|buildings|大型石质金字塔|Large stone pyramid|0.62|eg:cairo|0:left
+egypt|f2d53a98|buildings|灰白圆顶与高尖塔的清真寺|Mosque with pale dome and high minarets|0.62|eg:cairo|0:left
+egypt|370df043|buildings|海边厚砂岩城堡墙|Thick sandstone fortress wall by the sea|0.62|eg:alexandria|0:left
+ghana|d76074ee|camera|街景车架上有剥落黑胶带|Peeling black tape on Street View rack|0.62||
+ghana|d76074ee|camera|街景车胶带上有两个白斑|Two white spots on Street View car tape|0.62||
+kenya|d992245f|camera|灰色街景车配大型涉水喉|Gray Street View car with large snorkel|0.62|ke:west|0:left
+kenya|938d6caf|camera|黑色街景车配小型涉水喉|Black Street View car with small snorkel|0.62|ke:east|0:left
+kenya|6fa912c5|camera|街景车顶有白色胶带|White tape on Street View roof|0.62||0:left
+kenya|617bd445|terrain|绿草丘陵与高大桉树农场|Green grassy hills and tall eucalyptus farms|0.62|ke:west|0:left
+kenya|7f512577|soil|半干旱山丘与浅橙沙土|Semi-arid hills with pale orange sandy soil|0.62|ke:east|0:left
+kenya|u47481f|plants|道路两侧成片白色小花|Clusters of small white roadside flowers|0.34||0:left
+madagascar|u39841b5|camera|街景车顶有大型银色行李架|Large silver roof rack on Street View car|0.62|mg:menabe|0
+madagascar|u5c69de|camera|繁忙城镇中的徒步全景|Trekker panorama in a busy town|0.34|mg:southwest|
+madagascar|u0c9aac8|road-vehicles|多人乘坐的白色小船|Small white boat carrying several people|0.62|mg:northwest|0
+mali|f815673c|buildings|清真寺内有欧式装饰柱|Decorative European-style columns inside mosque|0.62|ml:niono|0:left
+mali|4969998b|buildings|黄色墙脚露砖与亮方砖庭院|Yellow walls with exposed brick base and bright tiled courtyard|0.62|ml:timbuktu|0:left
+mali|ue3a55de|buildings|清真寺内黄墙圆拱与红毯|Yellow mosque walls with round arches and red carpet|0.62|ml:timbuktu|0:left
+mali|db021035|buildings|蓝色地毯与低矮木梁天花板|Blue carpet and low wooden beam ceiling|0.62|ml:timbuktu|0:left
+mali|f9952c02|buildings|狭窄高大的哥特式拱廊|Tall narrow Gothic-style arcade|0.62|ml:djenne-mopti|0:left
+namibia|u107ff08|soil|农田旁浅色沙土与扇形棕榈|Pale sandy farmland with fan palms|0.62|na:north|0:left
+namibia|uec0b612|terrain|平坦干燥的淡红土与金黄矮草|Flat dry reddish soil with short golden grass|0.62||0:left
+namibia|u6aa1315|terrain|植被稀少的干旱丘陵|Arid hills with very sparse vegetation|0.62||0:left
+namibia|uf7357e6|terrain|山地覆满绿色植被|Hills densely covered in green vegetation|0.62||0:left
+namibia|ub0cd7c0|terrain|沿海浅沙与低矮沙丘|Pale coastal sand and low dunes|0.62||0:left
+namibia|u2a1f6c|terrain|平行的小山脊与浅谷|Parallel small ridges and shallow valleys|0.62||0:left
+namibia|u0a5e9e4|plants|干旱山谷里的葡萄园|Vineyard in an arid valley|0.34|na:south|0:left
+namibia|ue0c5c5d|posts|路边桩正面双黄反光片背面红顶|Road post with twin yellow reflectors and red back tip|0.62||
+namibia|udf4cb1|terrain|红色平顶桌山与浅色碎石路|Red flat-topped mesa beside pale gravel road|0.62||
+namibia|u93fca75|buildings|沙土街道旁有南洋杉和棕榈|Sandy streets lined with Norfolk pines and palms|0.62||
+namibia|ucf41768|markings|粉色人行道地砖|Pink pavement tiles|0.34||
+namibia|u0a02ebe|soil|凹凸不平且有车辙的浅色沙街|Uneven pale sand street with tire ruts|0.62||
+nigeria|u8e48ce|plants|浓密棕榈与绿色雨林|Dense palms and green rainforest|0.62|ng:south|
+nigeria|uc8ffb81|terrain|开阔干燥且少树的公路|Open dry highway with few trees|0.62|ng:north|0:left
+nigeria|u20f4f8b|terrain|岩石山与稀树草原同框|Rocky hills amid savanna|0.62|ng:central|0:left
+nigeria|uf61df1c|terrain|裸露且风化的孤立石山|Exposed weathered isolated rock hill|0.62||0:left
+nigeria|u8e87481|soil|颜色深红的土壤|Deep red soil|0.62|ng:south|0:left
+rwanda|udd78675|camera|街景天空带朦胧色调|Hazy sky tint in panorama|0.62||
+rwanda|udd78675|terrain|起伏丘陵与红色土壤|Rolling hills with reddish soil|0.62||
+rwanda|u25e3abb|posts|白色混凝土里程石|White concrete kilometer marker|0.62||0
+rwanda|u9f69256|terrain|火山山坡与火成岩|Volcanic slope and igneous rock|0.62|rw:northwest|
+senegal|e0802963|camera|白色第四代街景车|White fourth-generation Street View car|0.62|sn:south|0:left
+senegal|84d75601|camera|银车左前方有长天线|Long antenna at left front of silver camera car|0.62||0:left
+south-africa|b755e328|plates|车牌模糊后显绿色|Vehicle plate with greenish blur|0.62|za:fs|
+south-africa|b755e328|plates|车牌模糊后显蓝色|Vehicle plate with bluish blur|0.62|za:kzn|
+south-africa|u4fbda46|buildings|远处成片大型发电厂|Several large power stations in view|0.62|za:mp|0:left
+south-africa|u5862888|soil|干旱地貌伴红色土壤|Arid landscape with red soil|0.62|za:nc|0:left
+south-africa|u2200447|signs|杆上有隐蔽的小广告贴纸|Small discreet ads pasted on utility poles|0.62|za:gp|
+south-africa|u5a50874|terrain|橘黄土壤与干旱灌木山|Orange yellow soil and dry scrub hills|0.62|za:lp|0:left
+tunisia|bd7e036a|road-vehicles|浅绿色跟车|Pale green escort car|0.62|tn:north|0:left
+tunisia|2923cb38|road-vehicles|白色三菱跟车|White Mitsubishi escort car|0.62||0:left
+tunisia|344dd923|terrain|蓝门窗旁有大量棕榈|Many palms beside blue-painted doors and windows|0.62|tn:south|0:left
+uganda|74450bd5|terrain|大草原四周远望山脉|Mountains visible around open grassland|0.62|ug:kidepo|0:left
+uganda|9be60e91|barriers|道路两侧的低矮土障|Low earth berms beside the road|0.62|ug:murchison|0:left
+uganda|286d353a|terrain|茂密热带森林中的宽土路|Wide dirt road through dense tropical forest|0.62|ug:kibale|0:left
+uganda|f8db3bab|terrain|深红土森林旁有陡坡|Steep slope beside red-soil forest road|0.62|ug:elgon|0:left
+uganda|c85d4e33|terrain|蓄水的大型火山口|Large water-filled volcanic crater|0.62|ug:queen-elizabeth|0:left
+eswatini|269ca95c|plants|大片甘蔗田|Large sugarcane fields|0.62|sz:east|0:left
+ghana|6b7c1150|plants|浓密森林与天然棕榈|Dense forest with natural palms|0.62|gh:south|0:left
+ghana|318d17f7|plants|沿海高大棕榈树|Tall palms along the coast|0.62|gh:south|0:left
+reunion|ucb7e4ba|plants|沿海甘蔗种植园|Coastal sugarcane plantations|0.62|re:coast|0:left
+senegal|19b24d95|plants|茂盛的绿植与沿海棕榈|Lush vegetation with coastal palms|0.62|sn:south|
+senegal|84d75601|camera|银车左前方有长天线|Long antenna at left front of silver camera car|0.62|sn:north|
+tanzania|aa7f774b|camera|边境道路有普通街景车|Ordinary Street View car on a border road|0.62|tz:border|
+tunisia|441da8da|terrain|休耕农田与地中海丘陵|Fallow fields among Mediterranean hills|0.62|tn:north|0:left
+tunisia|4aa50fb7|terrain|白色小石散落的干旱沙漠|Arid desert with scattered small white stones|0.62|tn:south|0:left
+madagascar|u403ae92|camera|徒步画面里的人穿深蓝 T 恤和黑太阳镜|Trekker follower in dark blue shirt and black sunglasses|0.62|mg:northwest|0
+madagascar|ud0b40f3|camera|画面中有灰帽浅蓝衬衫的徒步同伴|Trekker companion with gray hat and pale blue shirt|0.62|mg:southwest|
+madagascar|u513ecc1|terrain|俯瞰城市的陡坡与山顶旧宫殿|Steep hillside overlooking city with hilltop palace|0.62|mg:highlands|
+mali|u76a7f83|buildings|清真寺外是大片红土空地|Broad red-dirt clearing outside mosque|0.62|ml:gao|0:left
+mali|ua3766b2|buildings|清真寺室内浅蓝墙和粉红地面|Pale blue mosque walls and pink floor|0.62|ml:bamako|0:left
+mali|d9fd3ce1|terrain|干枯树旁的天然岩石峡谷|Natural rock canyon with dry trees|0.62|ml:canyon|0:left
+rwanda|ua48c55c|camera|街景车为黑色皮卡|Black pickup as Street View car|0.62|rw:kigali|0:left
+rwanda|u2e87e1b|terrain|开阔农田中的缓和丘陵|Open farmland with gentle rolling hills|0.62|rw:northeast|0:left
+rwanda|u3eb0448|markings|鹅卵石铺成的城镇道路|Cobblestone town roads|0.62|rw:south|0:left
+rwanda|u912a773|buildings|高墙围起的豪华别墅群|Luxury villas behind high walls|0.62|rw:kigali|0:left

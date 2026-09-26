@@ -55,6 +55,7 @@ for (const asset of assets) {
   if (!image || asset.sourcePath !== image.sourcePath || asset.sourceUrl !== image.chapterSourceUrl || asset.redistribution !== 'user-directed-test-publication') errors.push(`asset ${asset.id}: source mapping or rights status invalid`)
   if (!asset.path?.startsWith('/source-images/') || !existsSync(resolve(root, 'public', asset.path.slice(1)))) errors.push(`asset ${asset.id}: missing converted file`)
   if (!asset.author || !asset.license || !asset.attribution || !asset.reviewed) errors.push(`asset ${asset.id}: incomplete source or rights metadata`)
+  if (asset.cardCrop !== undefined && asset.cardCrop !== 'left') errors.push(`asset ${asset.id}: invalid card crop`)
 }
 const rawMap = new Map(rawFeatures.map((feature) => [feature.id, feature]))
 const detailIds = new Set(details.map((detail) => detail.featureId))
@@ -76,7 +77,23 @@ for (const row of estimates) {
   for (const id of row.claimIds || []) if (!claimIds.has(id)) errors.push(`playable estimate ${key}: unknown claim ${id}`)
 }
 for (const rule of interactions) if (!locationIds.has(rule.locationId) || !factIds.has(rule.sourceFactId) || rule.featureIds.length < 2 || rule.featureIds.some((id: string) => !playableIds.has(id))) errors.push(`interaction ${rule.id}: invalid`)
-for (const scheme of regions) for (const region of scheme.regions) if (!locationIds.has(region.id) || !region.name?.en || !region.name?.zh) errors.push(`region ${region.id}: invalid`)
+const locationMap = new Map(locations.map((location) => [location.id, location]))
+const schemeCountries = new Set<string>()
+for (const scheme of regions) {
+  if (schemeCountries.has(scheme.countryId) || !locationMap.get(scheme.countryId)?.candidate) errors.push(`region scheme ${scheme.countryId}: duplicate or invalid country`)
+  schemeCountries.add(scheme.countryId)
+  if (!scheme.granularity?.en || !scheme.granularity?.zh || !scheme.note?.en || !scheme.note?.zh) errors.push(`region scheme ${scheme.countryId}: missing bilingual description`)
+  const schemeRegionIds = new Set<string>()
+  for (const region of scheme.regions) {
+    const location = locationMap.get(region.id)
+    if (schemeRegionIds.has(region.id) || !location || location.parentId !== scheme.countryId || (scheme.complete && location.candidate) || !region.name?.en || !region.name?.zh || !region.coverageSource?.startsWith('https://')) errors.push(`region ${region.id}: invalid, duplicated or mismatched parent`)
+    schemeRegionIds.add(region.id)
+  }
+  if (scheme.complete && schemeRegionIds.size < 2) errors.push(`region scheme ${scheme.countryId}: complete scheme needs distinct areas`)
+}
+for (const location of locations) if (location.id.includes(':region:') && !regions.some((scheme) => scheme.regions.some((region: Row) => region.id === location.id))) errors.push(`region ${location.id}: not assigned to a scheme`)
+const focusedCountries = new Set(['loc:canada', ...locations.filter((location) => location.candidate && location.continent === 'Africa').map((location) => location.id)])
+for (const countryId of focusedCountries) if (!regions.some((scheme) => scheme.countryId === countryId && scheme.complete)) errors.push(`focused country ${countryId}: complete regional scheme missing`)
 const photoDir = resolve(root, 'public/source-images')
 const manifest = JSON.parse(await readFile(resolve(photoDir, 'ready.json'), 'utf8')) as Row
 if (manifest.convertedCount !== 5860 || Object.keys(manifest.failures || {}).length) errors.push('image conversion manifest is incomplete')
@@ -100,7 +117,7 @@ if (errors.length) {
     const byLocation = new Map<string, number>()
     for (const estimate of estimates) byLocation.set(estimate.locationId, (byLocation.get(estimate.locationId) || 0) + 1)
     const rows = locations.filter((row) => row.candidate).map((row) => `| ${row.name.en} | ${byLocation.get(row.id) || 0} | ${row.source.path} |`).join('\n')
-    await writeFile(resolve(root, 'docs/DATA_COVERAGE.md'), `# Data coverage\n\nUpdated 2026-09-25. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.\n\n- ${locations.filter((row) => row.candidate).length} candidates and ${facts.length} source text blocks.\n- ${playable.length} reviewed bilingual clue labels: ${illustrated} with adjacent source images, ${playable.length-illustrated} text only.\n- ${estimates.length} active estimates for ${scored} clue IDs across ${chaptersWithEstimates} country/region units. Estimates use qualitative tiers, not measured frequencies.\n- ${images.length} source images converted without cropping; ${(bytes/1e6).toFixed(1)} MB published in the user-directed Pages test build. Their author and redistribution rights remain unverified.\n- ${quarantined} extracted phrase records are retained as raw audit candidates, not displayed or scored.\n\n| Candidate | Active estimate count | Local source chapter |\n|---|---:|---|\n${rows}\n`, 'utf8')
+    await writeFile(resolve(root, 'docs/DATA_COVERAGE.md'), `# Data coverage\n\nUpdated 2026-09-25. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.\n\n- ${locations.filter((row) => row.candidate).length} candidates and ${facts.length} source text blocks.\n- ${playable.length} reviewed bilingual clue labels: ${illustrated} with adjacent source images, ${playable.length-illustrated} text only.\n- ${estimates.length} active estimates for ${scored} clue IDs across ${chaptersWithEstimates} country/region units. Estimates use qualitative tiers, not measured frequencies.\n- ${images.length} source images converted without cropping; ${(bytes/1e6).toFixed(1)} MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.\n- ${quarantined} extracted phrase records are retained as raw audit candidates, not displayed or scored.\n\n| Candidate | Active estimate count | Local source chapter |\n|---|---:|---|\n${rows}\n`, 'utf8')
     console.log('Wrote docs/DATA_COVERAGE.md')
   }
 }

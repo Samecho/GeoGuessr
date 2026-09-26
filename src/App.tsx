@@ -165,7 +165,7 @@ function App() {
           const chosen = observations[clue.id]
           return <article className={`clue-card clue-${clue.id} ${chosen ? 'is-selected' : ''}`} key={clue.id}>
             <button type="button" className="clue-main" onClick={() => selectSeen(clue)} aria-pressed={chosen?.mode === 'seen'}>
-              <span className="photo-wrap"><img src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
+              <span className="photo-wrap"><img className={asset.cardCrop === 'left' ? 'crop-left' : undefined} src={`${import.meta.env.BASE_URL}${asset.path.slice(1)}`} loading="lazy" alt={clue.appearance[language]} /><span className="photo-check">{chosen?.mode === 'seen' ? <Check size={16} /> : null}</span></span>
               <span className="clue-label">{clue.appearance[language]}</span>
             </button>
             <button type="button" className="info-button" onClick={() => openInfo(clue)} aria-label={`${L.info}: ${clue.appearance[language]}`}><Info size={17} /></button>

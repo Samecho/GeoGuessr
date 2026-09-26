@@ -62,8 +62,8 @@ def main():
             photo_assets[image_id] = {
                 'id': image_id, 'path': f"/source-images/{image_id}{'.svg' if image['sourcePath'].lower().endswith('.svg') else '.webp'}",
                 'sourceUrl': image['chapterSourceUrl'], 'sourcePath': image['sourcePath'],
-                'author': 'Image author unverified in local archive',
-                'license': 'Original image rights unverified; user-directed test publication',
+                'author': 'Tutorial image; owner reports authorization from its author',
+                'license': 'Owner-reported permission for this project',
                 'licenseUrl': image['chapterSourceUrl'],
                 'attribution': image['chapterSourceUrl'],
                 'redistribution': 'user-directed-test-publication', 'reviewed': '2026-09-25',
@@ -174,6 +174,8 @@ def main():
     write('playable-interactions.json', 'interactions', playable_interactions)
     write('playable-clue-info.json', 'clues', details)
     write('source-photo-assets.json', 'assets', list(photo_assets.values()))
+    from apply_focused_review import main as apply_focused_review
+    apply_focused_review()
     print(json.dumps({'playableClues': len(curated), 'withAdjacentPhotos': sum(bool(x['assetIds']) for x in curated), 'textOnly': sum(not x['assetIds'] for x in curated), 'reviewedCardPhotoFiles': len(photo_assets), 'sourceImageRefsLinked': len(set(iid for x in curated for iid in x['sourceImageIds'])), 'estimates': len(playable_estimates), 'interactions': len(playable_interactions), 'sourceFeaturesQuarantined': len(raw)-len(raw_to_curated), 'curationPhrasesNotFound': len(missing), 'extremeEstimatesWithheld': len(withheld), 'extremeEstimatesReviewed': len(used_reviews)}, ensure_ascii=False))
 
 
