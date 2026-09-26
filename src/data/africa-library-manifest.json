@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "libraryId": "africa",
+  "candidateCountryIds": [
+    "loc:botswana",
+    "loc:eswatini",
+    "loc:ghana",
+    "loc:kenya",
+    "loc:lesotho",
+    "loc:namibia",
+    "loc:nigeria",
+    "loc:reunion",
+    "loc:rwanda",
+    "loc:sao-tome-and-principe",
+    "loc:senegal",
+    "loc:south-africa",
+    "loc:tunisia",
+    "loc:uganda"
+  ],
+  "clueCount": 93,
+  "illustratedCount": 55,
+  "reviewed": "2026-09-26"
+}

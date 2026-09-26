@@ -129,8 +129,8 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
   return <section className="custom-editor" aria-label={T.title}>
     <div className="custom-editor-head"><div><span className="section-kicker">{T.title}</span><h2>{T.title}</h2><p>{T.note}</p></div><div className="custom-editor-actions">
       <button type="button" onClick={() => { setDraft(newDraft()); setMessage('') }}><Plus size={15} /> {T.new}</button>
-      <button type="button" onClick={exportJson}><Download size={15} /> {T.export}</button>
-      <button type="button" onClick={() => jsonInput.current?.click()}><Upload size={15} /> {T.import}</button>
+      <button type="button" onClick={exportJson}><Upload size={15} /> {T.export}</button>
+      <button type="button" onClick={() => jsonInput.current?.click()}><Download size={15} /> {T.import}</button>
       <input ref={jsonInput} type="file" accept=".json,application/json" className="sr-only" aria-label={T.import} onChange={(event) => void importJson(event.target.files?.[0])} />
     </div></div>
     {message && <p className="custom-message" role="status">{message}</p>}

@@ -10,7 +10,7 @@
     "test": "vitest run",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "data:validate": "tsx scripts/validate-playable.ts",
+    "data:validate": "tsx scripts/validate-playable.ts && tsx scripts/validate-africa-library.ts",
     "test:e2e": "playwright test",
     "data:report": "tsx scripts/validate-playable.ts --write-report",
     "data:focus-report": "python scripts/report_focused_review.py",

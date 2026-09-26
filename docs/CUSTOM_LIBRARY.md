@@ -1,6 +1,6 @@
 # Personal clue library
 
-The **My library / 我的题库** tab is separate from the published official library. Switching tabs preserves each tab's selected observations, but only the active library's clues and weights enter its chart. The geographic hard scope is shared. No account, server, network upload, or runtime AI is involved.
+The **Edit library / 编辑题库** tab manages a personal library. Select **My library / 我的题库** in the **Match clues / 匹配线索** tab to use it for scoring. Global, Africa, and personal libraries preserve separate selected observations; only the chosen library's clues and weights enter its chart. The geographic hard scope is shared. No account, server, network upload, or runtime AI is involved.
 
 Create a clue by entering an English or Chinese visual label, choosing its existing category, and adding a country or a region from a complete published region scheme. The other language falls back to the entered label if left blank. Images can be uploaded, dropped, pasted into the image area with Ctrl+V, or read from the clipboard button. The browser resizes each image to at most 1280 pixels and stores it as WebP. PNG, JPEG, and WebP are accepted; SVG and executable image formats are rejected. A clue can also be text only.
 

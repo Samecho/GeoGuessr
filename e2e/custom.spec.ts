@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 
 const openCustom = async (page: import('@playwright/test').Page) => {
   await page.goto('/')
-  await page.getByRole('button', { name: 'My library' }).click()
+  await page.getByRole('button', { name: 'Edit library' }).click()
   await expect(page.getByRole('heading', { name: 'My clue library' })).toBeVisible()
 }
 
@@ -22,7 +22,8 @@ test('custom clue with uploaded image, Alberta weight, JSON export/import and lo
   await expect(page.locator('.custom-dropzone img')).toBeVisible()
   await page.getByRole('button', { name: 'Create clue' }).click()
   await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(1)
-  await page.getByRole('button', { name: 'Hide editor' }).click()
+  await page.getByRole('button', { name: 'Match clues' }).click()
+  await page.getByRole('button', { name: 'My library' }).click()
   const card = page.locator('.clue-card').filter({ hasText: 'Black Street View car' })
   await expect(card).toBeVisible()
   await card.locator('.info-button').click()
@@ -36,12 +37,12 @@ test('custom clue with uploaded image, Alberta weight, JSON export/import and lo
   await expect(page.locator('.region-card [data-rank-id]').first()).toHaveAttribute('data-rank-id', 'loc:canada:region:ca-ab')
   const regionValues = await page.locator('.region-card [data-rank-id]').evaluateAll((nodes) => nodes.map((node) => Number(node.querySelector('.rank-value')?.textContent?.replace('%', ''))))
   expect(regionValues.reduce((sum, value) => sum + value, 0)).toBeCloseTo(100)
-  await page.getByRole('button', { name: 'Official library' }).click()
+  await page.getByRole('button', { name: 'Global library' }).click()
   await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
   await expect(page.locator('.selection-chip')).toHaveCount(0)
   await page.getByRole('button', { name: 'My library' }).click()
   await expect(page.locator('.selection-chip')).toHaveCount(1)
-  await page.getByRole('button', { name: 'Edit my library' }).click()
+  await page.getByRole('button', { name: 'Edit library' }).click()
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export JSON' }).click()
   const download = await downloadPromise
@@ -51,7 +52,7 @@ test('custom clue with uploaded image, Alberta weight, JSON export/import and lo
   expect(exported.clues[0].imageDataUrl).toMatch(/^data:image\/webp;base64,/)
   expect(exported.clues[0].weights[0].locationId).toBe('loc:canada:region:ca-ab')
   await page.reload()
-  await page.getByRole('button', { name: 'My library' }).click()
+  await page.getByRole('button', { name: 'Edit library' }).click()
   await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(1)
   await page.getByRole('button', { name: 'Delete: Black Street View car' }).click()
   await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(0)
@@ -88,7 +89,8 @@ test('custom editor remains usable at a narrow viewport', async ({ page }) => {
   await page.getByRole('button', { name: 'Add location' }).click()
   await page.getByRole('button', { name: 'Create clue' }).click()
   await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(1)
-  await page.getByRole('button', { name: 'Hide editor' }).click()
+  await page.getByRole('button', { name: 'Match clues' }).click()
+  await page.getByRole('button', { name: 'My library' }).click()
   await expect(page.locator('.text-clue').filter({ hasText: 'Black camera car' })).toBeVisible()
   await page.screenshot({ path: 'test-results/custom-library-mobile.jpg', type: 'jpeg', quality: 65 })
 })

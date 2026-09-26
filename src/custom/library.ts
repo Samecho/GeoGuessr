@@ -73,12 +73,12 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
   return { schemaVersion: 1, kind: CUSTOM_KIND, clues }
 }
 
-export function customClueToCard(item: CustomClue): Clue {
+export function customClueToCard(item: CustomClue, source: 'personal' | 'africa' = 'personal'): Clue {
   return {
     id: item.id, categoryId: item.categoryId, groupId: item.id, appearance: item.appearance, formalName: item.appearance,
-    identify: { en: 'Your own visual observation.', zh: '你添加的视觉观察。' },
-    geography: { en: 'The location multipliers below are your estimates.', zh: '地点乘数由你自行设定。' },
-    strength: { en: 'Custom likelihood multipliers; not measured geographic frequencies.', zh: '自定义似然乘数；不是实测地理频率。' },
+    identify: source === 'africa' ? { en: 'Select when this visual feature is actually observed.', zh: '实际看见该视觉特征时选择。' } : { en: 'Your own visual observation.', zh: '你添加的视觉观察。' },
+    geography: source === 'africa' ? { en: 'The supported locations are listed below.', zh: '支持的地点列于下方。' } : { en: 'The location multipliers below are your estimates.', zh: '地点乘数由你自行设定。' },
+    strength: source === 'africa' ? { en: 'Curated initial likelihood estimates, not measured geographic frequencies.', zh: '整理后的初始似然估计，并非实测地理频率。' } : { en: 'Custom likelihood multipliers; not measured geographic frequencies.', zh: '自定义似然乘数；不是实测地理频率。' },
     caveat: { en: 'Unspecified places stay at 1×. An absent observation uses its separate absent multiplier.', zh: '未设置的地点保持 1×。明确未出现时使用单独的缺失乘数。' },
     sourceUrls: [], reviewed: '', assetIds: item.imageDataUrl ? [item.id] : [], tags: [item.categoryId], exclusionAllowed: true,
     cardCrop: item.cardCrop,
