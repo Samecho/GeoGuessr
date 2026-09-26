@@ -44,7 +44,7 @@ report = '''# Canada and Africa focused review
 
 Updated 2026-09-25. Counts below are generated from the current playable data and the paragraph review table. A source block or image counted here is **not** necessarily a usable visual clue. “Active clues” counts any clue with a country or regional likelihood for that place, including shared clues from other chapters. “Focused rows” counts source-backed review decisions; repeated wording can map to one stable clue ID.
 
-The local index contains 18 African chapters. This table covers every one of those chapters plus Canada. It cannot establish final coverage for African countries absent from the source archive.
+The supplied local index defines the requested candidate scope. This table covers every one of its 18 African chapters plus Canada. It reports content depth within that scope, not a broader sovereign-state inventory.
 
 | Chapter | Source blocks | Source images | Focused rows | Active clues | Illustrated | Text | Estimates | Conditional regions |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -53,7 +53,7 @@ The local index contains 18 African chapters. This table covers every one of tho
 ## Outstanding review
 
 - The tutorial is qualitative; all prevalence numbers are initial estimates and are marked `measured: false`.
-- The Africa scope lacks source chapters for countries outside these 18. No geographic facts were fabricated for them.
+- All 18 African chapters in the supplied documentation are represented. Further work concerns clue depth, photo matching and estimate calibration within the requested scope.
 - Image shortage varies by chapter. Some nearby source images are maps, answer labels, repeated examples, or do not visibly show the chosen feature. Text cards remain selectable and scored.
 - Tanzania, Egypt and Réunion have fewer usable illustrated observations than the larger chapters. Their geography is especially limited to the source's documented coverage.
 - Region schemes use provinces where supported (Canada, South Africa) and broad zones or documented coverage clusters elsewhere. Their uniform within-country prior is an engineering assumption.
