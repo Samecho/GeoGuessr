@@ -22,6 +22,7 @@ export type Observation = { clueId: string; mode: 'seen' | 'excluded'; certainty
 export type EvidenceEstimate = {
   featureId: string; locationId: string; pPresent: number; band: string
   basis: string; basisReason: string; status: 'initial-estimate'; measured: false; sourceFactId: string; sourceFactIds?: string[]; claimIds?: string[]
+  sourceRelation?: 'supports' | 'opposes' | 'explicit-absence' | 'inferred-parent' | 'mixed' | 'unclassified'
 }
 export type InteractionRule = {
   id: string; featureIds: string[]; locationId: string; relation: 'interaction'

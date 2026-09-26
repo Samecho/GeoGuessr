@@ -8,7 +8,7 @@ type ClueDetails = {
   featureId: string
   sourceNotes: { section: string; excerpt: string; url: string }[]
   sourceUrls: string[]
-  relations: Record<'supports' | 'opposes' | 'explicit-absence', string[]>
+  relations: Record<'supports' | 'opposes' | 'explicit-absence' | 'inferred-parent', string[]>
 }
 type DetailFile = { schemaVersion: number; clues: ClueDetails[] }
 const locations = (locationsFile as { locations: Location[] }).locations
@@ -26,6 +26,7 @@ const relationLabel: Record<string, Text2> = {
   supports: { en: 'source supports', zh: '原文支持' },
   opposes: { en: 'source opposes', zh: '原文反对' },
   'explicit-absence': { en: 'source explicitly notes absence', zh: '原文明确提到缺少' },
+  'inferred-parent': { en: 'parent location inferred from regional source', zh: '由地区原文推及上级地点' },
 }
 
 export async function loadClueInfo(clue: Clue, estimates: EvidenceEstimate[]): Promise<Clue> {
@@ -34,7 +35,7 @@ export async function loadClueInfo(clue: Clue, estimates: EvidenceEstimate[]): P
   const fittedCount = estimates.filter((estimate) => estimate.featureId === clue.id).length
   const en: string[] = []
   const zh: string[] = []
-  for (const relation of ['supports', 'opposes', 'explicit-absence'] as const) {
+  for (const relation of ['supports', 'opposes', 'explicit-absence', 'inferred-parent'] as const) {
     const places = (detail?.relations[relation] || []).map((id) => locationById.get(id)).filter((place): place is Location => !!place)
     if (!places.length) continue
     en.push(`${relationLabel[relation].en}: ${places.map((place) => place.name.en).join(', ')}`)

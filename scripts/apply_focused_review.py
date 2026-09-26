@@ -89,6 +89,8 @@ def main():
     alias_by_focused = {(alias['categoryId'], alias['focusedZh']): alias for alias in aliases}
     if len(alias_by_focused) != len(aliases):
         raise ValueError('Duplicate focused clue alias')
+    for detail in details:
+        detail['relations'].setdefault('inferred-parent', [])
     by_detail = {detail['featureId']: detail for detail in details}
     by_estimate = {(row['featureId'], row['locationId']): row for row in estimates}
     facts_by_chapter = {}
@@ -171,7 +173,7 @@ def main():
             clues.append(clue)
             by_clue[key] = clue
             detail = {'featureId': clue_id, 'sourceNotes': [], 'sourceUrls': [],
-                      'relations': {'supports': [], 'opposes': [], 'explicit-absence': []}}
+                      'relations': {'supports': [], 'opposes': [], 'explicit-absence': [], 'inferred-parent': []}}
             details.append(detail)
             by_detail[clue_id] = detail
         elif clue['appearance']['en'] != en:
@@ -218,7 +220,7 @@ def main():
                 by_asset[image_id]['cardCrop'] = card_crop
             photo_count += 1
 
-        def add_estimate(target_id: str, probability: float, reason: str):
+        def add_estimate(target_id: str, probability: float, reason: str, source_relation: str = 'supports'):
             estimate_key = (clue['id'], target_id)
             row = by_estimate.get(estimate_key)
             if row is None:
@@ -227,11 +229,13 @@ def main():
                     'band': 'paragraph-reviewed-qualitative-estimate', 'basis': 'focused-local-paragraph-review-v1',
                     'basisReason': reason, 'status': 'initial-estimate', 'measured': False,
                     'sourceFactId': fact['id'], 'sourceFactIds': [fact['id']], 'claimIds': [],
+                    'sourceRelation': source_relation,
                 }
                 estimates.append(row)
                 by_estimate[estimate_key] = row
             else:
                 unique_append(row.setdefault('sourceFactIds', [row['sourceFactId']]), fact['id'])
+                row['sourceRelation'] = source_relation
                 if row['basis'] == 'focused-local-paragraph-review-v1':
                     # Multiple source paragraphs about one place do not add two
                     # independent likelihood terms. Keep the stronger reviewed
@@ -240,9 +244,9 @@ def main():
                 else:
                     row.update({'pPresent': probability, 'band': 'paragraph-reviewed-qualitative-estimate',
                                 'basis': 'focused-local-paragraph-review-v1', 'basisReason': reason})
-            relation = 'supports' if probability > 0.5 else 'opposes' if probability < 0.5 else None
-            if relation:
-                unique_append(detail['relations'][relation], target_id)
+            # Keep a direct paragraph mention and its inferred parent separate,
+            # regardless of whether the occurrence estimate is below 50%.
+            unique_append(detail['relations'][source_relation], target_id)
 
         rationale = f"Local paragraph {fact['source']['path']}#{fact['source']['elementId']}; qualitative occurrence estimate, not a measured frequency."
         add_estimate(location_id, p_present, rationale)
@@ -253,7 +257,7 @@ def main():
             region_count = len(next(scheme['regions'] for scheme in schemes if scheme['countryId'] == country_id))
             parent_probability = 0.5 + (p_present - 0.5) / region_count
             if (clue['id'], country_id) not in by_estimate:
-                add_estimate(country_id, parent_probability, rationale + ' Parent-country occurrence marginalizes one documented region under the uniform regional prior; other regions remain unknown.')
+                add_estimate(country_id, parent_probability, rationale + ' Parent-country occurrence marginalizes one documented region under the uniform regional prior; other regions remain unknown.', 'inferred-parent')
 
     comparison_count = 0
     for line_no, line in enumerate((ROOT / 'scripts/focused-comparisons.tsv').read_text(encoding='utf-8').splitlines(), 1):
@@ -303,6 +307,7 @@ def main():
                 row.update({'pPresent': p_present, 'band': 'paragraph-reviewed-comparative-estimate',
                             'basis': 'focused-local-comparison-v1', 'basisReason': basis_reason})
                 unique_append(row.setdefault('sourceFactIds', [row['sourceFactId']]), fact['id'])
+            row['sourceRelation'] = 'opposes'
             comparison_count += 1
             detail = by_detail[clue['id']]
             unique_append(detail['relations']['opposes'], target_id)
@@ -337,7 +342,8 @@ def main():
                 row = {'featureId': clue['id'], 'locationId': target_id, 'claimIds': []}
                 estimates.append(row)
                 by_estimate[key] = row
-            row.update({'pPresent': probability, 'band': 'explicit-driving-side-qualitative-estimate',
+            row.update({'pPresent': probability, 'sourceRelation': 'supports' if side == stated_side else 'opposes',
+                        'band': 'explicit-driving-side-qualitative-estimate',
                         'basis': 'reviewed-driving-side-v1', 'basisReason': reason,
                         'status': 'initial-estimate', 'measured': False,
                         'sourceFactId': fact_id, 'sourceFactIds': [fact_id]})
@@ -444,6 +450,16 @@ def main():
                          'certainSpecificity': tier['certainSpecificity'], 'formalName': clue['appearance'],
                          'sourceFactId': fact_id, 'basisReason': rationale, 'measured': False})
         profiled_ids.add(clue['id'])
+
+    # Keep source polarity separate from estimated prevalence. A low chance of
+    # seeing a feature is not the same as a source claiming it is absent.
+    for row in estimates:
+        if row.get('sourceRelation'):
+            continue
+        place = row['locationId']
+        relations = by_detail[row['featureId']]['relations']
+        found = [kind for kind in ('supports', 'opposes', 'explicit-absence', 'inferred-parent') if place in relations[kind]]
+        row['sourceRelation'] = found[0] if len(found) == 1 else 'mixed' if found else 'unclassified'
 
     write('locations.json', 'locations', locations, 4)
     write('regions.json', 'regionSchemes', schemes, 4)

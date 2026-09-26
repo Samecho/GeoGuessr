@@ -84,6 +84,17 @@ export function rankCandidates(
     .sort((a, b) => a.clueId.localeCompare(b.clueId))
   const model = normalizeModel(options.model)
   const byFeatureLocation = estimateMap(estimates, options)
+  // A rare positive mention must not become negative evidence solely because
+  // the unmeasured shared background was initialized to a higher value.
+  // Within the active candidate set, use the lowest documented support as
+  // a conservative reference when it is below the default background.
+  const candidateSet = new Set(ids)
+  const supportedMinimum = new Map<string, number>()
+  for (const estimate of estimates) {
+    if (!['supports', 'inferred-parent'].includes(estimate.sourceRelation || '') || !candidateSet.has(estimate.locationId)) continue
+    const previous = supportedMinimum.get(estimate.featureId)
+    supportedMinimum.set(estimate.featureId, previous === undefined ? estimate.pPresent : Math.min(previous, estimate.pPresent))
+  }
   const components = unionFindComponents(observations, options.dependenceGroups)
   const activeInteractions = (options.interactions || []).filter((rule) => rule.condition === 'all-seen' && rule.featureIds.length > 1)
   const scores = ids.map((id) => {
@@ -91,7 +102,8 @@ export function rankCandidates(
     for (const component of components) {
       const deltas = component.map((observation) => {
         const profile = options.evidenceProfiles?.get(observation.clueId)
-        const background = profile?.unknownPrevalence ?? model.unknownLocationFeature
+        const background = Math.min(profile?.unknownPrevalence ?? model.unknownLocationFeature,
+          supportedMinimum.get(observation.clueId) ?? 1)
         const p = byFeatureLocation.get(`${id}\u0000${observation.clueId}`) ?? background
         const observedLog = Math.log(reportProbability(p, observation, model, profile))
         const backgroundLog = Math.log(reportProbability(background, observation, model, profile))

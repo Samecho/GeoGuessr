@@ -50,6 +50,20 @@ describe('probability evidence model', () => {
     expect(share(absentCertain,'A')).toBeLessThan(0.5)
   })
 
+  it('does not turn a rare source-supported occurrence into opposition to unknown places', () => {
+    const low = { ...estimate('rare', 'A', 0.34), sourceRelation: 'supports' as const }
+    const frequent = { ...estimate('rare', 'B', 0.62), sourceRelation: 'supports' as const }
+    const ranked = rankCandidates(['A', 'B', 'UNKNOWN'], [low, frequent], [seen('rare')])
+    expect(share(ranked, 'A')).toBeCloseTo(share(ranked, 'UNKNOWN'))
+    expect(share(ranked, 'B')).toBeGreaterThan(share(ranked, 'A'))
+    const alone = rankCandidates(['A', 'UNKNOWN'], [low], [seen('rare')])
+    expect(share(alone, 'A')).toBeCloseTo(0.5)
+    const opposed = rankCandidates(['A', 'UNKNOWN'], [
+      { ...estimate('rare', 'A', 0.03), sourceRelation: 'opposes' },
+    ], [seen('rare')])
+    expect(share(opposed, 'A')).toBeLessThan(0.5)
+  })
+
   it('allows independent evidence to overcome weak opposing evidence', () => {
     const data = [estimate('oppose','A',0.1),estimate('oppose','B',0.9),estimate('distinctive','A',0.99),estimate('distinctive','B',0.01)]
     const result = rankCandidates(['A','B'], data, [seen('oppose'),seen('distinctive')])

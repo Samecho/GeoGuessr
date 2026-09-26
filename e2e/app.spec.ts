@@ -230,3 +230,22 @@ test('plate-color cards frame the corresponding plate in the shared source monta
   await expect(yellow.locator('.photo-wrap img')).toHaveClass(/crop-bottom/)
   await yellow.screenshot({ path: 'test-results/yellow-plate-card.jpg', type: 'jpeg', quality: 90 })
 })
+
+
+test('green sign-back source says British Columbia is supported', async ({ page }) => {
+  await page.goto('/')
+  await clueSearch(page).fill('Green back of a road sign')
+  const card = page.locator('.clue-card').filter({ hasText: 'Green back of a road sign' })
+  await expect(card).toHaveCount(1)
+  await card.locator('.info-button').click()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toContainText('source supports: British Columbia')
+  await expect(dialog).toContainText('parent location inferred from regional source: Canada')
+  await expect(dialog).not.toContainText('source opposes: British Columbia')
+  await dialog.getByRole('button', { name: 'Close' }).click()
+  await page.getByRole('button', { name: 'Switch to Simplified Chinese' }).click()
+  await page.getByRole('searchbox').fill('路牌背面为绿色')
+  await page.locator('.clue-card').filter({ hasText: '路牌背面为绿色' }).locator('.info-button').click()
+  await expect(dialog).toContainText('原文支持：不列颠哥伦比亚省')
+  await expect(dialog).toContainText('由地区原文推及上级地点：加拿大')
+})

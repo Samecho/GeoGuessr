@@ -98,11 +98,19 @@ for (const profile of profiles) {
   }
 }
 for (const asset of assets) if (!playable.some((clue) => clue.assetIds.includes(asset.id))) errors.push(`asset ${asset.id}: not attached to a playable clue`)
+const detailByFeature = new Map(details.map((detail) => [detail.featureId, detail]))
 const estimateKeys = new Set<string>()
 for (const row of estimates) {
   const key = `${row.featureId}/${row.locationId}`
-  if (estimateKeys.has(key) || !playableIds.has(row.featureId) || !locationIds.has(row.locationId) || !factIds.has(row.sourceFactId) || !Number.isFinite(row.pPresent) || row.pPresent <= 0 || row.pPresent >= 1 || row.measured !== false) errors.push(`playable estimate ${key}: invalid`)
+  if (estimateKeys.has(key) || !playableIds.has(row.featureId) || !locationIds.has(row.locationId) || !factIds.has(row.sourceFactId) || !Number.isFinite(row.pPresent) || row.pPresent <= 0 || row.pPresent >= 1 || row.measured !== false || !['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'mixed', 'unclassified'].includes(row.sourceRelation)) errors.push(`playable estimate ${key}: invalid`)
   estimateKeys.add(key)
+  const sourcePlaces = detailByFeature.get(row.featureId)?.relations
+  if (row.sourceRelation === 'supports' && !sourcePlaces?.supports?.includes(row.locationId))
+    errors.push(`playable estimate ${key}: source support missing from Info`)
+  if (row.sourceRelation === 'inferred-parent' && !sourcePlaces?.['inferred-parent']?.includes(row.locationId))
+    errors.push(`playable estimate ${key}: inferred parent missing from Info`)
+  if (row.sourceRelation === 'opposes' && !sourcePlaces?.opposes?.includes(row.locationId))
+    errors.push(`playable estimate ${key}: source opposition missing from Info`)
   for (const id of row.claimIds || []) if (!claimIds.has(id)) errors.push(`playable estimate ${key}: unknown claim ${id}`)
 }
 for (const rule of interactions) if (!locationIds.has(rule.locationId) || !factIds.has(rule.sourceFactId) || rule.featureIds.length < 2 || rule.featureIds.some((id: string) => !playableIds.has(id))) errors.push(`interaction ${rule.id}: invalid`)

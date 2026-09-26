@@ -154,6 +154,19 @@ describe('Canada and Africa paragraph review', () => {
     expect(regions[0].share).toBeGreaterThan(0.9)
   })
 
+  it('treats the green-backed road sign as a weak British Columbia mention, not contrary evidence', () => {
+    const green = clue('Green back of a road sign')!
+    const bc = estimate(green.appearance.en, 'loc:canada:region:ca-bc')!
+    expect(bc.pPresent).toBe(0.34)
+    expect(bc.sourceRelation).toBe('supports')
+    expect(estimate(green.appearance.en, 'loc:canada')?.sourceRelation).toBe('inferred-parent')
+    const regions = rankCandidates(['loc:canada:region:ca-bc', 'loc:canada:region:ca-on'], estimates,
+      [{ clueId: green.id, mode: 'seen', certainty: 'certain' }],
+      { scope: 'region', parentId: 'loc:canada', parentByLocation })
+    expect(regions.find((row) => row.id === 'loc:canada:region:ca-bc')!.share)
+      .toBeGreaterThanOrEqual(regions.find((row) => row.id === 'loc:canada:region:ca-on')!.share)
+  })
+
   it('uses an explicit Canadian and American sign-word contrast', () => {
     const maximum = clue('MAXIMUM on a speed sign')!
     const ranked = rankCandidates(['loc:canada', 'loc:united-states'], estimates,
