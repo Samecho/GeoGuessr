@@ -167,6 +167,28 @@ describe('Canada and Africa paragraph review', () => {
       .toBeGreaterThanOrEqual(regions.find((row) => row.id === 'loc:canada:region:ca-on')!.share)
   })
 
+  it('keeps reviewed rare appearances as source support and removes mismatched excerpts', () => {
+    for (const [label, locationId, probability] of [
+      ['White edge line', 'loc:qatar', 0.82],
+      ['White letters on black plate', 'loc:singapore', 0.82],
+      ['Yellow chevron on black', 'loc:luxembourg', 0.82],
+      ['Flat terrain', 'loc:slovakia', 0.62],
+      ['Pine trees', 'loc:philippines', 0.62],
+      ['Farmland', 'loc:united-states', 0.14],
+    ] as const) {
+      expect(estimate(label, locationId)?.sourceRelation).toBe('supports')
+      expect(estimate(label, locationId)?.pPresent).toBe(probability)
+    }
+    expect(estimate('Russian text', 'loc:russia')).toBeUndefined()
+    expect(estimate('Taxi', 'loc:indonesia')).toBeUndefined()
+    expect(estimate('Hindi text', 'loc:nepal')).toBeUndefined()
+    expect(estimates.filter((row) => row.sourceRelation === 'opposes').every((row) => row.pPresent < 0.5)).toBe(true)
+    expect(estimates.some((row) => row.sourceRelation === 'mixed' || row.sourceRelation === 'unclassified')).toBe(false)
+    expect(estimate('Tamil text', 'loc:sri-lanka')?.sourceRelation).toBe('supports')
+    expect(estimate('Finnish text', 'loc:sweden')).toBeUndefined()
+    expect(estimate('Wetland', 'loc:brazil')?.sourceRelation).toBe('inferred-parent')
+  })
+
   it('uses an explicit Canadian and American sign-word contrast', () => {
     const maximum = clue('MAXIMUM on a speed sign')!
     const ranked = rankCandidates(['loc:canada', 'loc:united-states'], estimates,

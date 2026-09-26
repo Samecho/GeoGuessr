@@ -16,7 +16,13 @@ This pass visually reviewed a contact sheet of every illustrated clue card, comp
 | Green back of a road sign | The British Columbia source paragraph says sign backs may be green; it does not oppose British Columbia or Canada. | Direct source support for British Columbia and the inferred parent Canada relation are separate from estimated occurrence. The lower-than-50% estimate no longer appears as “source opposes” or pushes an undocumented province above British Columbia. |
 | DUR on stop sign | Substring matching had connected the Turkish word to unrelated place names. | Only the cited Turkish stop-sign paragraph remains attached. |
 
-The current playable library has 489 bilingual clues: 324 illustrated and 165 text-only; 451 carry active likelihood estimates across 1,192 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
+### Follow-up source-polarity audit
+
+The 148 entries previously labelled as opposing evidence were grouped by provenance. The 95 previously paragraph-reviewed comparisons and 31 driving-side opposites remain explicit; the one manual Curaçao comparison remains. This pass checked the 21 legacy importer oppositions against their cited local paragraphs and recorded them in `scripts/reviewed-source-relations.json`. Seventeen were actually positive appearances, often rare or limited to one region, and four excerpt-to-observation links were removed. Examples: Qatar usually uses a white edge line; most Singapore plates are black with white characters; Luxembourg uses black-backed yellow chevrons; an excerpt about Russian in eastern Estonia does not establish a Russia-wide estimate. The correction file is reapplied on every data build and rejects changed source fact IDs. Validation now rejects an opposing label paired with a majority occurrence estimate.
+
+This pass also checked 23 formerly mixed relations and six unclassified region-derived parent estimates. Five unrelated observation links were removed; source-supported appearances and inferred country parents now have distinct labels. Active estimates no longer carry mixed or unclassified relation labels. This is still not a complete semantic audit of every clue: broad wording/source pairings and visual variants need further manual review. The Info view uses the reviewed per-estimate relation rather than old overlapping raw relation lists.
+
+The current playable library has 489 bilingual clues: 324 illustrated and 165 text-only; 451 carry active likelihood estimates across 1,183 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
 
 ## Open review
 

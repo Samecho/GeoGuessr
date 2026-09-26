@@ -4,7 +4,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 
 - 133 candidates and 8466 source text blocks.
 - 489 reviewed bilingual clue labels: 324 with adjacent source images, 165 text only.
-- 1192 active estimates for 451 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
+- 1183 active estimates for 451 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
 - 5860 source images converted without cropping; 351.0 MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.
 - 5317 extracted phrase records are retained as raw audit candidates, not displayed or scored.
 
@@ -20,7 +20,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Mali | 15 | tuxundoc/非洲/mali/index.html |
 | Namibia | 28 | tuxundoc/非洲/namibia/index.html |
 | Nigeria | 20 | tuxundoc/非洲/nigeria/index.html |
-| Réunion | 9 | tuxundoc/非洲/reunion/index.html |
+| Réunion | 8 | tuxundoc/非洲/reunion/index.html |
 | Rwanda | 21 | tuxundoc/非洲/rwanda/index.html |
 | Senegal | 17 | tuxundoc/非洲/senegal/index.html |
 | South Africa | 35 | tuxundoc/非洲/south-africa/index.html |
@@ -35,7 +35,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Cambodia | 8 | tuxundoc/亚洲/cambodia/index.html |
 | China | 0 | tuxundoc/亚洲/china/index.html |
 | India | 11 | tuxundoc/亚洲/india/index.html |
-| Indonesia | 9 | tuxundoc/亚洲/indonesia/index.html |
+| Indonesia | 8 | tuxundoc/亚洲/indonesia/index.html |
 | Iraq | 0 | tuxundoc/亚洲/iraq/index.html |
 | Israel West Bank | 5 | tuxundoc/亚洲/israel-west-bank/index.html |
 | Japan | 8 | tuxundoc/亚洲/japan/index.html |
@@ -46,7 +46,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Lebanon | 4 | tuxundoc/亚洲/lebanon/index.html |
 | Malaysia | 4 | tuxundoc/亚洲/malaysia/index.html |
 | Mongolia | 9 | tuxundoc/亚洲/mongolia/index.html |
-| Nepal | 10 | tuxundoc/亚洲/nepal/index.html |
+| Nepal | 9 | tuxundoc/亚洲/nepal/index.html |
 | Oman | 8 | tuxundoc/亚洲/oman/index.html |
 | Pakistan | 4 | tuxundoc/亚洲/pakistan/index.html |
 | Philippines | 9 | tuxundoc/亚洲/philippines/index.html |
@@ -64,15 +64,15 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Azores | 2 | tuxundoc/欧洲/azores/index.html |
 | Belarus | 2 | tuxundoc/欧洲/belarus/index.html |
 | Belgium | 5 | tuxundoc/欧洲/belgium/index.html |
-| Bulgaria | 9 | tuxundoc/欧洲/bulgaria/index.html |
-| Croatia | 6 | tuxundoc/欧洲/croatia/index.html |
+| Bulgaria | 8 | tuxundoc/欧洲/bulgaria/index.html |
+| Croatia | 5 | tuxundoc/欧洲/croatia/index.html |
 | Czechia | 3 | tuxundoc/欧洲/czechia/index.html |
 | Denmark | 4 | tuxundoc/欧洲/denmark/index.html |
 | Estonia | 4 | tuxundoc/欧洲/estonia/index.html |
 | Faroe Islands | 0 | tuxundoc/欧洲/faroe-islands/index.html |
 | Finland | 7 | tuxundoc/欧洲/finland/index.html |
 | France | 5 | tuxundoc/欧洲/france/index.html |
-| Germany | 5 | tuxundoc/欧洲/germany/index.html |
+| Germany | 4 | tuxundoc/欧洲/germany/index.html |
 | Gibraltar | 4 | tuxundoc/欧洲/gibraltar/index.html |
 | Greece | 2 | tuxundoc/欧洲/greece/index.html |
 | Hungary | 4 | tuxundoc/欧洲/hungary/index.html |
@@ -91,18 +91,18 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Montenegro | 1 | tuxundoc/欧洲/montenegro/index.html |
 | Netherlands | 9 | tuxundoc/欧洲/netherlands/index.html |
 | North Macedonia | 6 | tuxundoc/欧洲/north-macedonia/index.html |
-| Norway | 3 | tuxundoc/欧洲/norway/index.html |
+| Norway | 2 | tuxundoc/欧洲/norway/index.html |
 | Poland | 4 | tuxundoc/欧洲/poland/index.html |
 | Portugal | 5 | tuxundoc/欧洲/portugal/index.html |
 | Romania | 5 | tuxundoc/欧洲/romania/index.html |
-| Russia | 6 | tuxundoc/欧洲/russia/index.html |
+| Russia | 5 | tuxundoc/欧洲/russia/index.html |
 | San Marino | 1 | tuxundoc/欧洲/san-marino/index.html |
 | Serbia | 3 | tuxundoc/欧洲/serbia/index.html |
 | Slovakia | 3 | tuxundoc/欧洲/slovakia/index.html |
 | Slovenia | 3 | tuxundoc/欧洲/slovenia/index.html |
 | Spain | 7 | tuxundoc/欧洲/spain/index.html |
 | Svalbard | 2 | tuxundoc/欧洲/svalbard/index.html |
-| Sweden | 15 | tuxundoc/欧洲/sweden/index.html |
+| Sweden | 14 | tuxundoc/欧洲/sweden/index.html |
 | Switzerland | 5 | tuxundoc/欧洲/switzerland/index.html |
 | Ukraine | 4 | tuxundoc/欧洲/ukraine/index.html |
 | United Kingdom | 8 | tuxundoc/欧洲/united-kingdom/index.html |

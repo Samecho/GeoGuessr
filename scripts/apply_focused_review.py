@@ -451,6 +451,35 @@ def main():
                          'sourceFactId': fact_id, 'basisReason': rationale, 'measured': False})
         profiled_ids.add(clue['id'])
 
+    # Review source-extraction polarity separately from occurrence estimates.
+    # A sentence can say that a feature exists but is rare, or that a variant
+    # is rare while its parent visual feature is common. Neither is opposition.
+    for review in json.loads((ROOT / 'scripts/reviewed-source-relations.json').read_text(encoding='utf-8'))['reviews']:
+        key = (review['featureId'], review['locationId'])
+        row = by_estimate.get(key)
+        if (row is None or row['sourceFactId'] != review['sourceFactId'] or
+                row['basis'] != 'curated-local-source-v1' or not review.get('reason')):
+            raise ValueError(f'Changed source relation awaiting review: {key}')
+        detail = by_detail[review['featureId']]
+        for relation in detail['relations']:
+            detail['relations'][relation] = [place for place in detail['relations'][relation]
+                                             if place != review['locationId']]
+        if review['action'] == 'remove':
+            estimates.remove(row)
+            del by_estimate[key]
+        elif review['action'] in ('support', 'inferred-parent'):
+            if 'pPresent' in review:
+                probability = review['pPresent']
+                if not 0 < probability < 1:
+                    raise ValueError(f'Invalid reviewed likelihood: {key}')
+                row['pPresent'] = probability
+            relation = 'supports' if review['action'] == 'support' else 'inferred-parent'
+            row['sourceRelation'] = relation
+            row['basisReason'] += ' Source-polarity review: ' + review['reason']
+            unique_append(detail['relations'][relation], review['locationId'])
+        else:
+            raise ValueError(f'Invalid reviewed source action: {key}')
+
     # Keep source polarity separate from estimated prevalence. A low chance of
     # seeing a feature is not the same as a source claiming it is absent.
     for row in estimates:

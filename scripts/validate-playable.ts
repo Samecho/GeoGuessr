@@ -104,6 +104,10 @@ for (const row of estimates) {
   const key = `${row.featureId}/${row.locationId}`
   if (estimateKeys.has(key) || !playableIds.has(row.featureId) || !locationIds.has(row.locationId) || !factIds.has(row.sourceFactId) || !Number.isFinite(row.pPresent) || row.pPresent <= 0 || row.pPresent >= 1 || row.measured !== false || !['supports', 'opposes', 'explicit-absence', 'inferred-parent', 'mixed', 'unclassified'].includes(row.sourceRelation)) errors.push(`playable estimate ${key}: invalid`)
   estimateKeys.add(key)
+  if (row.sourceRelation === 'opposes' && row.pPresent >= 0.5)
+    errors.push(`playable estimate ${key}: opposition cannot have majority occurrence likelihood`)
+  if (row.sourceRelation === 'mixed' || row.sourceRelation === 'unclassified')
+    errors.push(`playable estimate ${key}: source polarity awaits review`)
   const sourcePlaces = detailByFeature.get(row.featureId)?.relations
   if (row.sourceRelation === 'supports' && !sourcePlaces?.supports?.includes(row.locationId))
     errors.push(`playable estimate ${key}: source support missing from Info`)

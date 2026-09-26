@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "reviews": [
+    {
+      "featureId": "clue-15411eeb2dd79bc9",
+      "locationId": "loc:brazil:state:rs",
+      "sourceFactId": "fact-8c6e60a1cdc191262a",
+      "action": "support",
+      "reason": "Coastal RS wetland is described as rare within Brazil, but present in RS."
+    },
+    {
+      "featureId": "clue-2cc047e8f7098318",
+      "locationId": "loc:india",
+      "sourceFactId": "fact-25c5197278b792d3ee",
+      "action": "support",
+      "reason": "The paragraph says similar stickers are rare in other Indian states, not absent from India."
+    },
+    {
+      "featureId": "clue-3274e8912bf225b5",
+      "locationId": "loc:qatar",
+      "sourceFactId": "fact-418397d34e46a2481f",
+      "action": "support",
+      "reason": "The chapter says Qatar usually uses a solid white outer edge line; the rare variant is yellow."
+    },
+    {
+      "featureId": "clue-3493627c063522d4",
+      "locationId": "loc:philippines",
+      "sourceFactId": "fact-31c5cc7b682629cf22",
+      "action": "support",
+      "reason": "Northern Luzon has many pines; similar Mindanao scenery is the rare variant."
+    },
+    {
+      "featureId": "clue-3722cded4bf806ff",
+      "locationId": "loc:slovakia",
+      "sourceFactId": "fact-49f6c6da79a81c92ec",
+      "action": "support",
+      "reason": "The trident pole-top subtype is rare but explicitly described as present in Slovakia."
+    },
+    {
+      "featureId": "clue-4976ab9969cecf3e",
+      "locationId": "loc:sweden",
+      "sourceFactId": "fact-138b5a7d2d60abd2d3",
+      "action": "support",
+      "reason": "The comparison says Finnish diphthongs are rare in Swedish, not that Swedish text is rare in Sweden."
+    },
+    {
+      "featureId": "clue-4d7e660014f81c46",
+      "locationId": "loc:united-states",
+      "sourceFactId": "fact-047d808d2c0176a7bc",
+      "action": "support",
+      "reason": "Second-generation imagery is described as rare in the contiguous United States, not absent."
+    },
+    {
+      "featureId": "clue-4e5b58e62d0b5512",
+      "locationId": "loc:singapore",
+      "sourceFactId": "fact-e053c76278989b1c59",
+      "action": "support",
+      "reason": "The chapter says most Singapore plates are white characters on black.",
+      "pPresent": 0.82
+    },
+    {
+      "featureId": "clue-5f9b019e05462763",
+      "locationId": "loc:singapore",
+      "sourceFactId": "fact-e053c76278989b1c59",
+      "action": "support",
+      "reason": "Some Singapore vehicles use this British-style plate combination."
+    },
+    {
+      "featureId": "clue-6a67b080be1acc07",
+      "locationId": "loc:mongolia",
+      "sourceFactId": "fact-396294847ff7c3d9ba",
+      "action": "support",
+      "reason": "Farmland is rare nationally but present around Selenge and Tov."
+    },
+    {
+      "featureId": "clue-6a67b080be1acc07",
+      "locationId": "loc:united-states",
+      "sourceFactId": "fact-e57c5dcf6310cc3060",
+      "action": "support",
+      "reason": "The Great Plains paragraph explicitly describes some farmland; the scarcity refers to trees."
+    },
+    {
+      "featureId": "clue-6dc650a95d35d82a",
+      "locationId": "loc:estonia",
+      "sourceFactId": "fact-a368c36751a06e783b",
+      "action": "support",
+      "reason": "Russian text is rare but explicitly described in eastern Estonia."
+    },
+    {
+      "featureId": "clue-6dc650a95d35d82a",
+      "locationId": "loc:russia",
+      "sourceFactId": "fact-a368c36751a06e783b",
+      "action": "remove",
+      "reason": "This excerpt only concerns Ukraine and eastern Estonia; it gives no estimate for Russia."
+    },
+    {
+      "featureId": "clue-7f374ae70a8d85af",
+      "locationId": "loc:indonesia",
+      "sourceFactId": "fact-33683bc1764e366989",
+      "action": "remove",
+      "reason": "A taxi in one rare Street View vehicle scene does not support a general taxi prevalence estimate."
+    },
+    {
+      "featureId": "clue-a656a73200531b76",
+      "locationId": "loc:spain",
+      "sourceFactId": "fact-bf9154739a49d59723",
+      "action": "support",
+      "reason": "Black-background white-arrow signs are one of two Spanish styles; only the single-arrow subtype is very rare.",
+      "pPresent": 0.62
+    },
+    {
+      "featureId": "clue-b5f19f5d0f4e3c7a",
+      "locationId": "loc:norway",
+      "sourceFactId": "fact-944508732f48273d39",
+      "action": "remove",
+      "reason": "The excerpt contrasts Sami letters with Norwegian; it does not estimate general Norwegian-text prevalence."
+    },
+    {
+      "featureId": "clue-bfc717ec8beba667",
+      "locationId": "loc:nepal",
+      "sourceFactId": "fact-4b0e2f2fb4a9873ae2",
+      "action": "remove",
+      "reason": "The excerpt compares Nepali letters with Hindi/Marathi; it does not establish Hindi text in Nepal."
+    },
+    {
+      "featureId": "clue-d30f8d2a1a553158",
+      "locationId": "loc:slovakia",
+      "sourceFactId": "fact-893563c1d9a228d0d7",
+      "action": "support",
+      "reason": "Western Slovak lowlands are described as completely flat; rarity applies elsewhere in Slovakia."
+    },
+    {
+      "featureId": "clue-d30f8d2a1a553158",
+      "locationId": "loc:south-korea",
+      "sourceFactId": "fact-bb95c60a0592e82054",
+      "action": "support",
+      "reason": "Gimje is one of few flat Korean areas, so the feature is present but rare."
+    },
+    {
+      "featureId": "clue-da1b1c5c71cf93ed",
+      "locationId": "loc:cyprus",
+      "sourceFactId": "fact-1d8702589487219d68",
+      "action": "support",
+      "reason": "The chapter describes classic European plates and British-style yellow rear plates.",
+      "pPresent": 0.82
+    },
+    {
+      "featureId": "clue-f2b3a521ee98694f",
+      "locationId": "loc:luxembourg",
+      "sourceFactId": "fact-f63d6f0b33704efa95",
+      "action": "support",
+      "reason": "The chapter describes black-background yellow-arrow signs as the regular style; blue is rare.",
+      "pPresent": 0.82
+    },
+    {
+      "featureId": "clue-0181056f60c3f0d9",
+      "locationId": "loc:sri-lanka",
+      "sourceFactId": "fact-64d3029a5743b0f04a",
+      "action": "support",
+      "reason": "The chapter explicitly describes both Sinhala and Tamil text in Sri Lanka; rarity concerns Tamil-only signs outside Tamil-majority areas.",
+      "pPresent": 0.62
+    },
+    {
+      "featureId": "clue-063c856288ecdfbc",
+      "locationId": "loc:uganda",
+      "sourceFactId": "fact-089b21b18a6f4e4073",
+      "action": "support",
+      "reason": "Forest is explicitly described on covered national-park trails and the northern Kidepo road; the spatial condition remains in the source excerpt."
+    },
+    {
+      "featureId": "clue-1ab540076b06ccd0",
+      "locationId": "loc:ukraine",
+      "sourceFactId": "fact-5242e0144a7ba9750d",
+      "action": "support",
+      "reason": "The 2011 Odesa vehicle had a short antenna; the absence statement concerns fourth-generation imagery, not this antenna."
+    },
+    {
+      "featureId": "clue-1da09502cc1c6aa5",
+      "locationId": "loc:mongolia",
+      "sourceFactId": "fact-0052b30fdd61389883",
+      "action": "support",
+      "reason": "Snow is documented near Ulaanbaatar and Darkhan; its absence in Erdene is a local condition."
+    },
+    {
+      "featureId": "clue-239fefb1d586eac6",
+      "locationId": "loc:austria",
+      "sourceFactId": "fact-6100ef5ff955562188",
+      "action": "support",
+      "reason": "The Austria chapter refers to three German-speaking Street View countries; the word German is not an absence statement.",
+      "pPresent": 0.62
+    },
+    {
+      "featureId": "clue-245abd37db7bc9ca",
+      "locationId": "loc:brazil:state:ce",
+      "sourceFactId": "fact-1265d58d6ff3c0187f",
+      "action": "support",
+      "reason": "Two crossbar designs are explicitly documented in Ceara; absence language concerns variant geometry elsewhere."
+    },
+    {
+      "featureId": "clue-245abd37db7bc9ca",
+      "locationId": "loc:oman",
+      "sourceFactId": "fact-76d3c1ae9280e1d6dc",
+      "action": "support",
+      "reason": "The Oman chapter explicitly describes horizontal metal crossbars on wood utility poles; a separate vehicle-bar sentence is unrelated."
+    },
+    {
+      "featureId": "clue-2cc047e8f7098318",
+      "locationId": "loc:croatia",
+      "sourceFactId": "fact-4b75e117c6231c6b28",
+      "action": "remove",
+      "reason": "Cited excerpts concern a vehicle-mirror sticker and bollard reflectors, not a utility-pole sticker."
+    },
+    {
+      "featureId": "clue-2cc047e8f7098318",
+      "locationId": "loc:germany",
+      "sourceFactId": "fact-5a2306ef65295025dd",
+      "action": "remove",
+      "reason": "Cited excerpts concern roadside posts without discs and a car windscreen sticker, not a utility-pole sticker."
+    },
+    {
+      "featureId": "clue-2cc047e8f7098318",
+      "locationId": "loc:united-kingdom",
+      "sourceFactId": "fact-b0371ade266a8602ea",
+      "action": "support",
+      "reason": "The cited UK/Ireland comparison describes the electricity warning sticker design; the no-person detail is Irish, not UK absence."
+    },
+    {
+      "featureId": "clue-4976ab9969cecf3e",
+      "locationId": "loc:finland",
+      "sourceFactId": "fact-22636cf404ec2f58b3",
+      "action": "support",
+      "reason": "Swedish appears in Aland and southern/western coastal Finland; Swedish-only signs are local to Aland."
+    },
+    {
+      "featureId": "clue-4a891862e4cce29c",
+      "locationId": "loc:cyprus",
+      "sourceFactId": "fact-d0d9c1c5534a52e123",
+      "action": "support",
+      "reason": "Famagusta coverage is described as shitcam; rarity applies to the rest of Cyprus."
+    },
+    {
+      "featureId": "clue-6dc650a95d35d82a",
+      "locationId": "loc:bulgaria",
+      "sourceFactId": "fact-58c5dd5867c7596ce3",
+      "action": "remove",
+      "reason": "The cited snippets compare Cyrillic lettering and a shared letter with Russian; they do not show Russian-language signs in Bulgaria."
+    },
+    {
+      "featureId": "clue-6dc650a95d35d82a",
+      "locationId": "loc:kazakhstan",
+      "sourceFactId": "fact-e5131ad39262693555",
+      "action": "support",
+      "reason": "The Kazakhstan chapter says Russian sometimes appears monolingually; the unique Kazakh letters are a contrast, not Russian absence.",
+      "pPresent": 0.34
+    },
+    {
+      "featureId": "clue-6dc650a95d35d82a",
+      "locationId": "loc:ukraine",
+      "sourceFactId": "fact-1ee7730cfeb8d60720",
+      "action": "support",
+      "reason": "The excerpt says Russian is rarely encountered in Ukraine, which is positive rare occurrence rather than exclusion.",
+      "pPresent": 0.14
+    },
+    {
+      "featureId": "clue-7da4a4a0cdad7880",
+      "locationId": "loc:mexico",
+      "sourceFactId": "fact-8a5643af0467b3fd66",
+      "action": "support",
+      "reason": "The cited comparison says round meters occur mainly in Mexico; cross-border examples do not negate Mexican occurrence."
+    },
+    {
+      "featureId": "clue-8135ddad5b6323ff",
+      "locationId": "loc:chile",
+      "sourceFactId": "fact-08d0a1d8a4d88be786",
+      "action": "support",
+      "reason": "Two Chilean protected-area descriptions mention salt flats; unpaved roads are a separate condition."
+    },
+    {
+      "featureId": "clue-82064003a1eed54c",
+      "locationId": "loc:sweden",
+      "sourceFactId": "fact-138b5a7d2d60abd2d3",
+      "action": "remove",
+      "reason": "The excerpts compare Finnish and Swedish spelling or describe Meankieli; they do not establish Finnish-language signs in Sweden."
+    },
+    {
+      "featureId": "clue-988bb3a152ce34f3",
+      "locationId": "loc:luxembourg",
+      "sourceFactId": "fact-b56bc3c9dda95466ca",
+      "action": "support",
+      "reason": "French is described as the main public language on signs and ads; the rarity statement concerns German."
+    },
+    {
+      "featureId": "clue-9c785496a31eb8a0",
+      "locationId": "loc:netherlands",
+      "sourceFactId": "fact-93c5352f5c585ba0eb",
+      "action": "support",
+      "reason": "The Netherlands excerpt describes Dutch letter patterns; missing Frisian diacritics are not absence of Dutch.",
+      "pPresent": 0.82
+    },
+    {
+      "featureId": "clue-a007675a156646fe",
+      "locationId": "loc:ghana",
+      "sourceFactId": "fact-34ce83cb29b171802f",
+      "action": "support",
+      "reason": "The Ghana chapter repeatedly says palms are common, especially in the south; local scarcity does not contradict national occurrence."
+    },
+    {
+      "featureId": "clue-ea77b1ec65adb2d8",
+      "locationId": "loc:reunion",
+      "sourceFactId": "fact-27733ac00b3d838260",
+      "action": "remove",
+      "reason": "The cited paragraphs discuss bus stops and shelters, not the presence of buses as an observable vehicle clue."
+    },
+    {
+      "featureId": "clue-f68895b437793e06",
+      "locationId": "loc:tanzania",
+      "sourceFactId": "fact-3054849d647ada4c2b",
+      "action": "support",
+      "reason": "The source describes a trekker in Gombe; it limits road-map applicability rather than denying trekker coverage."
+    },
+    {
+      "featureId": "clue-054b4c59e3b15f51",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-f3384687a14b141c7e",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is a marginal derived from documented southern states, not a direct nationwide claim."
+    },
+    {
+      "featureId": "clue-15411eeb2dd79bc9",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-8c6e60a1cdc191262a",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is derived from coastal Rio Grande do Sul; other Brazilian areas remain unknown."
+    },
+    {
+      "featureId": "clue-242e20b9a25143a1",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-6565ed1b420748069b",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is derived from the documented southern-state tree distribution."
+    },
+    {
+      "featureId": "clue-914ef9d7359356d2",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-9c88894c4d0f9302b2",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is derived from documented Sao Paulo and northeast-coast region facts."
+    },
+    {
+      "featureId": "clue-994fd7afbf855307",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-6e7d33b3f7bad780b1",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is derived from the Roraima regional source statement."
+    },
+    {
+      "featureId": "clue-df046f9a4bf32fe5",
+      "locationId": "loc:brazil",
+      "sourceFactId": "fact-6565ed1b420748069b",
+      "action": "inferred-parent",
+      "reason": "Country prevalence is derived from the documented Parana pine range in southern states."
+    }
+  ]
+}

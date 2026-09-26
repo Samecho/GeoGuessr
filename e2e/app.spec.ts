@@ -249,3 +249,15 @@ test('green sign-back source says British Columbia is supported', async ({ page 
   await expect(dialog).toContainText('原文支持：不列颠哥伦比亚省')
   await expect(dialog).toContainText('由地区原文推及上级地点：加拿大')
 })
+
+
+test('reviewed source contexts do not present contradictory geographic labels', async ({ page }) => {
+  await page.goto('/')
+  await clueSearch(page).fill('Tamil text')
+  const card = page.locator('.clue-card').filter({ hasText: 'Tamil text' })
+  await expect(card).toHaveCount(1)
+  await card.locator('.info-button').click()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toContainText('source supports: India, Sri Lanka')
+  await expect(dialog).not.toContainText('source opposes: Sri Lanka')
+})
