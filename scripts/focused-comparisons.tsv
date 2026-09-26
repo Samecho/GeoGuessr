@@ -9,8 +9,8 @@ canada|688a4d0|words|停止牌写有 ARRÊT|scheme-except:ca:qc|0.14|The chapter
 canada|a855330|signs|红底白箭头弯道诱导牌|scheme-except:ca:qc|0.14|The chapter explicitly says other Canadian provinces use yellow-black chevrons.
 canada|u15fc385|markings|双黄中心线|loc:canada:region:ca-on|0.34|The chapter says Ontario favors single yellow in the east but double yellow also occurs.
 botswana|uce89061|plates|白色前牌和黄色后牌|loc:south-africa,loc:eswatini,loc:lesotho|0.14|The chapter says Botswana alone commonly has yellow rear plates in southern Africa; other countries remain possible.
-eswatini|u83215d1|terrain|绿色树丘与路旁金色长草|loc:lesotho|0.14|The chapter contrasts Lesotho's bare hills and lack of long roadside grass.
-lesotho|u3496ffc|terrain|山地里的低矮短草|loc:eswatini|0.14|The chapter contrasts Eswatini's taller grass.
+eswatini|u83215d1|plants|路旁金黄色长草|loc:lesotho|0.14|The chapter contrasts Lesotho's bare hills and lack of long roadside grass.
+lesotho|u3496ffc|plants|低矮短草|loc:eswatini|0.14|The chapter contrasts Eswatini's taller grass.
 namibia|ue641478|camera|白色街景皮卡前方有左倾短天线|loc:oman|0.14|The chapter explicitly contrasts Oman's right-leaning antenna.
 senegal|d9b5a439|plates|整块蓝色车牌|africa-except:senegal|0.14|The chapter states solid blue plates are unique among African coverage; allow exceptions.
 south-africa|u9d1a0f5|camera|第二代街景画面|africa-mainland-except:south-africa|0.14|The chapter states generation-two road panoramas are unique to South Africa on mainland Africa; conservative exception probability.

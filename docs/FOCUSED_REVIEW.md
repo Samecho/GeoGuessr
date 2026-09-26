@@ -6,25 +6,25 @@ The supplied local index defines the requested candidate scope. This table cover
 
 | Chapter | Source blocks | Source images | Focused rows | Active clues | Illustrated | Text | Estimates | Conditional regions |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Botswana | 59 | 37 | 13 | 21 | 15 | 6 | 23 | 2 |
+| Botswana | 59 | 37 | 13 | 23 | 16 | 7 | 27 | 2 |
 | Egypt | 23 | 15 | 10 | 13 | 6 | 7 | 20 | 2 |
-| Eswatini | 30 | 18 | 9 | 14 | 12 | 2 | 18 | 3 |
-| Ghana | 46 | 29 | 13 | 23 | 14 | 9 | 26 | 2 |
-| Kenya | 69 | 50 | 14 | 22 | 16 | 6 | 27 | 2 |
-| Lesotho | 40 | 23 | 9 | 15 | 9 | 6 | 17 | 2 |
-| Madagascar | 53 | 49 | 12 | 15 | 9 | 6 | 26 | 4 |
-| Mali | 34 | 24 | 12 | 15 | 10 | 5 | 23 | 6 |
-| Namibia | 144 | 122 | 20 | 28 | 17 | 11 | 32 | 2 |
-| Nigeria | 41 | 33 | 12 | 20 | 13 | 7 | 24 | 3 |
-| Réunion | 25 | 15 | 6 | 9 | 5 | 4 | 12 | 2 |
-| Rwanda | 54 | 38 | 15 | 21 | 13 | 8 | 27 | 5 |
-| Senegal | 53 | 40 | 11 | 17 | 12 | 5 | 21 | 2 |
-| South Africa | 93 | 54 | 25 | 35 | 22 | 13 | 71 | 9 |
+| Eswatini | 30 | 18 | 9 | 18 | 14 | 4 | 26 | 3 |
+| Ghana | 46 | 29 | 13 | 24 | 14 | 10 | 28 | 2 |
+| Kenya | 69 | 50 | 14 | 26 | 19 | 7 | 36 | 2 |
+| Lesotho | 40 | 23 | 9 | 18 | 10 | 8 | 22 | 2 |
+| Madagascar | 53 | 49 | 12 | 16 | 9 | 7 | 29 | 4 |
+| Mali | 34 | 24 | 12 | 17 | 12 | 5 | 26 | 6 |
+| Namibia | 144 | 122 | 20 | 36 | 23 | 13 | 41 | 2 |
+| Nigeria | 41 | 33 | 12 | 23 | 13 | 10 | 30 | 3 |
+| Réunion | 25 | 15 | 6 | 11 | 7 | 4 | 17 | 2 |
+| Rwanda | 54 | 38 | 15 | 22 | 14 | 8 | 30 | 5 |
+| Senegal | 53 | 40 | 11 | 19 | 13 | 6 | 25 | 2 |
+| South Africa | 93 | 54 | 25 | 38 | 24 | 14 | 77 | 9 |
 | São Tomé and Príncipe | 17 | 13 | 8 | 9 | 5 | 4 | 11 | 2 |
-| Tanzania | 22 | 9 | 6 | 9 | 2 | 7 | 15 | 3 |
-| Tunisia | 49 | 32 | 14 | 20 | 17 | 3 | 25 | 3 |
-| Uganda | 38 | 30 | 13 | 21 | 14 | 7 | 32 | 8 |
-| Canada | 162 | 119 | 64 | 70 | 51 | 19 | 162 | 13 |
+| Tanzania | 22 | 9 | 6 | 12 | 2 | 10 | 21 | 3 |
+| Tunisia | 49 | 32 | 14 | 21 | 18 | 3 | 29 | 3 |
+| Uganda | 38 | 30 | 13 | 27 | 18 | 9 | 44 | 8 |
+| Canada | 162 | 119 | 64 | 78 | 55 | 23 | 206 | 13 |
 
 ## Outstanding review
 

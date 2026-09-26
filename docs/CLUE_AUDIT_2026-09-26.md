@@ -22,11 +22,11 @@ The 148 entries previously labelled as opposing evidence were grouped by provena
 
 This pass also checked 23 formerly mixed relations and six unclassified region-derived parent estimates. Five unrelated observation links were removed; source-supported appearances and inferred country parents now have distinct labels. Active estimates no longer carry mixed or unclassified relation labels. This is still not a complete semantic audit of every clue: broad wording/source pairings and visual variants need further manual review. The Info view uses the reviewed per-estimate relation rather than old overlapping raw relation lists.
 
-The current playable library has 489 bilingual clues: 324 illustrated and 165 text-only; 451 carry active likelihood estimates across 1,209 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
+After the scene-atomization pass, the playable library has 475 bilingual clues: 304 illustrated and 171 text-only; 438 carry active likelihood estimates across 1,322 location relations. The chapter browser separately offers all 5,860 source images. An image's existence does not make every nearby extracted phrase a verified picture clue.
 
 ## Open review
 
-- The remaining 165 text clues need source-by-source image matching before becoming illustrated cards. Many lack an adjacent matching photo.
+- The remaining 171 text clues need source-by-source image matching before becoming illustrated cards. Many lack an adjacent matching photo.
 - Other broad clue families may still combine subtly different country variants. Shared primary-image pairs were inspected for literal duplicates, but the 5,860-image archive has not received a full object-level visual classification.
 - Source prose gives qualitative frequency words; current prevalence tiers and recognition parameters remain estimates. Only cited comparisons should change relative likelihoods. Countries absent from a paragraph remain unknown.
 - The regional preset boundaries are practical manual filters, not evidence or a single authoritative cultural map; users can combine presets and individual candidates.

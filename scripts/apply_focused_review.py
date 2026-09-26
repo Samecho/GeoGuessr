@@ -30,6 +30,13 @@ def unique_append(target: list, value):
 
 
 def main():
+    # A chapter paragraph can describe several independently visible parts.
+    # Expand reviewed scene descriptions into atomic cards while preserving the
+    # original source fact as a shared evidence group.
+    scene_file = json.loads((ROOT / 'scripts/focused-observation-decompositions.json').read_text(encoding='utf-8'))
+    scenes = {(row['slug'], row['elementPrefix'], row['categoryId'], row['originalZh']): row for row in scene_file['entries']}
+    if len(scenes) != len(scene_file['entries']):
+        raise ValueError('Duplicate scene decomposition')
     locations = [row for row in read('locations.json', 'locations') if ':region:' not in row['id']]
     focused_countries = {config['countryId'] for config in json.loads((ROOT / 'scripts/focused-regions.json').read_text(encoding='utf-8'))['schemes']}
     schemes = [row for row in read('regions.json', 'regionSchemes') if row['countryId'] not in focused_countries]
@@ -129,9 +136,38 @@ def main():
 
     counts = Counter()
     photo_count = 0
+    expanded_lines = []
+    original_review_rows = 0
+    used_scenes = set()
     for line_no, line in enumerate((ROOT / 'scripts/focused-clues.tsv').read_text(encoding='utf-8').splitlines(), 1):
         if not line or line.startswith('#'):
             continue
+        original_review_rows += 1
+        parts = line.split('|')
+        if len(parts) != 8:
+            raise ValueError(f'focused-clues.tsv:{line_no}: expected eight fields')
+        slug, element_prefix, category, zh, _, p_text, region_key, photo_text = parts
+        scene = scenes.get((slug, element_prefix, category, zh))
+        if scene is None:
+            expanded_lines.append((line_no, line))
+            continue
+        if scene['originalZh'] != zh or scene['categoryId'] != category or len(scene['components']) < 2:
+            raise ValueError(f'Changed reviewed scene: {slug}/{element_prefix}')
+        component_keys = [(part['categoryId'], part['zh']) for part in scene['components']]
+        photo_uses = sum(bool(part.get('usePhoto')) for part in scene['components'])
+        if (len(set(component_keys)) != len(component_keys) or photo_uses > 1 or
+                (photo_text and photo_uses != 1) or
+                any(part['categoryId'] not in category_ids or not part['zh'] or not part['en'] or
+                    not 0 < float(part.get('pPresent', p_text)) < 1 for part in scene['components'])):
+            raise ValueError(f'Invalid reviewed scene components: {slug}/{element_prefix}')
+        used_scenes.add((slug, element_prefix, category, zh))
+        for component in scene['components']:
+            expanded_lines.append((line_no, '|'.join((slug, element_prefix, component['categoryId'],
+                component['zh'], component['en'], str(component.get('pPresent', p_text)), region_key,
+                photo_text if component.get('usePhoto', False) else ''))))
+    if used_scenes != set(scenes):
+        raise ValueError(f'Unmatched scene decompositions: {set(scenes) - used_scenes}')
+    for line_no, line in expanded_lines:
         parts = line.split('|')
         if len(parts) != 8:
             raise ValueError(f'focused-clues.tsv:{line_no}: expected eight fields')
@@ -258,6 +294,93 @@ def main():
             parent_probability = 0.5 + (p_present - 0.5) / region_count
             if (clue['id'], country_id) not in by_estimate:
                 add_estimate(country_id, parent_probability, rationale + ' Parent-country occurrence marginalizes one documented region under the uniform regional prior; other regions remain unknown.', 'inferred-parent')
+
+    # Some older generic cards also combine separately observable attributes.
+    # Keep their source facts and image on the resulting atoms; remove only the
+    # overlapping selectable card. Shared facts still form one evidence group.
+    base_scenes = [
+        (('terrain', '沙丘'), [('soil', '沙质土壤'), ('terrain', '丘陵')]),
+        (('terrain', '高大陡峭的山'), [('terrain', '高山'), ('terrain', '陡坡')]),
+        (('terrain', '雪山'), [('terrain', '高山'), ('terrain', '积雪')]),
+    ]
+    for source_key, target_keys in base_scenes:
+        source_clue = by_clue.pop(source_key, None)
+        if source_clue is None or any(key not in by_clue for key in target_keys):
+            raise ValueError(f'Changed reviewed base scene: {source_key}')
+        target_clues = [by_clue[key] for key in target_keys]
+        source_detail = by_detail.pop(source_clue['id'])
+        for target in target_clues:
+            target_detail = by_detail[target['id']]
+            for fact_id in source_clue['evidenceGroupIds']:
+                unique_append(target['evidenceGroupIds'], fact_id)
+                unique_append(target.setdefault('manualFactIds', []), fact_id)
+            for image_id in source_clue['sourceImageIds']:
+                unique_append(target['sourceImageIds'], image_id)
+            for note in source_detail['sourceNotes']:
+                if note not in target_detail['sourceNotes']:
+                    target_detail['sourceNotes'].append(note)
+            for url in source_detail['sourceUrls']:
+                unique_append(target_detail['sourceUrls'], url)
+            for relation, places in source_detail['relations'].items():
+                for place in places:
+                    unique_append(target_detail['relations'].setdefault(relation, []), place)
+        for image_id in source_clue['assetIds']:
+            unique_append(target_clues[0]['assetIds'], image_id)
+        for row in list(estimates):
+            if row['featureId'] != source_clue['id']:
+                continue
+            estimates.remove(row)
+            del by_estimate[(source_clue['id'], row['locationId'])]
+            for target in target_clues:
+                key = (target['id'], row['locationId'])
+                previous = by_estimate.get(key)
+                if previous is None:
+                    transferred = {**row, 'featureId': target['id'],
+                                   'basis': 'decomposed-scene-source-v1',
+                                   'basisReason': 'The source scene entails this visible component. Its qualitative occurrence estimate is a conservative component lower bound, not a measured frequency.'}
+                    estimates.append(transferred)
+                    by_estimate[key] = transferred
+                else:
+                    previous['pPresent'] = max(previous['pPresent'], row['pPresent'])
+                    for fact_id in row.get('sourceFactIds', [row['sourceFactId']]):
+                        unique_append(previous.setdefault('sourceFactIds', [previous['sourceFactId']]), fact_id)
+        clues.remove(source_clue)
+        details.remove(source_detail)
+
+    # Joint terms are optional extras only where a reviewed local paragraph or
+    # image identifies the combination. Components from the same paragraph are
+    # already grouped by the engine, so these terms add only the extra pattern.
+    interactions = read('playable-interactions.json', 'interactions')
+    for scene in scene_file['entries']:
+        joint = scene.get('interaction')
+        if joint is None:
+            continue
+        key = (scene['slug'], scene['elementPrefix'], scene['categoryId'], scene['originalZh'])
+        if key not in used_scenes or not 1 < joint['likelihoodRatio'] < 10 or not joint.get('reason'):
+            raise ValueError(f'Invalid reviewed scene interaction: {key}')
+        country_id = f"loc:{scene['slug']}"
+        fact_matches = [fact for fact in facts_by_chapter[country_id]
+                        if fact['source']['elementId'].startswith(scene['elementPrefix'])]
+        if len(fact_matches) != 1:
+            raise ValueError(f'Changed interaction source: {key}')
+        feature_ids = sorted({by_clue[(part['categoryId'], part['zh'])]['id'] for part in scene['components']})
+        if len(feature_ids) < 2:
+            raise ValueError(f'Interaction has fewer than two observations: {key}')
+        original = next(line.split('|') for line in (ROOT / 'scripts/focused-clues.tsv').read_text(encoding='utf-8').splitlines()
+                        if line.startswith(scene['slug'] + '|' + scene['elementPrefix'] + '|')
+                        and line.split('|')[2:4] == [scene['categoryId'], scene['originalZh']])
+        target_id = region_by_key[original[6]] if original[6] else country_id
+        targets = [(target_id, joint['likelihoodRatio'])]
+        if target_id != country_id:
+            region_count = len(next(scheme['regions'] for scheme in schemes if scheme['countryId'] == country_id))
+            targets.append((country_id, 1 + (joint['likelihoodRatio'] - 1) / region_count))
+        for location_id, lr in targets:
+            interactions.append({
+                'id': 'interaction-' + hashlib.sha256((str(key) + location_id).encode()).hexdigest()[:16],
+                'featureIds': feature_ids, 'locationId': location_id, 'relation': 'interaction',
+                'likelihoodRatio': lr, 'certaintyMode': 'minimum', 'condition': 'all-seen',
+                'sourceFactId': fact_matches[0]['id'], 'rationale': joint['reason'], 'measured': False,
+            })
 
     comparison_count = 0
     for line_no, line in enumerate((ROOT / 'scripts/focused-comparisons.tsv').read_text(encoding='utf-8').splitlines(), 1):
@@ -553,7 +676,8 @@ def main():
     write('playable-clue-info.json', 'clues', details)
     write('source-photo-assets.json', 'assets', assets)
     write('playable-evidence-profiles.json', 'profiles', profiles)
-    print(json.dumps({'focusedSourceRows': sum(counts.values()), 'byChapter': dict(counts),
+    write('playable-interactions.json', 'interactions', interactions)
+    print(json.dumps({'focusedSourceRows': original_review_rows, 'atomicObservationRows': sum(counts.values()), 'byChapter': dict(counts),
                       'playableClues': len(clues), 'playableEstimates': len(estimates),
                       'newPhotoAssignments': photo_count, 'comparativeEstimates': comparison_count, 'completeRegionSchemes': len([s for s in schemes if s['complete']])}, ensure_ascii=False))
 

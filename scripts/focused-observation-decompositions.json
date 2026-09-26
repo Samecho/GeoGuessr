@@ -1,0 +1,1271 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "slug": "botswana",
+      "elementPrefix": "u27e3f35",
+      "categoryId": "markings",
+      "originalZh": "黄色边线与白色中线",
+      "components": [
+        {
+          "categoryId": "markings",
+          "zh": "黄色边线",
+          "en": "Yellow edge line",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "markings",
+          "zh": "白色中心线",
+          "en": "White center line",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "kenya",
+      "elementPrefix": "e076db2",
+      "categoryId": "markings",
+      "originalZh": "白色边线与黄色中线",
+      "components": [
+        {
+          "categoryId": "markings",
+          "zh": "白色边线",
+          "en": "White edge line",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "markings",
+          "zh": "黄色中心线",
+          "en": "Yellow center line",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "u742dcc",
+      "categoryId": "markings",
+      "originalZh": "白色中线与单根黄色边线",
+      "components": [
+        {
+          "categoryId": "markings",
+          "zh": "黄色边线",
+          "en": "Yellow edge line",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "markings",
+          "zh": "白色中心线",
+          "en": "White center line",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "botswana",
+      "elementPrefix": "u8f3364",
+      "categoryId": "terrain",
+      "originalZh": "干燥而平坦的灌木地",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "干旱灌木丛",
+          "en": "Dry thorn scrub",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "eswatini",
+      "elementPrefix": "7255bae",
+      "categoryId": "terrain",
+      "originalZh": "绿色树丘与路旁金色长草",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "路旁金黄色长草",
+          "en": "Long golden roadside grass",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "eswatini",
+      "elementPrefix": "66de869",
+      "categoryId": "terrain",
+      "originalZh": "高山草地长着金色长草",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高地",
+          "en": "Highland terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "草原",
+          "en": "Grassland",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "路旁金黄色长草",
+          "en": "Long golden roadside grass",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "eswatini",
+      "elementPrefix": "c7cbeb3",
+      "categoryId": "terrain",
+      "originalZh": "平坦地形且远处有山",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "远处山脉",
+          "en": "Distant mountains",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "ghana",
+      "elementPrefix": "dd52518",
+      "categoryId": "terrain",
+      "originalZh": "干燥少树的疏林草原",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "kenya",
+      "elementPrefix": "ff4456c",
+      "categoryId": "terrain",
+      "originalZh": "白色沙质海岸与棕榈",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "白色沙地",
+          "en": "White sandy ground",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "棕榈树",
+          "en": "Palm trees",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "海岸",
+          "en": "Coastline",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "lesotho",
+      "elementPrefix": "0daec489",
+      "categoryId": "terrain",
+      "originalZh": "裸露平顶山与水平岩层",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平顶山脊",
+          "en": "Flat-topped ridge",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "soil",
+          "zh": "水平岩层",
+          "en": "Horizontal rock strata",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "madagascar",
+      "elementPrefix": "u3ea5e06",
+      "categoryId": "terrain",
+      "originalZh": "光滑沙滩与成片棕榈",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "沙质土壤",
+          "en": "Sandy soil",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "棕榈树",
+          "en": "Palm trees",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "海岸",
+          "en": "Coastline",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "ubd7cbdb",
+      "categoryId": "terrain",
+      "originalZh": "高大的粉色沙丘",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "粉红色沙地",
+          "en": "Pink sandy ground",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence.",
+      "interaction": {
+        "likelihoodRatio": 1.6,
+        "reason": "The source paragraph explicitly identifies the pink dunes around Sossusvlei; the joint visual pattern carries modest extra information beyond either broad component. This is a qualitative estimate, not a measured frequency."
+      }
+    },
+    {
+      "slug": "nigeria",
+      "elementPrefix": "u2acf7d",
+      "categoryId": "markings",
+      "originalZh": "磨损且无标线的柏油路",
+      "components": [
+        {
+          "categoryId": "markings",
+          "zh": "磨损的柏油路面",
+          "en": "Worn asphalt surface",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "markings",
+          "zh": "无道路标线",
+          "en": "Road without painted lines",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "69949f2",
+      "categoryId": "terrain",
+      "originalZh": "棕色草坡与稀疏松树林",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏松树",
+          "en": "Scattered pine trees",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "53c8f11",
+      "categoryId": "terrain",
+      "originalZh": "平坦且少树的农田草原",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "农田",
+          "en": "Farmland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "3505979",
+      "categoryId": "terrain",
+      "originalZh": "草原中的贫瘠河谷丘陵",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "山谷",
+          "en": "Valley",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "草原",
+          "en": "Grassland",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "uec0b612",
+      "categoryId": "terrain",
+      "originalZh": "平坦干燥的淡红土与金黄矮草",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "soil",
+          "zh": "淡红色土壤",
+          "en": "Pale reddish soil",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "u6aa1315",
+      "categoryId": "terrain",
+      "originalZh": "植被稀少的干旱丘陵",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "uf7357e6",
+      "categoryId": "terrain",
+      "originalZh": "山地覆满绿色植被",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "茂密绿色植被",
+          "en": "Dense green vegetation",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "ub0cd7c0",
+      "categoryId": "terrain",
+      "originalZh": "沿海浅沙与低矮沙丘",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "浅色沙地",
+          "en": "Pale sandy ground",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "海岸",
+          "en": "Coastline",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "u2a1f6c",
+      "categoryId": "terrain",
+      "originalZh": "平行的小山脊与浅谷",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平行山脊",
+          "en": "Parallel ridges",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "浅谷",
+          "en": "Shallow valleys",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "namibia",
+      "elementPrefix": "udf4cb1",
+      "categoryId": "terrain",
+      "originalZh": "红色平顶桌山与浅色碎石路",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平顶山脊",
+          "en": "Flat-topped ridge",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "soil",
+          "zh": "红色土壤",
+          "en": "Red soil",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "markings",
+          "zh": "浅色碎石路面",
+          "en": "Pale gravel road",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "nigeria",
+      "elementPrefix": "u20f4f8b",
+      "categoryId": "terrain",
+      "originalZh": "岩石山与稀树草原同框",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "岩石山",
+          "en": "Rocky hills",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀树草原",
+          "en": "Savanna",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "rwanda",
+      "elementPrefix": "udd78675",
+      "categoryId": "terrain",
+      "originalZh": "起伏丘陵与红色土壤",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "soil",
+          "zh": "红色土壤",
+          "en": "Red soil",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "south-africa",
+      "elementPrefix": "u5a50874",
+      "categoryId": "terrain",
+      "originalZh": "橘黄土壤与干旱灌木山",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "橘黄色土壤",
+          "en": "Orange yellow soil",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "干旱灌木丛",
+          "en": "Dry thorn scrub",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence.",
+      "interaction": {
+        "likelihoodRatio": 1.5,
+        "reason": "The reviewed source photo shows orange soil, dry scrub, and hills together in the Limpopo example. Modest joint recognition estimate, not a measured prevalence."
+      }
+    },
+    {
+      "slug": "tunisia",
+      "elementPrefix": "4aa50fb7",
+      "categoryId": "terrain",
+      "originalZh": "白色小石散落的干旱沙漠",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "白色小石",
+          "en": "Small white stones",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "soil",
+          "zh": "沙质土壤",
+          "en": "Sandy soil",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "uganda",
+      "elementPrefix": "74450bd5",
+      "categoryId": "terrain",
+      "originalZh": "大草原四周远望山脉",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "草原",
+          "en": "Grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "远处山脉",
+          "en": "Distant mountains",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "uganda",
+      "elementPrefix": "f8db3bab",
+      "categoryId": "terrain",
+      "originalZh": "深红土森林旁有陡坡",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "红色土壤",
+          "en": "Red soil",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "陡坡",
+          "en": "Steep slope",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "茂密绿色植被",
+          "en": "Dense green vegetation",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "botswana",
+      "elementPrefix": "ub57bec1",
+      "categoryId": "soil",
+      "originalZh": "坚硬多石的红土和疏树",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "红色土壤",
+          "en": "Red soil",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "soil",
+          "zh": "碎石地表",
+          "en": "Stony ground",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "kenya",
+      "elementPrefix": "617bd445",
+      "categoryId": "terrain",
+      "originalZh": "绿草丘陵与高大桉树农场",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "绿草地",
+          "en": "Green grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "桉树",
+          "en": "Eucalyptus trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "kenya",
+      "elementPrefix": "7f512577",
+      "categoryId": "soil",
+      "originalZh": "半干旱山丘与浅橙沙土",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "soil",
+          "zh": "浅橙色沙地",
+          "en": "Pale orange sandy ground",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "reunion",
+      "elementPrefix": "uf423753",
+      "categoryId": "terrain",
+      "originalZh": "热带绿山紧邻海岸道路",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "海岸",
+          "en": "Coastline",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "高大陡峭的山",
+          "en": "Tall, steep mountains",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "茂密绿色植被",
+          "en": "Dense green vegetation",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "tunisia",
+      "elementPrefix": "441da8da",
+      "categoryId": "terrain",
+      "originalZh": "休耕农田与地中海丘陵",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "农田",
+          "en": "Farmland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "rwanda",
+      "elementPrefix": "u2e87e1b",
+      "categoryId": "terrain",
+      "originalZh": "开阔农田中的缓和丘陵",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "农田",
+          "en": "Farmland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "senegal",
+      "elementPrefix": "e042f87",
+      "categoryId": "terrain",
+      "originalZh": "干燥且少树的平坦草原",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "south-africa",
+      "elementPrefix": "u2bcf60",
+      "categoryId": "terrain",
+      "originalZh": "陡峭尖锐而少树的岩山",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "岩石山",
+          "en": "Rocky hills",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "nigeria",
+      "elementPrefix": "uc8ffb81",
+      "categoryId": "terrain",
+      "originalZh": "开阔干燥且少树的公路",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏树木",
+          "en": "Sparse trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate visible attributes of one documented scene; shared source fact prevents treating the same scene as independent evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "ea78c67",
+      "categoryId": "terrain",
+      "originalZh": "高耸连绵的山脉",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高山",
+          "en": "High mountains",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "山脉",
+          "en": "Mountain range",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "eswatini",
+      "elementPrefix": "6b921f8",
+      "categoryId": "terrain",
+      "originalZh": "深绿树木覆盖的高山",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高山",
+          "en": "High mountains",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "茂密绿色植被",
+          "en": "Dense green vegetation",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "lesotho",
+      "elementPrefix": "964528c",
+      "categoryId": "terrain",
+      "originalZh": "山地里的低矮短草",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "山地",
+          "en": "Mountainous terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "低矮短草",
+          "en": "Short grass",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "lesotho",
+      "elementPrefix": "9472f0f",
+      "categoryId": "terrain",
+      "originalZh": "平缓道路旁远处的桌状山",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "平坦地形",
+          "en": "Flat terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "平顶山脊",
+          "en": "Flat-topped ridge",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "lesotho",
+      "elementPrefix": "bc5304d",
+      "categoryId": "terrain",
+      "originalZh": "公路紧贴绿色高山山腰",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高山",
+          "en": "High mountains",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "山腰公路",
+          "en": "Road along a mountainside",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "mali",
+      "elementPrefix": "49f0268",
+      "categoryId": "terrain",
+      "originalZh": "清真寺外的干旱沙地",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "沙质土壤",
+          "en": "Sandy soil",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "buildings",
+          "zh": "清真寺",
+          "en": "Mosque",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "tanzania",
+      "elementPrefix": "2bbb436",
+      "categoryId": "terrain",
+      "originalZh": "深灰高山岩石和常年积雪",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高山",
+          "en": "High mountains",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "soil",
+          "zh": "深灰色岩石",
+          "en": "Dark gray rock",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "积雪",
+          "en": "Snow on the ground",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "tanzania",
+      "elementPrefix": "f305742",
+      "categoryId": "terrain",
+      "originalZh": "阴暗茂密的雨林与黑猩猩",
+      "components": [
+        {
+          "categoryId": "plants",
+          "zh": "热带雨林",
+          "en": "Tropical rainforest",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "other",
+          "zh": "黑猩猩",
+          "en": "Chimpanzees",
+          "usePhoto": false,
+          "pPresent": 0.34
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "uganda",
+      "elementPrefix": "89ef5b2",
+      "categoryId": "terrain",
+      "originalZh": "完全干黄的草地和灌木",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "干黄草地",
+          "en": "Dry yellow grassland",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "干旱灌木丛",
+          "en": "Dry thorn scrub",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "9e96d858",
+      "categoryId": "terrain",
+      "originalZh": "无植被的裸岩和冰川",
+      "components": [
+        {
+          "categoryId": "soil",
+          "zh": "裸露基岩",
+          "en": "Exposed bedrock",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "冰川",
+          "en": "Glacier",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "01445fa9",
+      "categoryId": "terrain",
+      "originalZh": "北方丘陵与稀矮针叶树",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "丘陵",
+          "en": "Hills",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "稀疏针叶树",
+          "en": "Sparse conifers",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "canada",
+      "elementPrefix": "e9345364",
+      "categoryId": "terrain",
+      "originalZh": "浓密森林里的高地",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "高地",
+          "en": "Highland terrain",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "plants",
+          "zh": "茂密绿色植被",
+          "en": "Dense green vegetation",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "nigeria",
+      "elementPrefix": "uf61df1c",
+      "categoryId": "terrain",
+      "originalZh": "裸露且风化的孤立石山",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "岩石山",
+          "en": "Rocky hills",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "孤立山丘",
+          "en": "Isolated hill",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "rwanda",
+      "elementPrefix": "u9f69256",
+      "categoryId": "terrain",
+      "originalZh": "火山山坡与火成岩",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "火山山坡",
+          "en": "Volcanic slope",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "soil",
+          "zh": "火山岩",
+          "en": "Volcanic rock",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "tunisia",
+      "elementPrefix": "344dd923",
+      "categoryId": "terrain",
+      "originalZh": "蓝门窗旁有大量棕榈",
+      "components": [
+        {
+          "categoryId": "buildings",
+          "zh": "蓝色门窗",
+          "en": "Blue doors and windows",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "棕榈树",
+          "en": "Palm trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "uganda",
+      "elementPrefix": "286d353a",
+      "categoryId": "terrain",
+      "originalZh": "茂密热带森林中的宽土路",
+      "components": [
+        {
+          "categoryId": "plants",
+          "zh": "热带雨林",
+          "en": "Tropical rainforest",
+          "usePhoto": false
+        },
+        {
+          "categoryId": "markings",
+          "zh": "宽阔土路",
+          "en": "Wide dirt road",
+          "usePhoto": true
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "uganda",
+      "elementPrefix": "c85d4e33",
+      "categoryId": "terrain",
+      "originalZh": "蓄水的大型火山口",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "火山口",
+          "en": "Volcanic crater",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "terrain",
+          "zh": "湖泊",
+          "en": "Lake",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    },
+    {
+      "slug": "mali",
+      "elementPrefix": "d9fd3ce1",
+      "categoryId": "terrain",
+      "originalZh": "干枯树旁的天然岩石峡谷",
+      "components": [
+        {
+          "categoryId": "terrain",
+          "zh": "岩石峡谷",
+          "en": "Rock canyon",
+          "usePhoto": true
+        },
+        {
+          "categoryId": "plants",
+          "zh": "干枯树木",
+          "en": "Dry dead trees",
+          "usePhoto": false
+        }
+      ],
+      "reason": "Separate observable landform, surface, vegetation, water, or object attributes documented in one source block; group their shared evidence."
+    }
+  ]
+}

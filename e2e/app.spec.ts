@@ -7,7 +7,7 @@ const rows = (page: import('@playwright/test').Page, selector = '.chart-card') =
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect(page.getByText('Select any visual clue to compare countries.')).toBeVisible()
-  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
 
   await page.locator('.inspect-select select').selectOption({ label: 'Brazil' })
   await expect(page.locator('.region-card h2')).toHaveText('Brazil')
@@ -94,7 +94,7 @@ test('scoped match rows remain normalized and Others stays last', async ({ page 
 })
 test('all source photos are browsable by chapter without changing observations', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
   await page.getByRole('button', { name: 'Browse', exact: true }).click()
   await page.locator('.source-gallery-filter select').selectOption({ label: 'Brazil' })
   await expect(page.locator('.source-gallery .small-note').last()).toContainText('108 images')
@@ -107,7 +107,7 @@ test('all source photos are browsable by chapter without changing observations',
 test('compact screen keeps clue wording and separate info action usable', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
   await clueSearch(page).fill('ALTO')
   const card = page.locator('.clue-card').filter({ hasText: 'The word ALTO' }).first()
   await expect(card).toBeVisible()
@@ -122,7 +122,7 @@ test('compact screen keeps clue wording and separate info action usable', async 
 test('Canada and African source chapters open conditional regions with reviewed clue photos', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
   await page.locator('.inspect-select select').selectOption({ label: 'Canada' })
   await expect(page.locator('.region-card h2')).toHaveText('Canada')
   await expect(page.locator('.region-card [data-rank-id]')).toHaveCount(6)
@@ -144,7 +144,7 @@ test('Canada and African source chapters open conditional regions with reviewed 
 
 test('manual geographic scope filters the gallery without discarding selected observations', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.gallery-count')).toContainText('324 illustrated')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
   await page.getByRole('button', { name: 'Africa', exact: true }).click()
   await clueSearch(page).fill('Safaricom')
   const brand = page.locator('.clue-card').filter({ hasText: 'Safaricom shop sign or advert' })
@@ -164,6 +164,29 @@ test('manual geographic scope filters the gallery without discarding selected ob
   await clueSearch(page).fill('Yellow star on blue stripe')
   await expect(page.locator('.clue-card')).toHaveCount(1)
   await expect(page.locator('.selection-chip')).toHaveCount(1)
+})
+
+test('road lines and landscape parts are selectable without duplicate scene cards', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('.gallery-count')).toContainText('304 illustrated')
+  await clueSearch(page).fill('Yellow edge and white center lines')
+  await expect(page.locator('.clue-card, .text-clue')).toHaveCount(0)
+  for (const label of ['Yellow edge line', 'White center line']) {
+    await clueSearch(page).fill(label)
+    const card = page.locator('.clue-card').filter({ hasText: label }).first()
+    await expect(card).toBeVisible()
+    await card.locator('.clue-main').click()
+  }
+  await expect(page.locator('.selection-chip')).toHaveCount(2)
+  await clueSearch(page).fill('Orange yellow soil and dry scrub hills')
+  await expect(page.locator('.clue-card, .text-clue')).toHaveCount(0)
+  for (const label of ['Orange yellow soil', 'Dry thorn scrub', 'Hills']) {
+    await clueSearch(page).fill(label)
+    const card = page.locator('.clue-card').filter({ hasText: label }).first()
+    await expect(card).toBeVisible()
+    await card.locator('.clue-main').click()
+  }
+  await expect(page.locator('.selection-chip')).toHaveCount(5)
 })
 
 test('a photographed red chevron appears once and has no duplicate text clue', async ({ page }) => {

@@ -29,11 +29,50 @@ describe('reviewed local knowledge regressions', () => {
   })
 
   it('only uses reviewed joint evidence with actual matching observations', () => {
-    expect(interactions).toHaveLength(2)
+    expect(interactions).toHaveLength(6)
     expect(interactions.some((rule) => rule.locationId === 'loc:italy')).toBe(false)
     expect(interactions.some((rule) => rule.locationId === 'loc:ghana')).toBe(true)
     expect(features).toHaveLength(clues.length)
     expect(features.every((feature) => feature.translationStatus === 'reviewed')).toBe(true)
+  })
+
+  it('offers separate road and landscape observations with one shared source', () => {
+    expect(clue('Yellow edge and white center lines')).toBeUndefined()
+    expect(clue('Sand dunes')).toBeUndefined()
+    expect(clue('Orange yellow soil and dry scrub hills')).toBeUndefined()
+    const edge = clue('Yellow edge line')!
+    const center = clue('White center line')!
+    const sand = clue('Sandy soil')!
+    const hills = clue('Hills')!
+    expect(edge).toBeDefined()
+    expect(center).toBeDefined()
+    expect(sand).toBeDefined()
+    expect(hills).toBeDefined()
+    const edgeFacts = features.find((feature) => feature.id === edge.id)!.evidenceGroupIds
+    const centerFacts = features.find((feature) => feature.id === center.id)!.evidenceGroupIds
+    expect(edgeFacts).toContain('fact-27e206101c975481cf')
+    expect(centerFacts).toContain('fact-27e206101c975481cf')
+    expect(features.find((feature) => feature.id === sand.id)!.evidenceGroupIds
+      .some((factId) => features.find((feature) => feature.id === hills.id)!.evidenceGroupIds.includes(factId))).toBe(true)
+  })
+
+  it('uses a documented scene interaction only when every atomic part is seen', () => {
+    const parts = ['Orange yellow soil', 'Dry thorn scrub', 'Hills'].map((name) => clue(name)!)
+    expect(parts.every(Boolean)).toBe(true)
+    const parentByLocation = new Map(locations.map((place) => [place.id, place.parentId]))
+    const options = { scope: 'region' as const, parentId: 'loc:south-africa', parentByLocation,
+      candidateByLocation: new Map(locations.map((place) => [place.id, place.candidate])),
+      dependenceGroups: new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), interactions }
+    const ids = regionSchemeByCountry.get('loc:south-africa')!.regions.map((region) => region.id)
+    const selected = parts.map((part) => ({ clueId: part.id, mode: 'seen' as const, certainty: 'certain' as const }))
+    const full = rankCandidates(ids, estimates, selected, options)
+    const reversed = rankCandidates(ids, estimates, [...selected].reverse(), options)
+    const withoutJoint = rankCandidates(ids, estimates, selected, { ...options, interactions: [] })
+    const limpopo = 'loc:south-africa:region:za-lp'
+    expect(full).toEqual(reversed)
+    expect(full.find((item) => item.id === limpopo)!.share).toBeGreaterThan(withoutJoint.find((item) => item.id === limpopo)!.share)
+    const partial = rankCandidates(ids, estimates, selected.slice(0, 2), options)
+    expect(partial).toEqual(rankCandidates(ids, estimates, selected.slice(0, 2), { ...options, interactions: [] }))
   })
 })
 
@@ -97,7 +136,7 @@ describe('Canada and Africa paragraph review', () => {
       expect(ranks[0].id).toBe(expectedRegion)
       expect(ranks[0].share).toBeGreaterThan(0.85)
     }
-    const mountains = clue('High continuous mountains')!
+    const mountains = clue('High mountains')!
     const weak = rankCandidates(countries.map((country) => country.id), estimates,
       [{ clueId: mountains.id, mode: 'seen', certainty: 'certain' }], { ...options, scope: 'country' })
     expect(weak[0].share).toBeLessThan(0.1)

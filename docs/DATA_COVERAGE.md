@@ -3,31 +3,31 @@
 Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Automated source extraction is preserved for audit; only manually chosen visual phrases enter the playable library. Inclusion does not certify every geographic claim.
 
 - 133 candidates and 8466 source text blocks.
-- 489 reviewed bilingual clue labels: 324 with adjacent source images, 165 text only.
-- 1209 active estimates for 451 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
+- 475 reviewed bilingual clue labels: 304 with adjacent source images, 171 text only.
+- 1322 active estimates for 438 clue IDs across 220 country/region units. Estimates use qualitative tiers, not measured frequencies.
 - 5860 source images converted without cropping; 351.0 MB published in the user-directed Pages test build. The project owner reports permission from the source author for this project; per-image author metadata is not in the archive.
-- 5317 extracted phrase records are retained as raw audit candidates, not displayed or scored.
+- 5320 extracted phrase records are retained as raw audit candidates, not displayed or scored.
 
 | Candidate | Active estimate count | Local source chapter |
 |---|---:|---|
-| Botswana | 21 | tuxundoc/非洲/botswana/index.html |
+| Botswana | 23 | tuxundoc/非洲/botswana/index.html |
 | Egypt | 13 | tuxundoc/非洲/egypt/index.html |
-| Eswatini | 14 | tuxundoc/非洲/eswatini/index.html |
-| Ghana | 23 | tuxundoc/非洲/ghana/index.html |
-| Kenya | 22 | tuxundoc/非洲/kenya/index.html |
-| Lesotho | 15 | tuxundoc/非洲/lesotho/index.html |
-| Madagascar | 15 | tuxundoc/非洲/madagascar/index.html |
-| Mali | 15 | tuxundoc/非洲/mali/index.html |
-| Namibia | 28 | tuxundoc/非洲/namibia/index.html |
-| Nigeria | 20 | tuxundoc/非洲/nigeria/index.html |
-| Réunion | 8 | tuxundoc/非洲/reunion/index.html |
-| Rwanda | 21 | tuxundoc/非洲/rwanda/index.html |
-| Senegal | 17 | tuxundoc/非洲/senegal/index.html |
-| South Africa | 35 | tuxundoc/非洲/south-africa/index.html |
+| Eswatini | 18 | tuxundoc/非洲/eswatini/index.html |
+| Ghana | 24 | tuxundoc/非洲/ghana/index.html |
+| Kenya | 26 | tuxundoc/非洲/kenya/index.html |
+| Lesotho | 18 | tuxundoc/非洲/lesotho/index.html |
+| Madagascar | 16 | tuxundoc/非洲/madagascar/index.html |
+| Mali | 17 | tuxundoc/非洲/mali/index.html |
+| Namibia | 36 | tuxundoc/非洲/namibia/index.html |
+| Nigeria | 23 | tuxundoc/非洲/nigeria/index.html |
+| Réunion | 11 | tuxundoc/非洲/reunion/index.html |
+| Rwanda | 22 | tuxundoc/非洲/rwanda/index.html |
+| Senegal | 19 | tuxundoc/非洲/senegal/index.html |
+| South Africa | 38 | tuxundoc/非洲/south-africa/index.html |
 | São Tomé and Príncipe | 9 | tuxundoc/非洲/sao-tome-and-principe/index.html |
-| Tanzania | 9 | tuxundoc/非洲/tanzania/index.html |
-| Tunisia | 20 | tuxundoc/非洲/tunisia/index.html |
-| Uganda | 21 | tuxundoc/非洲/uganda/index.html |
+| Tanzania | 12 | tuxundoc/非洲/tanzania/index.html |
+| Tunisia | 21 | tuxundoc/非洲/tunisia/index.html |
+| Uganda | 27 | tuxundoc/非洲/uganda/index.html |
 | Cyprus | 10 | tuxundoc/亚洲/cyprus/index.html |
 | Bangladesh | 5 | tuxundoc/亚洲/bangladesh/index.html |
 | Bhutan | 2 | tuxundoc/亚洲/bhutan/index.html |
@@ -47,7 +47,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Malaysia | 4 | tuxundoc/亚洲/malaysia/index.html |
 | Mongolia | 9 | tuxundoc/亚洲/mongolia/index.html |
 | Nepal | 9 | tuxundoc/亚洲/nepal/index.html |
-| Oman | 8 | tuxundoc/亚洲/oman/index.html |
+| Oman | 9 | tuxundoc/亚洲/oman/index.html |
 | Pakistan | 4 | tuxundoc/亚洲/pakistan/index.html |
 | Philippines | 9 | tuxundoc/亚洲/philippines/index.html |
 | Qatar | 2 | tuxundoc/亚洲/qatar/index.html |
@@ -56,14 +56,14 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Sri Lanka | 6 | tuxundoc/亚洲/sri-lanka/index.html |
 | Thailand | 14 | tuxundoc/亚洲/thailand/index.html |
 | Turkey | 17 | tuxundoc/亚洲/turkey/index.html |
-| United Arab Emirates | 4 | tuxundoc/亚洲/united-arab-emirates/index.html |
+| United Arab Emirates | 5 | tuxundoc/亚洲/united-arab-emirates/index.html |
 | Vietnam | 8 | tuxundoc/亚洲/vietnam/index.html |
 | Albania | 1 | tuxundoc/欧洲/albania/index.html |
 | Andorra | 1 | tuxundoc/欧洲/andorra/index.html |
 | Austria | 3 | tuxundoc/欧洲/austria/index.html |
 | Azores | 2 | tuxundoc/欧洲/azores/index.html |
 | Belarus | 2 | tuxundoc/欧洲/belarus/index.html |
-| Belgium | 5 | tuxundoc/欧洲/belgium/index.html |
+| Belgium | 6 | tuxundoc/欧洲/belgium/index.html |
 | Bulgaria | 8 | tuxundoc/欧洲/bulgaria/index.html |
 | Croatia | 5 | tuxundoc/欧洲/croatia/index.html |
 | Czechia | 3 | tuxundoc/欧洲/czechia/index.html |
@@ -89,7 +89,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Malta | 4 | tuxundoc/欧洲/malta/index.html |
 | Monaco | 3 | tuxundoc/欧洲/monaco/index.html |
 | Montenegro | 1 | tuxundoc/欧洲/montenegro/index.html |
-| Netherlands | 9 | tuxundoc/欧洲/netherlands/index.html |
+| Netherlands | 10 | tuxundoc/欧洲/netherlands/index.html |
 | North Macedonia | 6 | tuxundoc/欧洲/north-macedonia/index.html |
 | Norway | 2 | tuxundoc/欧洲/norway/index.html |
 | Poland | 4 | tuxundoc/欧洲/poland/index.html |
@@ -108,7 +108,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | United Kingdom | 8 | tuxundoc/欧洲/united-kingdom/index.html |
 | Alaska | 0 | tuxundoc/北美洲/alaska/index.html |
 | Bermuda | 1 | tuxundoc/北美洲/bermuda/index.html |
-| Canada | 70 | tuxundoc/北美洲/canada/index.html |
+| Canada | 78 | tuxundoc/北美洲/canada/index.html |
 | Costa Rica | 7 | tuxundoc/北美洲/costa_rica/index.html |
 | Dominican Republic | 1 | tuxundoc/北美洲/dominican/index.html |
 | Greenland | 0 | tuxundoc/北美洲/greenland/index.html |
@@ -134,7 +134,7 @@ Updated 2026-09-26. The only geographic source is the local Tuxundoc archive. Au
 | Argentina | 10 | tuxundoc/南美洲/argentina/index.html |
 | Bolivia | 2 | tuxundoc/南美洲/bolivia/index.html |
 | Brazil | 15 | tuxundoc/南美洲/brazil/index.html |
-| Chile | 4 | tuxundoc/南美洲/chile/index.html |
+| Chile | 5 | tuxundoc/南美洲/chile/index.html |
 | Colombia | 5 | tuxundoc/南美洲/colombia/index.html |
 | Curaçao | 3 | tuxundoc/南美洲/curacao/index.html |
 | Ecuador | 9 | tuxundoc/南美洲/ecuador/index.html |
