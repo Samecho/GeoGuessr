@@ -4,6 +4,8 @@ import manifest from '../src/data/africa-library-manifest.json'
 
 const library = parseCustomLibrary(JSON.parse(readFileSync('public/libraries/africa.json', 'utf8')))
 const candidateIds = new Set(manifest.candidateCountryIds)
+const clueIds = new Set(library.clues.map((clue) => clue.id))
+if (library.clues.some((clue) => clue.supersedesClueIds?.some((id) => !clueIds.has(id)))) throw new Error('Africa clue replaces a missing clue')
 const documented = new Set(library.clues.flatMap((clue) => clue.weights.map((row) => row.locationId.split(':region:')[0])))
 if (library.clues.length !== manifest.clueCount) throw new Error('Africa clue count differs from manifest')
 if (library.clues.filter((clue) => clue.imageDataUrl).length !== manifest.illustratedCount) throw new Error('Africa image count differs from manifest')

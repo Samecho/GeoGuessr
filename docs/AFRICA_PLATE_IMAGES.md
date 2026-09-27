@@ -28,3 +28,7 @@
 | 白底车牌略泛绿 | 继续纯文字：原截图模糊，不能清楚展示泛绿色调。 |
 | 白底蓝字的长车牌 | 莱索托原图只有一张白底蓝字长牌，保留。 |
 | 黑白配色的车牌 | 继续纯文字：黑底白字与白底黑字方向不同，单图不宜假装代表所有。 |
+
+## 2026-09-27 update
+
+The table above records the original 20-card image audit. The current built-in Africa library merges five overlapping plate cards into 15 cards: 14 illustrated and one text-only. The broad green card uses the previously audited white plate with green detail; the broad blue card retains the two blue/white variants. The separate green/yellow decoration image remains available in the read-only tutorial archive but is no longer a separate selectable card. No new plate image or inferred plate color was introduced.
