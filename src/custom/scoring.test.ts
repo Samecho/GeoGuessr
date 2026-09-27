@@ -25,6 +25,10 @@ describe('custom library', () => {
     expect(parseCustomLibrary({ ...library, clues: [focused] }).clues[0].cardCrop).toBe('left-half')
     const withExamples = { ...entry, imageDataUrl: 'data:image/png;base64,YQ==', additionalImageDataUrls: ['data:image/png;base64,Yg=='] }
     expect(parseCustomLibrary({ ...library, clues: [withExamples] }).clues[0].additionalImageDataUrls).toHaveLength(1)
+    const photoCredits = [{ imageIndex: 0, sourceUrl: 'https://commons.wikimedia.org/wiki/File:Example.jpg', author: 'Photographer', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', modification: 'Resized.' }]
+    expect(parseCustomLibrary({ ...library, clues: [{ ...withExamples, photoCredits }] }).clues[0].photoCredits).toEqual(photoCredits)
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...withExamples, photoCredits: [{ ...photoCredits[0], imageIndex: 2 }] }] })).toThrow()
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...withExamples, photoCredits: [{ ...photoCredits[0], licenseUrl: 'javascript:alert(1)' }] }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, additionalImageDataUrls: withExamples.additionalImageDataUrls }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...withExamples, additionalImageDataUrls: [withExamples.imageDataUrl] }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...focused, cardCrop: 'center' }] })).toThrow()

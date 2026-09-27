@@ -1,6 +1,6 @@
-# 20 条车牌卡图片目视审查
+# 车牌图片审查与署名
 
-- 2026-09-26。逐张核对用户 JSON 中全部 20 条车牌卡。图片的源文件仍原样嵌入 JSON；以下 focused view 仅影响卡片呈现，详情放大仍可看完整教学对照图。
+- 以下首轮审查记录于 2026-09-26，当时逐张核对用户 JSON 中全部 20 条车牌卡。图片的源文件仍原样嵌入 JSON；以下 focused view 仅影响卡片呈现，详情放大仍可看完整教学对照图。
 - 八张对照图卡设置了与线索对应的半幅展示。两张南非地区卡的唯一教程图同时混合多个省份且带地图，不适合直接作为单一颜色示例，暂改为纯文字卡。
 - 本版共 81 条线索、55 条带图；车牌 20 条中 15 条带图、5 条纯文字。非车牌图片、所有地点倍率和域名线索均未更改。
 
@@ -39,13 +39,13 @@ The table above is the earlier image audit, not the current card count. In the c
 
 ## 2026-09-27 missing regional examples audit
 
-Current plate section: 21 clues, including five broad text color clues and sixteen precise pictured clues. The latter have 23 image instances. The whole Africa library has 94 clues, 56 pictured clues, 38 text-only clues, and 63 image instances. Shared examples are selectable only through their one underlying clue ID and therefore never add a second score.
+At that update, the plate section had 21 clues: five broad text color clues and sixteen precise pictured clues, with 23 plate images. The whole Africa library then had 94 clues, 56 pictured clues, 38 text-only clues, and 63 image instances. Shared examples are selectable only through their one underlying clue ID and therefore never add a second score.
 
 | Visible layout or instance | Local source | Published treatment |
 |---|---|---|
 | Rwanda long white front / long yellow rear | `tuxundoc/非洲/rwanda/images/0002.png` | Second image on shared front-white/rear-yellow clue. |
 | Uganda white front / yellow rear with small striped flag | `tuxundoc/非洲/uganda/images/0005.png` | Separate specific plate card, full figure. |
-| Free State pale yellow-green plate, black characters | `tuxundoc/非洲/south-africa/images/0016.png`, crop (362, 301, 553, 354) | Separate regional card. |
+| Free State pale yellow-green plate, initially misread as black characters | `tuxundoc/非洲/south-africa/images/0016.png`, crop (362, 301, 553, 354) | Former image and label; replaced after clearer-photo review below. |
 | Gauteng white plate, blue characters and round emblem | Same source, crop (244, 66, 438, 116) | Separate regional card. |
 | Northern Cape green characters and yellow-green decoration | Same source, crop (140, 349, 330, 406) | Separate regional card. |
 | KwaZulu-Natal white/blue plate | Same source, crop (558, 300, 749, 354) | Second image on shared white/blue clue. |
@@ -55,4 +55,19 @@ Current plate section: 21 clues, including five broad text color clues and sixte
 | Ghana standard white/black plate | `tuxundoc/非洲/ghana/images/0003.png`, crop (0, 0, 1920, 420) | Main image on shared white-background/black-characters clue. |
 | Tunisian military black/white plate with red flag panel | `tuxundoc/非洲/tunisia/images/0002.png`, crop (4, 354, 543, 455) | Separate military-context card. |
 
-The archive originals stay read-only. Focused plate excerpts are padded with a neutral dark background for the gallery aspect ratio; plate colors are not recolored. The North West and Eastern Cape plates are visually close to the existing lower-band clue, whereas ordinary white/black provincial plates are only extra examples of a shared pattern. The local Nigeria chapter provides a textual green-tinge comparison but no standalone Nigerian plate figure, so there is no fabricated Nigerian plate picture.
+The archive originals stay read-only. Focused plate excerpts are padded with a neutral dark background for the gallery aspect ratio; plate colors are not recolored. The North West and Eastern Cape plates are visually close to the existing lower-band clue, whereas ordinary white/black provincial plates are only extra examples of a shared pattern. The local Nigeria chapter provides a textual green-tinge comparison but no standalone plate figure. The current Nigerian picture was sourced independently as detailed below.
+
+## 2026-09-27 independent image review (current build)
+
+The current plate section has **22 clues: five broad text-only color clues and 17 pictured specific layouts, with 25 plate image instances**. The whole Africa library has **95 clues, 57 pictured, 38 text-only, and 65 image instances**. Each example below is embedded in `public/libraries/africa.json`; the individual `photoCredits` entry is also shown in the info dialog for that image. Reviewed 2026-09-27.
+
+| Card / photo | Source, author, license | Change and visual check |
+|---|---|---|
+| Free State pale green, green letters, yellow wildlife | [South Africa Free State License plate 05](https://commons.wikimedia.org/wiki/File:South_Africa_Free_State_License_plate_05.jpg), Dickelbers, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Replaced tiny diagram crop. Green letters clearly visible; former “black characters” wording corrected. Resized, WebP, neutral padding; plate colors intact. |
+| Gauteng white/blue with small round emblem | [South Africa Gauteng plate (5)](https://commons.wikimedia.org/wiki/File:South_Africa_-_Gauteng_plate_(5).JPG), Dickelbers, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Replaced tiny diagram crop; blue letters and emblem visible. Resized, WebP, neutral padding; colors intact. |
+| Northern Cape light plate/dark green letters and antelope artwork | [South Africa Northern Cape license plate](https://commons.wikimedia.org/wiki/File:South_Africa_Northern_Cape_license_plate.jpg), Marduk, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Replaced tiny diagram crop; corrected label to match antelope artwork. Resized, WebP, neutral padding; colors intact. |
+| KwaZulu-Natal white/blue historical variant | [South Africa KwaZulu-Natal (1)](https://commons.wikimedia.org/wiki/File:South_Africa_-_KwaZulu-Natal_(1).JPG), Dickelbers, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Replaced second image on shared white/blue card. Photo from 2015; it illustrates an older visible variant and does not establish current issue practice. Resized, WebP, neutral padding; colors intact. |
+| Nigeria white/blue/green-map, Adamawa | [Nigerian number plate Adamawa](https://commons.wikimedia.org/wiki/File:Nigerian_number_plate_Adamawa.jpg), Niegodzisie, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | First image on new detailed Nigerian card. Blue characters and green map motif visible. Resized and WebP; colors intact. |
+| Nigeria white/blue/green-map, Lagos | [Nigeria Lagos License Plate](https://commons.wikimedia.org/wiki/File:Nigeria_Lagos_License_Plate.jpg), Joshua Doubek, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Second example of the same clue, with no second score. Resized and WebP; colors intact. |
+
+The [Federal Road Safety Corps guide](https://frsc.gov.ng/wp-content/uploads/2021/11/Recent.pdf) documents the Nigerian map element. Photo author/license metadata comes from each Commons file page; the direct links are kept in the published JSON. The tutorial archive remains read-only. Its own images have separate user-reported authorization; the Commons terms above govern these six independently sourced examples.

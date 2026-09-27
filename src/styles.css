@@ -104,3 +104,5 @@
 .library-picker-buttons button.active{background:#176f80;border-color:#176f80;color:white}
 .library-picker-note{font-size:11px;color:#647f87}
 @media(max-width:760px){.library-picker{margin:10px 12px;padding:12px}.library-picker-buttons{width:100%}.library-picker-buttons button{flex:1}}
+
+.local-photo-credit{margin:10px 0 0;font-size:11px;line-height:1.45;color:#536b73}.local-photo-credit a{color:#116a79}

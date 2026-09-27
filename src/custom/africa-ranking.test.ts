@@ -22,7 +22,7 @@ const plateClues = library.clues.filter((clue) => clue.categoryId === 'plates')
 
 describe('built-in Africa plate clues', () => {
   it('offers five consistently worded broad colors and no duplicate green or blue tint card', () => {
-    expect(plateClues).toHaveLength(21)
+    expect(plateClues).toHaveLength(22)
     const broad = [white, yellow, green, blue, seen('custom-africa-plates-black-white')]
     expect(plateClues.slice(0, 5).map((clue) => clue.id)).toEqual(broad.map((item) => item.clueId))
     expect(broad.map((item) => library.clues.find((clue) => clue.id === item.clueId)?.appearance.en)).toEqual([
@@ -32,11 +32,13 @@ describe('built-in Africa plate clues', () => {
     expect(plateClues.filter((clue) => /green-tinted|green tint|blue-tinted|noticeable blue/i.test(clue.appearance.en))).toHaveLength(0)
     expect(plateClues.slice(0, 5).every((clue) => !clue.imageDataUrl)).toBe(true)
     expect(plateClues.slice(5).every((clue) => !!clue.imageDataUrl)).toBe(true)
-    expect(plateClues.reduce((count, clue) => count + (clue.imageDataUrl ? 1 : 0) + (clue.additionalImageDataUrls?.length || 0), 0)).toBe(23)
+    expect(plateClues.reduce((count, clue) => count + (clue.imageDataUrl ? 1 : 0) + (clue.additionalImageDataUrls?.length || 0), 0)).toBe(25)
     expect(library.clues.find((clue) => clue.id === pairedPlate.clueId)?.additionalImageDataUrls).toHaveLength(1)
     expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-namibia-white-blue')?.additionalImageDataUrls).toHaveLength(1)
     expect(library.clues.find((clue) => clue.id === greenBand.clueId)?.additionalImageDataUrls).toHaveLength(2)
     expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-white-black-characters')?.additionalImageDataUrls).toHaveLength(3)
+    expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-nigeria-blue-green-map')?.additionalImageDataUrls).toHaveLength(1)
+    expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-sa-free-state-green')?.appearance.en).toContain('green letters')
     const colorWeight = (clueId: string, locationId: string) => library.clues.find((clue) => clue.id === clueId)?.weights.find((row) => row.locationId === locationId)?.seenMultiplier
     expect(colorWeight(white.clueId, 'loc:tunisia')).toBeGreaterThan(1) // white characters on black plate
     expect(colorWeight(yellow.clueId, 'loc:eswatini')).toBeGreaterThan(1) // yellow detail on a green-banded plate
@@ -99,5 +101,8 @@ describe('built-in Africa plate clues', () => {
     expect(rank([white, green, greenBand])).toEqual(rank([greenBand]))
     const longKenyan = seen('custom-africa-plates-kenya-long-white-square-yellow')
     expect(rank([white, yellow, pairedPlate, longKenyan])).toEqual(rank([longKenyan]))
+    const nigeriaPlate = seen('custom-africa-plates-nigeria-blue-green-map')
+    expect(rank([white, blue, green, nigeriaPlate])).toEqual(rank([nigeriaPlate]))
+    expect(rank([nigeriaPlate])[0].id).toBe('loc:nigeria')
   })
 })

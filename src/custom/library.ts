@@ -6,7 +6,8 @@ export const CUSTOM_KIND = 'street-clues-custom-library'
 export const MAX_CUSTOM_CLUES = 500
 export const MAX_IMAGE_DATA_LENGTH = 5_000_000
 export type CustomWeight = { locationId: string; seenMultiplier: number; absentMultiplier: number }
-export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; additionalImageDataUrls?: string[]; weights: CustomWeight[]; supersedesClueIds?: string[]; regionalWeightMode?: 'conditional'; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
+export type PhotoCredit = { imageIndex: number; sourceUrl: string; author: string; license: string; licenseUrl: string; modification: string }
+export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; additionalImageDataUrls?: string[]; photoCredits?: PhotoCredit[]; weights: CustomWeight[]; supersedesClueIds?: string[]; regionalWeightMode?: 'conditional'; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
 export type CustomLibrary = { schemaVersion: 1; kind: typeof CUSTOM_KIND; clues: CustomClue[] }
 export const emptyCustomLibrary = (): CustomLibrary => ({ schemaVersion: CUSTOM_SCHEMA_VERSION, kind: CUSTOM_KIND, clues: [] })
 
@@ -17,6 +18,10 @@ const allowedTargets = new Set([...countryIds, ...completeRegions])
 const imagePattern = /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/
 const isRecord = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 const validMultiplier = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0.01 && value <= 1000
+const validHttpsUrl = (value: unknown): value is string => {
+  if (typeof value !== 'string' || value.length > 500) return false
+  try { return new URL(value).protocol === 'https:' } catch { return false }
+}
 
 export function parseCustomLibrary(value: unknown): CustomLibrary {
   if (!isRecord(value) || value.schemaVersion !== CUSTOM_SCHEMA_VERSION || value.kind !== CUSTOM_KIND || !Array.isArray(value.clues) || value.clues.length > MAX_CUSTOM_CLUES) {
@@ -51,6 +56,17 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
       new Set([raw.imageDataUrl, ...raw.additionalImageDataUrls]).size !== raw.additionalImageDataUrls.length + 1)) {
       throw new Error(`Invalid additional images in clue ${index + 1}.`)
     }
+    const imageCount = (raw.imageDataUrl ? 1 : 0) + (Array.isArray(raw.additionalImageDataUrls) ? raw.additionalImageDataUrls.length : 0)
+    if (raw.photoCredits !== undefined && (!Array.isArray(raw.photoCredits) || raw.photoCredits.length > imageCount ||
+      raw.photoCredits.some((credit) => !isRecord(credit) || !Number.isInteger(credit.imageIndex) ||
+        (credit.imageIndex as number) < 0 || (credit.imageIndex as number) >= imageCount ||
+        !validHttpsUrl(credit.sourceUrl) || !validHttpsUrl(credit.licenseUrl) ||
+        typeof credit.author !== 'string' || !credit.author.trim() || credit.author.length > 120 ||
+        typeof credit.license !== 'string' || !credit.license.trim() || credit.license.length > 100 ||
+        typeof credit.modification !== 'string' || credit.modification.length > 200) ||
+      new Set(raw.photoCredits.map((credit) => isRecord(credit) ? credit.imageIndex : -1)).size !== raw.photoCredits.length)) {
+      throw new Error(`Invalid photo credits in clue ${index + 1}.`)
+    }
     const seenTargets = new Set<string>()
     const weights: CustomWeight[] = raw.weights.map((row, weightIndex) => {
       if (!isRecord(row) || typeof row.locationId !== 'string' || !allowedTargets.has(row.locationId) || seenTargets.has(row.locationId) ||
@@ -62,7 +78,8 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
     })
     return { id: raw.id, categoryId: raw.categoryId, appearance: { en: raw.appearance.en.trim(), zh: raw.appearance.zh.trim() },
       ...(raw.imageDataUrl ? { imageDataUrl: raw.imageDataUrl } : {}),
-      ...(raw.additionalImageDataUrls?.length ? { additionalImageDataUrls: raw.additionalImageDataUrls as string[] } : {}), weights,
+      ...(raw.additionalImageDataUrls?.length ? { additionalImageDataUrls: raw.additionalImageDataUrls as string[] } : {}),
+      ...(raw.photoCredits?.length ? { photoCredits: raw.photoCredits as PhotoCredit[] } : {}), weights,
       ...(raw.supersedesClueIds ? { supersedesClueIds: raw.supersedesClueIds as string[] } : {}),
       ...(raw.regionalWeightMode ? { regionalWeightMode: 'conditional' as const } : {}),
       ...(raw.cardCrop ? { cardCrop: raw.cardCrop as CustomClue['cardCrop'] } : {}) }

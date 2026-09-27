@@ -4,8 +4,8 @@ test('built-in Africa library is selectable and separate from the global and per
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Global library' })).toHaveAttribute('aria-pressed', 'true')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.library-picker-note').first()).toContainText('94 clues · 14 documented candidates')
-  await expect(page.locator('.tree-all')).toContainText('94', { timeout: 15_000 })
+  await expect(page.locator('.library-picker-note').first()).toContainText('95 clues · 14 documented candidates')
+  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
   await expect(page.locator('.scope-inline .count-pill')).toHaveText('14')
   const route = page.locator('.text-clue').filter({ hasText: 'Road number: R followed by digits' })
   await expect(route).toHaveCount(1)
@@ -29,7 +29,7 @@ test('built-in Africa library is selectable and separate from the global and per
 test('Africa plate gallery has one broad card per color and keeps distinct plate layouts', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.tree-all')).toContainText('94', { timeout: 15_000 })
+  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
   const search = page.getByRole('searchbox', { name: 'Search clue labels' })
   for (const color of ['White', 'Yellow', 'Green', 'Blue', 'Black']) {
     const label = `${color} visible on a license plate`
@@ -45,7 +45,7 @@ test('Africa plate gallery has one broad card per color and keeps distinct plate
 test('Africa plate photo examples include Rwanda and South African province variants without duplicate selection', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.tree-all')).toContainText('94', { timeout: 15_000 })
+  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
   const search = page.getByRole('searchbox', { name: 'Search clue labels' })
   await search.fill('White front plate and yellow rear plate on the same vehicle')
   const paired = page.locator('.clue-card').filter({ hasText: 'White front plate and yellow rear plate on the same vehicle' })
@@ -57,8 +57,25 @@ test('Africa plate photo examples include Rwanda and South African province vari
   await expect(page.locator('.info-modal .modal-image img')).not.toHaveAttribute('src', firstImage!)
   await expect(page.locator('.selection-chip')).toHaveCount(0)
   await page.getByRole('button', { name: 'Close' }).click()
-  await search.fill('Pale yellow-green plate with black characters')
-  await expect(page.locator('.clue-card').filter({ hasText: 'Pale yellow-green plate with black characters' })).toHaveCount(1)
+  await search.fill('Pale green plate with green letters and a yellow wildlife motif')
+  await expect(page.locator('.clue-card').filter({ hasText: 'Pale green plate with green letters and a yellow wildlife motif' })).toHaveCount(1)
   await search.fill('White front and yellow rear plates with a small striped flag at left')
   await expect(page.locator('.clue-card').filter({ hasText: 'White front and yellow rear plates with a small striped flag at left' })).toHaveCount(1)
+})
+
+
+test('Africa Nigerian plate images and their per-photo credit load', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Africa library' }).click()
+  const search = page.getByRole('searchbox', { name: 'Search clue labels' })
+  await search.fill('White plate with blue characters and a green map motif')
+  const card = page.locator('.clue-card').filter({ hasText: 'White plate with blue characters and a green map motif' })
+  await expect(card).toHaveCount(1)
+  await expect(card.locator('img')).toHaveJSProperty('naturalWidth', 960)
+  await card.locator('.info-button').click()
+  await expect(page.locator('.info-modal .instance-strip button')).toHaveCount(2)
+  await expect(page.locator('.local-photo-credit')).toContainText('Niegodzisie')
+  await page.locator('.info-modal .instance-strip button').nth(1).click()
+  await expect(page.locator('.local-photo-credit')).toContainText('Joshua Doubek')
+  await expect(page.locator('.local-photo-credit a')).toHaveCount(2)
 })
