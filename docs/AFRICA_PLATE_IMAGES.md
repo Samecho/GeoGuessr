@@ -31,4 +31,8 @@
 
 ## 2026-09-27 update
 
-The table above records the original 20-card image audit. The current built-in Africa library merges five overlapping plate cards into 15 cards: 14 illustrated and one text-only. The broad green card uses the previously audited white plate with green detail; the broad blue card retains the two blue/white variants. The separate green/yellow decoration image remains available in the read-only tutorial archive but is no longer a separate selectable card. No new plate image or inferred plate color was introduced.
+The table above records the original 20-card image audit. At the consolidation stage, the library merged five overlapping plate cards into 15 cards: 14 illustrated and one text-only. The broad green card then used the previously audited white plate with green detail; the broad blue card then retained the two blue/white variants. The separate green/yellow decoration image remains available in the read-only tutorial archive but is no longer a separate selectable card. No new plate image or inferred plate color was introduced.
+
+## 2026-09-27 presentation update
+
+The table above is the earlier image audit, not the current card count. In the current Africa library the five broad color observations are text-only, and all ten precise plate-layout observations have images. The cropped plate examples remain on the precise cards, and source images remain intact in the JSON.

@@ -6,10 +6,10 @@ import { CUSTOM_KIND, imageFileToDataUrl, mergeCustomLibraries, parseCustomLibra
 import type { Language } from '../i18n'
 
 type DraftWeight = { locationId: string; seen: string; absent: string }
-type Draft = { id: string | null; en: string; zh: string; categoryId: string; imageDataUrl: string; weights: DraftWeight[]; supersedesClueIds: string[]; cardCrop?: CustomClue['cardCrop'] }
+type Draft = { id: string | null; en: string; zh: string; categoryId: string; imageDataUrl: string; weights: DraftWeight[]; supersedesClueIds: string[]; regionalWeightMode?: CustomClue['regionalWeightMode']; cardCrop?: CustomClue['cardCrop'] }
 const newDraft = (): Draft => ({ id: null, en: '', zh: '', categoryId: 'camera', imageDataUrl: '', weights: [], supersedesClueIds: [] })
 const fromClue = (clue: CustomClue): Draft => ({ id: clue.id, en: clue.appearance.en, zh: clue.appearance.zh,
-  categoryId: clue.categoryId, imageDataUrl: clue.imageDataUrl || '', supersedesClueIds: clue.supersedesClueIds || [], cardCrop: clue.cardCrop,
+  categoryId: clue.categoryId, imageDataUrl: clue.imageDataUrl || '', supersedesClueIds: clue.supersedesClueIds || [], regionalWeightMode: clue.regionalWeightMode, cardCrop: clue.cardCrop,
   weights: clue.weights.map((row) => ({ locationId: row.locationId, seen: String(row.seenMultiplier), absent: String(row.absentMultiplier) })) })
 
 const copy = {
@@ -97,6 +97,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
     const item: CustomClue = { id: draft.id || `custom-${crypto.randomUUID()}`, appearance: { en, zh }, categoryId: draft.categoryId,
       ...(draft.imageDataUrl ? { imageDataUrl: draft.imageDataUrl } : {}), weights,
       ...(draft.supersedesClueIds.length ? { supersedesClueIds: draft.supersedesClueIds } : {}),
+      ...(draft.regionalWeightMode ? { regionalWeightMode: draft.regionalWeightMode } : {}),
       ...(draft.cardCrop && draft.imageDataUrl ? { cardCrop: draft.cardCrop } : {}) }
     try {
       onChange(parseCustomLibrary({ schemaVersion: 1, kind: CUSTOM_KIND,

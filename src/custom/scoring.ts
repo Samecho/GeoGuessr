@@ -7,6 +7,10 @@ export type CustomRankingScope = { kind: 'country' } | { kind: 'region'; country
 const reliability = (observation: Observation) => observation.certainty === 'certain' ? 1 : 0.5
 const multiplierFor = (row: CustomWeight | undefined, observation: Observation) =>
   row ? observation.mode === 'seen' ? row.seenMultiplier : row.absentMultiplier : 1
+const logMeanExp = (values: number[]) => {
+  const maximum = Math.max(...values)
+  return maximum + Math.log(values.reduce((sum, value) => sum + Math.exp(value - maximum), 0) / values.length)
+}
 
 /** User-entered likelihood ratios, with a uniform prior over the active candidate set. */
 export function rankCustomCandidates(candidateIds: readonly string[], library: CustomLibrary, observations: readonly Observation[], scope: CustomRankingScope): Ranked[] {
@@ -28,6 +32,7 @@ export function rankCustomCandidates(candidateIds: readonly string[], library: C
     observation,
     scale: Math.max(0, reliability(observation) - (observation.mode === 'seen' ? supersedingReliability.get(observation.clueId) || 0 : 0)),
     targets: new Map(clueById.get(observation.clueId)!.weights.map((row) => [row.locationId, row])),
+    regionalWeightMode: clueById.get(observation.clueId)!.regionalWeightMode,
   }))
   const logEvidence = (id: string) => effects.reduce((sum, { observation, scale, targets }) =>
     sum + Math.log(multiplierFor(targets.get(id), observation)) * scale, 0)
@@ -39,8 +44,14 @@ export function rankCustomCandidates(candidateIds: readonly string[], library: C
         // Marginalize the joint regional evidence once. Averaging each clue
         // separately would imply that every clue can come from a different region.
         const regionScores = regions.map((region) => logEvidence(region.id))
-        const maximum = Math.max(...regionScores)
-        score += maximum + Math.log(regionScores.reduce((sum, value) => sum + Math.exp(value - maximum), 0) / regions.length)
+        score += logMeanExp(regionScores)
+        // Conditional region multipliers redistribute a clue within the country.
+        // Their averages are already represented by the country multiplier.
+        for (const effect of effects) {
+          if (effect.regionalWeightMode !== 'conditional') continue
+          score -= logMeanExp(regions.map((region) =>
+            Math.log(multiplierFor(effect.targets.get(region.id), effect.observation)) * effect.scale))
+        }
       }
     }
     return { id, score }

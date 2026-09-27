@@ -30,6 +30,8 @@ describe('built-in Africa plate clues', () => {
       'Blue visible on a license plate', 'Black visible on a license plate',
     ])
     expect(plateClues.filter((clue) => /green-tinted|green tint|blue-tinted|noticeable blue/i.test(clue.appearance.en))).toHaveLength(0)
+    expect(plateClues.slice(0, 5).every((clue) => !clue.imageDataUrl)).toBe(true)
+    expect(plateClues.slice(5).every((clue) => !!clue.imageDataUrl)).toBe(true)
     const colorWeight = (clueId: string, locationId: string) => library.clues.find((clue) => clue.id === clueId)?.weights.find((row) => row.locationId === locationId)?.seenMultiplier
     expect(colorWeight(white.clueId, 'loc:tunisia')).toBeGreaterThan(1) // white characters on black plate
     expect(colorWeight(yellow.clueId, 'loc:eswatini')).toBeGreaterThan(1) // yellow detail on a green-banded plate
@@ -44,6 +46,10 @@ describe('built-in Africa plate clues', () => {
     expect(weight('loc:ghana')).toBeLessThan(1)
     expect(weight('loc:tunisia')).toBeLessThan(1)
     expect(weight('loc:reunion')).toBeUndefined()
+    const greenOnly = rank([green])
+    expect(share(greenOnly, 'loc:nigeria')).toBeGreaterThan(share(greenOnly, 'loc:south-africa'))
+    const blueOnly = rank([blue])
+    expect(share(blueOnly, 'loc:south-africa')).toBeCloseTo(share(blueOnly, 'loc:senegal'))
     const ranked = rank([right, green])
     expect(ranked[0].id).toBe('loc:nigeria')
     expect(share(ranked, 'loc:nigeria')).toBeGreaterThan(share(ranked, 'loc:tunisia'))

@@ -35,3 +35,5 @@ Example structure (image omitted; remove `supersedesClueIds` unless that broad c
 ```
 
 The official library's reviewed sources and photos are not written into custom JSON. A personal image appears only in the user's browser and their exported file.
+
+A clue may optionally set `regionalWeightMode: "conditional"` in JSON when it specifies both a country multiplier and province multipliers for the **same** observation. Each such clue’s regional likelihoods are normalized to mean 1 for country ranking, so the province values describe within-country contrast without duplicating the country effect. The region chart still uses their relative values. Without this field, regional evidence is marginalized into the parent country as before. The editor preserves the field when loading and saving a clue.

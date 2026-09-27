@@ -19,6 +19,8 @@ const getShare = (rows: ReturnType<typeof rankCustomCandidates>, id: string) => 
 describe('custom library', () => {
   it('validates versioned JSON and rejects untrusted targets, duplicate IDs and SVG images', () => {
     expect(parseCustomLibrary(library)).toEqual(library)
+    expect(parseCustomLibrary({ ...library, clues: [{ ...entry, regionalWeightMode: 'conditional' }] }).clues[0].regionalWeightMode).toBe('conditional')
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, regionalWeightMode: 'invalid' }] })).toThrow()
     const focused = { ...entry, imageDataUrl: 'data:image/png;base64,YQ==', cardCrop: 'left-half' }
     expect(parseCustomLibrary({ ...library, clues: [focused] }).clues[0].cardCrop).toBe('left-half')
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...focused, cardCrop: 'center' }] })).toThrow()
@@ -53,6 +55,15 @@ describe('custom library', () => {
     expect(getShare(countryRanks, 'loc:canada')).toBeCloseTo(expectedCanadaMultiplier / (expectedCanadaMultiplier + 1))
     expect(customClueRelevant(entry, ['loc:canada'])).toBe(true)
     expect(customClueRelevant(entry, ['loc:nigeria'])).toBe(false)
+  })
+
+  it('keeps a conditional region contrast from multiplying the country likelihood', () => {
+    const conditionalLibrary = parseCustomLibrary({ ...library, clues: [{ ...entry, regionalWeightMode: 'conditional' }] })
+    const countryRows = rankCustomCandidates(['loc:canada', 'loc:united-states'], conditionalLibrary, [seen()], { kind: 'country' })
+    expect(getShare(countryRows, 'loc:canada')).toBeCloseTo(5 / 6)
+    const regions = regionSchemeByCountry.get('loc:canada')!.regions.map((region) => region.id)
+    const regional = rankCustomCandidates(regions, conditionalLibrary, [seen()], { kind: 'region', countryId: 'loc:canada' })
+    expect(getShare(regional, 'loc:canada:region:ca-ab')).toBeCloseTo(20 / (20 + regions.length - 1))
   })
 
   it('marginalizes joint province evidence without assigning clues to different provinces', () => {

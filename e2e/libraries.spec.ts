@@ -34,7 +34,8 @@ test('Africa plate gallery has one broad card per color and keeps distinct plate
   for (const color of ['White', 'Yellow', 'Green', 'Blue', 'Black']) {
     const label = `${color} visible on a license plate`
     await search.fill(label)
-    await expect(page.locator('.clue-card, .text-clue').filter({ hasText: label })).toHaveCount(1)
+    await expect(page.locator('.text-clue').filter({ hasText: label })).toHaveCount(1)
+    await expect(page.locator('.clue-card').filter({ hasText: label })).toHaveCount(0)
   }
   await search.fill('Long white front plate and square yellow rear plate')
   await expect(page.locator('.clue-card').filter({ hasText: 'Long white front plate and square yellow rear plate' })).toHaveCount(1)
