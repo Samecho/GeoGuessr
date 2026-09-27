@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { countries, regionSchemeByCountry } from '../data/knowledge'
 import type { Observation } from '../data/types'
-import { CUSTOM_KIND, emptyCustomLibrary, mergeCustomLibraries, parseCustomLibrary, type CustomLibrary } from './library'
+import { COLLECTION_KIND, CUSTOM_KIND, DEFAULT_PERSONAL_ID, emptyCustomLibrary, emptyCustomLibraryCollection, mergeCustomLibraries, parseCustomLibrary, parseCustomLibraryCollection, type CustomLibrary } from './library'
 import { customClueRelevant, rankCustomCandidates } from './scoring'
 
 const entry: CustomLibrary['clues'][number] = {
@@ -15,6 +15,28 @@ const library: CustomLibrary = { schemaVersion: 1, kind: CUSTOM_KIND, clues: [en
 const seen = (certainty: Observation['certainty'] = 'certain'): Observation => ({ clueId: entry.id, mode: 'seen', certainty })
 const absent: Observation = { clueId: entry.id, mode: 'excluded', certainty: 'certain' }
 const getShare = (rows: ReturnType<typeof rankCustomCandidates>, id: string) => rows.find((row) => row.id === id)!.share
+
+describe('personal library collection', () => {
+  it('migrates a legacy single-library document without dropping clues or images', () => {
+    const old = { ...library, clues: [{ ...entry, imageDataUrl: 'data:image/png;base64,YQ==' }] }
+    const migrated = parseCustomLibraryCollection(old)
+    expect(migrated.activeId).toBe(DEFAULT_PERSONAL_ID)
+    expect(migrated.libraries[0].library).toEqual(old)
+    expect(parseCustomLibraryCollection(migrated)).toEqual(migrated)
+  })
+
+  it('validates distinct named libraries and an existing active selection', () => {
+    const initial = emptyCustomLibraryCollection()
+    const second = { id: 'personal-second1', name: 'Practice', library }
+    const collection = { ...initial, activeId: second.id, libraries: [...initial.libraries, second] }
+    expect(parseCustomLibraryCollection(collection).libraries).toHaveLength(2)
+    expect(parseCustomLibraryCollection(collection).kind).toBe(COLLECTION_KIND)
+    expect(() => parseCustomLibraryCollection({ ...collection, activeId: 'personal-missing' })).toThrow()
+    expect(() => parseCustomLibraryCollection({ ...collection, libraries: [second, second] })).toThrow()
+    expect(() => parseCustomLibraryCollection({ ...collection, libraries: [{ ...second, name: '' }] })).toThrow()
+    expect(() => parseCustomLibraryCollection({ ...collection, libraries: [initial.libraries[0], { ...second, name: 'my LIBRARY' }] })).toThrow()
+  })
+})
 
 describe('custom library', () => {
   it('validates versioned JSON and rejects untrusted targets, duplicate IDs and SVG images', () => {

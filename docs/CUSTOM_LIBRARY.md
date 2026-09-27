@@ -1,6 +1,6 @@
 # Personal clue library
 
-The **Edit library / 编辑题库** tab manages a personal library. Select **My library / 我的题库** in the **Match clues / 匹配线索** tab to use it for scoring. Global, Africa, and personal libraries preserve separate selected observations; only the chosen library's clues and weights enter its chart. The geographic hard scope is shared. No account, server, network upload, or runtime AI is involved.
+The **Edit library / 编辑题库** tab manages multiple named personal libraries. **New library / 新建题库** creates an empty library; the name can be edited in the same panel. Select **My library / 我的题库** and the desired personal library in the **Match clues / 匹配线索** tab to use it for scoring. Global, Africa, and each personal library preserve separate selected observations within the session; only the chosen library's clues and weights enter its chart. The geographic hard scope is shared. No account, server, network upload, or runtime AI is involved.
 
 Create a clue by entering an English or Chinese visual label, choosing its existing category, and adding a country or a region from a complete published region scheme. The other language falls back to the entered label if left blank. Images can be uploaded, dropped, pasted into the image area with Ctrl+V, or read from the clipboard button. The browser resizes each image to at most 1280 pixels and stores it as WebP. PNG, JPEG, and WebP are accepted; SVG and executable image formats are rejected. A clue can also be text only.
 
@@ -12,7 +12,7 @@ For a country, the country-level multipliers are combined with each region’s j
 
 Imported JSON may optionally set `cardCrop` to `left-half`, `right-half`, `top-half`, or `bottom-half` for a comparison photo. This focuses the clue card on the relevant plate while keeping the original image bytes intact in the exported JSON; the enlarged source view shows the full comparison. The field requires an embedded image and is preserved when the clue is edited.
 
-The browser saves the personal library in IndexedDB. Export downloads a versioned JSON file containing all clue labels, weights and embedded image data. Import validates the schema and **merges by stable clue ID**, replacing matching IDs while keeping unrelated local entries. Deleting a clue offers an immediate Undo action. Export regularly for a portable backup; browser storage may be cleared independently of this site.
+The browser saves a collection of named personal libraries in IndexedDB. Existing single-library data under the old `main` key is migrated to the first library on load, including clue IDs, weights, and embedded images. Export downloads **only the selected library** as a versioned JSON file containing all its labels, weights, and embedded image data; the filename includes its name. To back up several libraries, export each one. Import validates the JSON and **merges into the selected library by stable clue ID**, replacing matching IDs while keeping unrelated entries. Deleting a clue offers an immediate Undo action. Deleting a library requires two clicks and removes its locally saved contents; export it first if a backup is needed. Browser storage may be cleared independently of this site.
 
 Example structure (image omitted; remove `supersedesClueIds` unless that broad clue exists):
 

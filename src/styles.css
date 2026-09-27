@@ -106,3 +106,12 @@
 @media(max-width:760px){.library-picker{margin:10px 12px;padding:12px}.library-picker-buttons{width:100%}.library-picker-buttons button{flex:1}}
 
 .local-photo-credit{margin:10px 0 0;font-size:11px;line-height:1.45;color:#536b73}.local-photo-credit a{color:#116a79}
+
+.personal-library-manager{max-width:2156px;margin:10px auto 0;padding:13px 18px;background:#fff;border:1px solid #dce6e8;border-radius:10px;display:flex;align-items:end;gap:9px;flex-wrap:wrap}
+.personal-library-manager-title{display:flex;align-items:center;gap:8px;align-self:center;margin-right:8px;color:#1d4854;font-size:13px}.personal-library-manager-title span{border-radius:99px;background:#e7f0f1;padding:2px 7px;color:#47717a;font-size:11px}
+.personal-library-manager label{font-size:11px;font-weight:800;color:#5c7880;display:flex;flex-direction:column;gap:5px;min-width:165px}.personal-library-manager input,.personal-library-manager select,.personal-library-picker select{min-height:35px;border:1px solid #cfdddf;border-radius:7px;background:#fff;color:#274852;padding:7px 9px;font-size:12px}.personal-library-manager input{min-width:210px}
+.personal-library-manager button{min-height:35px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid #cadbdd;border-radius:7px;background:#f7fafb;color:#356773;padding:7px 10px;font-size:11px;font-weight:800}.personal-library-manager button:hover{background:#e7f1f2}.personal-library-manager .personal-library-create{background:#176f80;color:#fff;border-color:#176f80}.personal-library-manager .personal-library-delete{margin-left:auto;color:#9c4e48}.personal-library-manager .personal-library-delete.armed{background:#a9453f;border-color:#a9453f;color:#fff}.personal-library-message{width:100%;font-size:11px;color:#356773}
+.personal-library-picker{display:flex;align-items:center;gap:7px;color:#647f87;font-size:11px;font-weight:800}.personal-library-picker select{max-width:260px}
+@media(max-width:760px){.personal-library-manager{margin:10px 12px;padding:12px;align-items:stretch}.personal-library-manager label{width:100%}.personal-library-manager input,.personal-library-manager select{width:100%;min-width:0}.personal-library-manager .personal-library-delete{margin-left:0}.personal-library-picker{width:100%}.personal-library-picker select{flex:1;min-width:0}}
+
+.custom-active-library{color:#176f80}

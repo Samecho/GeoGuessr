@@ -39,7 +39,7 @@ const copy = {
   },
 } as const
 
-export function CustomLibraryEditor({ library, onChange, language }: { library: CustomLibrary; onChange: (value: CustomLibrary) => void; language: Language }) {
+export function CustomLibraryEditor({ library, libraryName, onChange, language }: { library: CustomLibrary; libraryName: string; onChange: (value: CustomLibrary) => void; language: Language }) {
   const T = copy[language]
   const [draft, setDraft] = useState<Draft>(newDraft)
   const [targetCountry, setTargetCountry] = useState('')
@@ -113,7 +113,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
   const exportJson = () => {
     const blob = new Blob([JSON.stringify(library, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
-    const link = document.createElement('a'); link.href = url; link.download = 'street-clues-custom-library.json'; link.click()
+    const link = document.createElement('a'); link.href = url; link.download = `street-clues-${libraryName.replace(/[^\p{L}\p{N}-]+/gu, '-').replace(/^-|-$/g, '') || 'library'}.json`; link.click()
     setTimeout(() => URL.revokeObjectURL(url), 30000)
   }
   const importJson = async (file: File | null | undefined) => {
@@ -128,7 +128,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
   }
 
   return <section className="custom-editor" aria-label={T.title}>
-    <div className="custom-editor-head"><div><span className="section-kicker">{T.title}</span><h2>{T.title}</h2><p>{T.note}</p></div><div className="custom-editor-actions">
+    <div className="custom-editor-head"><div><span className="section-kicker">{T.title}</span><h2>{T.title}</h2><p><strong className="custom-active-library">{libraryName}</strong> · {T.note}</p></div><div className="custom-editor-actions">
       <button type="button" onClick={() => { setDraft(newDraft()); setMessage('') }}><Plus size={15} /> {T.new}</button>
       <button type="button" onClick={exportJson}><Upload size={15} /> {T.export}</button>
       <button type="button" onClick={() => jsonInput.current?.click()}><Download size={15} /> {T.import}</button>

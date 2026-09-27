@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type SetStateAction } from 'react'
 import { BookOpen, Check, ChevronDown, ChevronRight, Globe2, Info, RotateCcw, Search, X, ZoomIn } from 'lucide-react'
 import { countries, countryById } from './data/countries'
 import { categories } from './data/categories'
@@ -14,7 +14,8 @@ import { RankingChart } from './components/RankingChart'
 import { SourceGallery } from './components/SourceGallery'
 import { ui, type Language } from './i18n'
 import { CustomLibraryEditor } from './custom/CustomLibraryEditor'
-import { customClueToCard, emptyCustomLibrary, parseCustomLibrary, loadCustomLibrary, saveCustomLibrary, type CustomLibrary } from './custom/library'
+import { PersonalLibraryManager } from './custom/PersonalLibraryManager'
+import { customClueToCard, emptyCustomLibrary, emptyCustomLibraryCollection, parseCustomLibrary, loadCustomLibraryCollection, saveCustomLibraryCollection, type CustomLibrary, type CustomLibraryCollection } from './custom/library'
 import { customClueRelevant, rankCustomCandidates } from './custom/scoring'
 import africaManifest from './data/africa-library-manifest.json'
 import './styles.css'
@@ -35,8 +36,14 @@ function App() {
   const [africaError, setAfricaError] = useState('')
   const [africaObservations, setAfricaObservations] = useState<Record<string, Observation>>({})
   const [officialObservations, setOfficialObservations] = useState<Record<string, Observation>>({})
-  const [customObservations, setCustomObservations] = useState<Record<string, Observation>>({})
-  const [customLibrary, setCustomLibrary] = useState<CustomLibrary>(emptyCustomLibrary)
+  const [personalObservations, setPersonalObservations] = useState<Record<string, Record<string, Observation>>>({})
+  const [customCollection, setCustomCollection] = useState<CustomLibraryCollection>(emptyCustomLibraryCollection)
+  const customLibrary = customCollection.libraries.find((entry) => entry.id === customCollection.activeId)?.library || EMPTY_LOCAL_LIBRARY
+  const currentPersonalObservations = personalObservations[customCollection.activeId] || {}
+  const setCurrentPersonalObservations = (update: SetStateAction<Record<string, Observation>>) => setPersonalObservations((current) => {
+    const prior = current[customCollection.activeId] || {}
+    return { ...current, [customCollection.activeId]: typeof update === 'function' ? update(prior) : update }
+  })
   const [customLoaded, setCustomLoaded] = useState(false)
   const [customStorageError, setCustomStorageError] = useState('')
   const [customSaveStatus, setCustomSaveStatus] = useState<'loading' | 'saving' | 'saved' | 'error'>('loading')
@@ -45,7 +52,7 @@ function App() {
   const [observations, setObservations] = libraryId === 'global'
     ? [officialObservations, setOfficialObservations] as const
     : libraryId === 'africa' ? [africaObservations, setAfricaObservations] as const
-    : [customObservations, setCustomObservations] as const
+    : [currentPersonalObservations, setCurrentPersonalObservations] as const
   const [openGroups, setOpenGroups] = useState<string[]>(['roads', 'writing'])
   const [categoryId, setCategoryId] = useState('all')
   const [infoId, setInfoId] = useState<string | null>(null)
@@ -65,7 +72,7 @@ function App() {
 
   useEffect(() => {
     let active = true
-    void loadCustomLibrary().then((value) => { if (active) setCustomLibrary(value) })
+    void loadCustomLibraryCollection().then((value) => { if (active) setCustomCollection(value) })
       .catch((error: unknown) => { if (active) { setCustomStorageError(error instanceof Error ? error.message : String(error)); setCustomSaveStatus('error') } })
       .finally(() => { if (active) setCustomLoaded(true) })
     return () => { active = false }
@@ -74,10 +81,10 @@ function App() {
     if (!customLoaded || customStorageError) return
     const version = ++saveVersion.current
     setCustomSaveStatus('saving')
-    saveQueue.current = saveQueue.current.catch(() => {}).then(() => saveCustomLibrary(customLibrary))
+    saveQueue.current = saveQueue.current.catch(() => {}).then(() => saveCustomLibraryCollection(customCollection))
     void saveQueue.current.then(() => { if (version === saveVersion.current) setCustomSaveStatus('saved') })
       .catch((error: unknown) => { setCustomStorageError(error instanceof Error ? error.message : String(error)); setCustomSaveStatus('error') })
-  }, [customLibrary, customLoaded, customStorageError])
+  }, [customCollection, customLoaded, customStorageError])
   useEffect(() => {
     if (libraryId !== 'africa' || africaLibrary || africaError) return
     const controller = new AbortController()
@@ -107,9 +114,20 @@ function App() {
   const localImages = useMemo(() => new Map(activeLocalLibrary.clues.map((clue) => [clue.id, clue.imageDataUrl ? [clue.imageDataUrl, ...(clue.additionalImageDataUrls || [])] : []])), [activeLocalLibrary])
   const selected = useMemo(() => Object.values(observations).filter((item) => activeClueById.has(item.clueId)), [observations, activeClueById])
   const applyCustomLibrary = (next: CustomLibrary) => {
-    setCustomLibrary(next)
+    setCustomCollection((current) => ({ ...current, libraries: current.libraries.map((entry) => entry.id === current.activeId ? { ...entry, library: next } : entry) }))
     const ids = new Set(next.clues.map((clue) => clue.id))
-    setCustomObservations((current) => Object.fromEntries(Object.entries(current).filter(([id]) => ids.has(id))))
+    setPersonalObservations((current) => ({ ...current, [customCollection.activeId]: Object.fromEntries(Object.entries(current[customCollection.activeId] || {}).filter(([id]) => ids.has(id))) }))
+  }
+  const choosePersonalLibrary = (id: string) => {
+    if (!customCollection.libraries.some((entry) => entry.id === id)) return
+    setCustomCollection((current) => ({ ...current, activeId: id }))
+    setCategoryId('all'); setGallerySearch(''); setInfoId(null); setViewCountry(null)
+  }
+  const applyCustomCollection = (next: CustomLibraryCollection) => {
+    const removed = new Set(customCollection.libraries.map((entry) => entry.id).filter((id) => !next.libraries.some((entry) => entry.id === id)))
+    if (removed.size) setPersonalObservations((current) => Object.fromEntries(Object.entries(current).filter(([id]) => !removed.has(id))))
+    setCustomCollection(next)
+    if (next.activeId !== customCollection.activeId) { setCategoryId('all'); setGallerySearch(''); setInfoId(null); setViewCountry(null) }
   }
   const imageForClue = (clue: Clue) => !isGlobalLibrary ? localImages.get(clue.id)?.[0] || '' :
     clue.assetIds.length && photosReady ? `${import.meta.env.BASE_URL}${assetById.get(clue.assetIds[0])!.path.slice(1)}` : ''
@@ -230,6 +248,7 @@ function App() {
     <section className="library-picker" aria-label={language === 'en' ? 'Choose clue library' : '选择线索题库'}>
       <span className="section-kicker">{language === 'en' ? 'CLUE LIBRARY' : '线索题库'}</span>
       <div className="library-picker-buttons">{(['global', 'africa', 'personal'] as const).map((id) => <button type="button" key={id} className={libraryId === id ? 'active' : ''} aria-pressed={libraryId === id} onClick={() => { setLibraryId(id); setCategoryId('all'); setGallerySearch(''); setInfoId(null); setViewCountry(null) }}>{id === 'global' ? (language === 'en' ? 'Global library' : '全球题库') : id === 'africa' ? (language === 'en' ? 'Africa library' : '非洲题库') : (language === 'en' ? 'My library' : '我的题库')}</button>)}</div>
+      {libraryId === 'personal' && customLoaded && <label className="personal-library-picker">{language === 'en' ? 'Personal library' : '个人题库'}<select aria-label={language === 'en' ? 'Personal library' : '个人题库'} value={customCollection.activeId} onChange={(event) => choosePersonalLibrary(event.target.value)}>{customCollection.libraries.map((entry) => <option key={entry.id} value={entry.id}>{entry.name} ({entry.library.clues.length})</option>)}</select></label>}
       {libraryId === 'africa' && <span className="library-picker-note">{language === 'en' ? `${africaManifest.clueCount} clues · ${africaManifest.candidateCountryIds.length} documented candidates` : `${africaManifest.clueCount} 条线索 · ${africaManifest.candidateCountryIds.length} 个已录入候选`}</span>}
       {libraryId === 'africa' && !africaLibrary && <span className="library-picker-note" role="status">{africaError ? (language === 'en' ? `Could not load Africa library: ${africaError}` : `非洲题库加载失败：${africaError}`) : (language === 'en' ? 'Loading library…' : '正在加载题库……')}</span>}
     </section>
@@ -312,7 +331,7 @@ function App() {
     </>}
     {pageId === 'edit' && <>
       <div className="custom-toolbar"><span>{customStorageError ? (language === 'en' ? `Local save failed: ${customStorageError}` : `本地保存失败：${customStorageError}`) : customSaveStatus === 'saving' ? (language === 'en' ? 'Saving locally…' : '正在保存到本地……') : customSaveStatus === 'saved' ? (language === 'en' ? 'Saved in this browser' : '已保存在本浏览器') : (language === 'en' ? 'Loading local library…' : '正在读取本地题库……')}</span></div>
-      {customLoaded && <CustomLibraryEditor library={customLibrary} onChange={applyCustomLibrary} language={language} />}
+      {customLoaded && <><PersonalLibraryManager collection={customCollection} onChange={applyCustomCollection} language={language} /><CustomLibraryEditor key={customCollection.activeId} library={customLibrary} libraryName={customCollection.libraries.find((entry) => entry.id === customCollection.activeId)?.name || 'My library'} onChange={applyCustomLibrary} language={language} /></>}
     </>}
 
     {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{infoImage && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={infoImage} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}

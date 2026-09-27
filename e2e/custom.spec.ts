@@ -94,3 +94,88 @@ test('custom editor remains usable at a narrow viewport', async ({ page }) => {
   await expect(page.locator('.text-clue').filter({ hasText: 'Black camera car' })).toBeVisible()
   await page.screenshot({ path: 'test-results/custom-library-mobile.jpg', type: 'jpeg', quality: 65 })
 })
+
+
+test('creates a second named library with isolated clues and observations', async ({ page }) => {
+  await openCustom(page)
+  await page.getByLabel('English clue label').fill('First library clue')
+  await page.locator('.custom-target-add select').first().selectOption({ label: 'Canada' })
+  await page.getByRole('button', { name: 'Add location' }).click()
+  await page.getByRole('button', { name: 'Create clue' }).click()
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(1)
+
+  await page.getByRole('button', { name: 'New library' }).click()
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(0)
+  await page.getByLabel('Library name').fill('Africa practice')
+  await page.getByRole('button', { name: 'Save name' }).click()
+  await page.getByLabel('English clue label').fill('Second library clue')
+  await page.locator('.custom-target-add select').first().selectOption({ label: 'Nigeria' })
+  await page.getByRole('button', { name: 'Add location' }).click()
+  await page.getByRole('button', { name: 'Create clue' }).click()
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('Second library clue')
+  const downloadPromise = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Export JSON' }).click()
+  const download = await downloadPromise
+  expect(download.suggestedFilename()).toContain('Africa-practice')
+  const exported = JSON.parse((await readFile(await download.path())).toString())
+  expect(exported.clues.map((clue: { appearance: { en: string } }) => clue.appearance.en)).toEqual(['Second library clue'])
+
+  await page.getByRole('button', { name: 'Match clues' }).click()
+  await page.getByRole('button', { name: 'My library' }).click()
+  await expect(page.locator('.text-clue').filter({ hasText: 'Second library clue' })).toBeVisible()
+  await page.locator('.text-clue').filter({ hasText: 'Second library clue' }).locator('.text-clue-pick').click()
+  await expect(page.locator('.selection-chip')).toContainText('Second library clue')
+  await page.getByLabel('Personal library').selectOption({ label: 'My library (1)' })
+  await expect(page.locator('.text-clue').filter({ hasText: 'First library clue' })).toBeVisible()
+  await expect(page.locator('.text-clue').filter({ hasText: 'Second library clue' })).toHaveCount(0)
+  await expect(page.locator('.selection-chip')).toHaveCount(0)
+  await page.locator('.text-clue').filter({ hasText: 'First library clue' }).locator('.text-clue-pick').click()
+  await page.getByLabel('Personal library').selectOption({ label: 'Africa practice (1)' })
+  await expect(page.locator('.selection-chip')).toContainText('Second library clue')
+
+  await expect(page.locator('.custom-toolbar')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Edit library' }).click()
+  await expect(page.locator('.custom-toolbar')).toContainText('Saved in this browser')
+  await page.reload()
+  await page.getByRole('button', { name: 'Edit library' }).click()
+  await expect(page.locator('.personal-library-manager select')).toHaveValue(/personal-/)
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('Second library clue')
+  await page.locator('.personal-library-manager select').selectOption({ label: 'My library (1)' })
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('First library clue')
+  await page.locator('.personal-library-manager select').selectOption({ label: 'Africa practice (1)' })
+  await page.getByRole('button', { name: 'Delete library' }).click()
+  await expect(page.locator('.personal-library-manager select option')).toHaveCount(2)
+  await page.getByRole('button', { name: 'Confirm delete' }).click()
+  await expect(page.locator('.personal-library-manager select option')).toHaveCount(1)
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('First library clue')
+})
+
+test('migrates the previous IndexedDB single-library document', async ({ page }) => {
+  await openCustom(page)
+  const imageDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII='
+  await page.evaluate(async (imageDataUrl) => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('street-clues-custom-library', 1)
+      request.onsuccess = () => resolve(request.result)
+      request.onerror = () => reject(request.error)
+    })
+    await new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction('documents', 'readwrite')
+      transaction.objectStore('documents').put({ schemaVersion: 1, kind: 'street-clues-custom-library', clues: [{
+        id: 'custom-legacy123', appearance: { en: 'Old pictured clue', zh: '旧图片线索' }, categoryId: 'camera', imageDataUrl,
+        weights: [{ locationId: 'loc:canada', seenMultiplier: 5, absentMultiplier: 1 }],
+      }] }, 'main')
+      transaction.oncomplete = () => resolve()
+      transaction.onerror = () => reject(transaction.error)
+    })
+    db.close()
+  }, imageDataUrl)
+  await page.reload()
+  await page.getByRole('button', { name: 'Edit library' }).click()
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('Old pictured clue')
+  await expect(page.locator('.custom-clue-list .custom-list-item img')).toBeVisible()
+  await page.getByRole('button', { name: 'New library' }).click()
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toHaveCount(0)
+  await page.locator('.personal-library-manager select').selectOption({ label: 'My library (1)' })
+  await expect(page.locator('.custom-clue-list .custom-list-item')).toContainText('Old pictured clue')
+})

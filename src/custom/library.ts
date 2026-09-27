@@ -10,6 +10,36 @@ export type PhotoCredit = { imageIndex: number; sourceUrl: string; author: strin
 export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; additionalImageDataUrls?: string[]; photoCredits?: PhotoCredit[]; weights: CustomWeight[]; supersedesClueIds?: string[]; regionalWeightMode?: 'conditional'; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
 export type CustomLibrary = { schemaVersion: 1; kind: typeof CUSTOM_KIND; clues: CustomClue[] }
 export const emptyCustomLibrary = (): CustomLibrary => ({ schemaVersion: CUSTOM_SCHEMA_VERSION, kind: CUSTOM_KIND, clues: [] })
+export const COLLECTION_KIND = 'street-clues-library-collection'
+export const DEFAULT_PERSONAL_ID = 'personal-default'
+export const MAX_PERSONAL_LIBRARIES = 30
+export type NamedCustomLibrary = { id: string; name: string; library: CustomLibrary }
+export type CustomLibraryCollection = { schemaVersion: 1; kind: typeof COLLECTION_KIND; activeId: string; libraries: NamedCustomLibrary[] }
+export const emptyCustomLibraryCollection = (): CustomLibraryCollection => ({
+  schemaVersion: 1, kind: COLLECTION_KIND, activeId: DEFAULT_PERSONAL_ID,
+  libraries: [{ id: DEFAULT_PERSONAL_ID, name: 'My library', library: emptyCustomLibrary() }],
+})
+
+export function parseCustomLibraryCollection(value: unknown): CustomLibraryCollection {
+  // Version 1 stored a single library under the same IndexedDB key. Keep every clue and image.
+  if (isRecord(value) && value.kind === CUSTOM_KIND) {
+    return { ...emptyCustomLibraryCollection(), libraries: [{ id: DEFAULT_PERSONAL_ID, name: 'My library', library: parseCustomLibrary(value) }] }
+  }
+  if (!isRecord(value) || value.schemaVersion !== 1 || value.kind !== COLLECTION_KIND ||
+    !Array.isArray(value.libraries) || value.libraries.length < 1 || value.libraries.length > MAX_PERSONAL_LIBRARIES ||
+    typeof value.activeId !== 'string') throw new Error('Invalid personal library collection.')
+  const ids = new Set<string>()
+  const names = new Set<string>()
+  const libraries: NamedCustomLibrary[] = value.libraries.map((raw) => {
+    if (!isRecord(raw) || typeof raw.id !== 'string' || !/^personal-[a-zA-Z0-9_-]{7,80}$/.test(raw.id) || ids.has(raw.id) ||
+      typeof raw.name !== 'string' || !raw.name.trim() || raw.name.trim().length > 80 || names.has(raw.name.trim().toLocaleLowerCase())) throw new Error('Invalid personal library name or ID.')
+    ids.add(raw.id)
+    names.add(raw.name.trim().toLocaleLowerCase())
+    return { id: raw.id, name: raw.name.trim(), library: parseCustomLibrary(raw.library) }
+  })
+  if (!ids.has(value.activeId)) throw new Error('Selected personal library is missing.')
+  return { schemaVersion: 1, kind: COLLECTION_KIND, activeId: value.activeId, libraries }
+}
 
 const categoryIds = new Set(categories.flatMap((category) => category.children.map((child) => child.id)))
 const countryIds = new Set(countries.map((country) => country.id))
@@ -124,7 +154,7 @@ function openDatabase(): Promise<IDBDatabase> {
     request.onerror = () => reject(request.error || new Error('Could not open local storage.'))
   })
 }
-export async function loadCustomLibrary(): Promise<CustomLibrary> {
+export async function loadCustomLibraryCollection(): Promise<CustomLibraryCollection> {
   const db = await openDatabase()
   try {
     const value = await new Promise<unknown>((resolve, reject) => {
@@ -132,11 +162,11 @@ export async function loadCustomLibrary(): Promise<CustomLibrary> {
       request.onsuccess = () => resolve(request.result)
       request.onerror = () => reject(request.error || new Error('Could not load custom library.'))
     })
-    return value === undefined ? emptyCustomLibrary() : parseCustomLibrary(value)
+    return value === undefined ? emptyCustomLibraryCollection() : parseCustomLibraryCollection(value)
   } finally { db.close() }
 }
-export async function saveCustomLibrary(value: CustomLibrary): Promise<void> {
-  const safe = parseCustomLibrary(value)
+export async function saveCustomLibraryCollection(value: CustomLibraryCollection): Promise<void> {
+  const safe = parseCustomLibraryCollection(value)
   const db = await openDatabase()
   try {
     await new Promise<void>((resolve, reject) => {
