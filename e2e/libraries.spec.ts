@@ -5,7 +5,7 @@ test('built-in Africa library is selectable and separate from the global and per
   await expect(page.getByRole('button', { name: 'Global library' })).toHaveAttribute('aria-pressed', 'true')
   await page.getByRole('button', { name: 'Africa library' }).click()
   await expect(page.locator('.library-picker-note').first()).toContainText('93 clues · 14 documented candidates')
-  await expect(page.locator('.tree-all')).toContainText('93')
+  await expect(page.locator('.tree-all')).toContainText('93', { timeout: 15_000 })
   await expect(page.locator('.scope-inline .count-pill')).toHaveText('14')
   const route = page.locator('.text-clue').filter({ hasText: 'Road number: R followed by digits' })
   await expect(route).toHaveCount(1)

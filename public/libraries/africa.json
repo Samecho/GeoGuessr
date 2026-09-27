@@ -1298,47 +1298,37 @@
       "weights": [
         {
           "locationId": "loc:botswana",
-          "seenMultiplier": 10,
+          "seenMultiplier": 1.4,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:eswatini",
-          "seenMultiplier": 10,
+          "seenMultiplier": 1.4,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:lesotho",
-          "seenMultiplier": 10,
+          "seenMultiplier": 1.4,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:namibia",
-          "seenMultiplier": 10,
+          "seenMultiplier": 1.4,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:south-africa",
-          "seenMultiplier": 10,
+          "seenMultiplier": 1.4,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:tunisia",
-          "seenMultiplier": 8,
+          "seenMultiplier": 1.15,
           "absentMultiplier": 1
         },
         {
           "locationId": "loc:ghana",
-          "seenMultiplier": 5,
-          "absentMultiplier": 1
-        },
-        {
-          "locationId": "loc:senegal",
-          "seenMultiplier": 5,
-          "absentMultiplier": 1
-        },
-        {
-          "locationId": "loc:reunion",
-          "seenMultiplier": 4,
+          "seenMultiplier": 1.15,
           "absentMultiplier": 1
         }
       ],
