@@ -22,7 +22,7 @@ const plateClues = library.clues.filter((clue) => clue.categoryId === 'plates')
 
 describe('built-in Africa plate clues', () => {
   it('offers five consistently worded broad colors and no duplicate green or blue tint card', () => {
-    expect(plateClues).toHaveLength(15)
+    expect(plateClues).toHaveLength(21)
     const broad = [white, yellow, green, blue, seen('custom-africa-plates-black-white')]
     expect(plateClues.slice(0, 5).map((clue) => clue.id)).toEqual(broad.map((item) => item.clueId))
     expect(broad.map((item) => library.clues.find((clue) => clue.id === item.clueId)?.appearance.en)).toEqual([
@@ -32,6 +32,11 @@ describe('built-in Africa plate clues', () => {
     expect(plateClues.filter((clue) => /green-tinted|green tint|blue-tinted|noticeable blue/i.test(clue.appearance.en))).toHaveLength(0)
     expect(plateClues.slice(0, 5).every((clue) => !clue.imageDataUrl)).toBe(true)
     expect(plateClues.slice(5).every((clue) => !!clue.imageDataUrl)).toBe(true)
+    expect(plateClues.reduce((count, clue) => count + (clue.imageDataUrl ? 1 : 0) + (clue.additionalImageDataUrls?.length || 0), 0)).toBe(23)
+    expect(library.clues.find((clue) => clue.id === pairedPlate.clueId)?.additionalImageDataUrls).toHaveLength(1)
+    expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-namibia-white-blue')?.additionalImageDataUrls).toHaveLength(1)
+    expect(library.clues.find((clue) => clue.id === greenBand.clueId)?.additionalImageDataUrls).toHaveLength(2)
+    expect(library.clues.find((clue) => clue.id === 'custom-africa-plates-white-black-characters')?.additionalImageDataUrls).toHaveLength(3)
     const colorWeight = (clueId: string, locationId: string) => library.clues.find((clue) => clue.id === clueId)?.weights.find((row) => row.locationId === locationId)?.seenMultiplier
     expect(colorWeight(white.clueId, 'loc:tunisia')).toBeGreaterThan(1) // white characters on black plate
     expect(colorWeight(yellow.clueId, 'loc:eswatini')).toBeGreaterThan(1) // yellow detail on a green-banded plate
@@ -60,8 +65,37 @@ describe('built-in Africa plate clues', () => {
     expect(regional[0].id).toBe('loc:south-africa:region:za-fs')
   })
 
+  it('keeps pictured South African province variants conditional and scores distinct flag plates once', () => {
+    const freeState = seen('custom-africa-plates-sa-free-state-green')
+    const regions = regionSchemeByCountry.get('loc:south-africa')!.regions.map((region) => region.id)
+    const provinceRanks = rankCustomCandidates(regions, library, [freeState], { kind: 'region', countryId: 'loc:south-africa' })
+    expect(provinceRanks[0].id).toBe('loc:south-africa:region:za-fs')
+    for (const [clueId, regionId, countryMultiplier] of [
+      ['custom-africa-plates-sa-free-state-green', 'za-fs', 4],
+      ['custom-africa-plates-sa-gauteng-emblem', 'za-gp', 6],
+      ['custom-africa-plates-sa-northern-cape-green', 'za-nc', 5],
+    ] as const) {
+      const observation = seen(clueId)
+      const countryRows = rank([observation])
+      expect(share(countryRows, 'loc:south-africa') / share(countryRows, 'loc:botswana')).toBeCloseTo(countryMultiplier)
+      const regionRows = rankCustomCandidates(regions, library, [observation], { kind: 'region', countryId: 'loc:south-africa' })
+      expect(regionRows[0].id).toBe(`loc:south-africa:region:${regionId}`)
+    }
+    const whiteBlue = seen('custom-africa-plates-namibia-white-blue')
+    expect(rankCustomCandidates(regions, library, [whiteBlue], { kind: 'region', countryId: 'loc:south-africa' })[0].id).toBe('loc:south-africa:region:za-kzn')
+    expect(rank([freeState, green, yellow])).toEqual(rank([freeState]))
+    const ugandaFlag = seen('custom-africa-plates-uganda-flag')
+    expect(rank([ugandaFlag, pairedPlate, white, yellow])).toEqual(rank([ugandaFlag]))
+    expect(rank([ugandaFlag])[0].id).toBe('loc:uganda')
+    const tunisianMilitary = seen('custom-africa-plates-tunisia-military-flag')
+    expect(rank([tunisianMilitary])[0].id).toBe('loc:tunisia')
+  })
+
   it('uses a detailed plate once when its broader colors are also selected', () => {
     expect(rank([white, yellow, pairedPlate])).toEqual(rank([pairedPlate]))
+    const whiteBlack = seen('custom-africa-plates-white-black-characters')
+    expect(rank([white, seen('custom-africa-plates-black-white'), whiteBlack])).toEqual(rank([whiteBlack]))
+    expect(rank([whiteBlack, pairedPlate])).toEqual(rank([pairedPlate]))
     expect(rank([white, green, greenBand])).toEqual(rank([greenBand]))
     const longKenyan = seen('custom-africa-plates-kenya-long-white-square-yellow')
     expect(rank([white, yellow, pairedPlate, longKenyan])).toEqual(rank([longKenyan]))

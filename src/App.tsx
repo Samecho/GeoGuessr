@@ -104,14 +104,14 @@ function App() {
   const localCards = useMemo(() => activeLocalLibrary.clues.map((clue) => customClueToCard(clue, libraryId === 'africa' ? 'africa' : 'personal')), [activeLocalLibrary, libraryId])
   const activeClues = isGlobalLibrary ? clues : localCards
   const activeClueById = useMemo(() => new Map(activeClues.map((clue) => [clue.id, clue])), [activeClues])
-  const localImages = useMemo(() => new Map(activeLocalLibrary.clues.map((clue) => [clue.id, clue.imageDataUrl || ''])), [activeLocalLibrary])
+  const localImages = useMemo(() => new Map(activeLocalLibrary.clues.map((clue) => [clue.id, clue.imageDataUrl ? [clue.imageDataUrl, ...(clue.additionalImageDataUrls || [])] : []])), [activeLocalLibrary])
   const selected = useMemo(() => Object.values(observations).filter((item) => activeClueById.has(item.clueId)), [observations, activeClueById])
   const applyCustomLibrary = (next: CustomLibrary) => {
     setCustomLibrary(next)
     const ids = new Set(next.clues.map((clue) => clue.id))
     setCustomObservations((current) => Object.fromEntries(Object.entries(current).filter(([id]) => ids.has(id))))
   }
-  const imageForClue = (clue: Clue) => !isGlobalLibrary ? localImages.get(clue.id) || '' :
+  const imageForClue = (clue: Clue) => !isGlobalLibrary ? localImages.get(clue.id)?.[0] || '' :
     clue.assetIds.length && photosReady ? `${import.meta.env.BASE_URL}${assetById.get(clue.assetIds[0])!.path.slice(1)}` : ''
   const dependenceGroups = useMemo(() => new Map(features.map((feature) => [feature.id, feature.evidenceGroupIds])), [])
   const parentByLocation = useMemo(() => new Map(locations.map((location) => [location.id, location.parentId])), [])
@@ -190,7 +190,7 @@ function App() {
   const textOnly = availableClues.filter((clue) => !imageForClue(clue) && (activeCategoryId === 'all' || clue.categoryId === activeCategoryId) && matchesQuery(clue))
   const visibleTextOnly = textOnly.slice(0, galleryLimit)
   const infoClue = infoId && infoContent?.id === infoId ? infoContent : undefined
-  const infoImage = infoClue ? !isGlobalLibrary ? localImages.get(infoClue.id) || '' :
+  const infoImage = infoClue ? !isGlobalLibrary ? localImages.get(infoClue.id)?.[photoIndex] || localImages.get(infoClue.id)?.[0] || '' :
     photosReady && infoClue.assetIds.length ? `${import.meta.env.BASE_URL}${assetById.get(infoClue.assetIds[photoIndex] || infoClue.assetIds[0])!.path.slice(1)}` : '' : ''
   const openInfo = (clue: Clue) => {
     setInfoId(clue.id); setInfoContent(clue)
@@ -315,6 +315,7 @@ function App() {
     </>}
 
     {infoClue && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) { setInfoId(null); setZoom(false) } }}><section className="info-modal" role="dialog" aria-modal="true" aria-label={infoClue.formalName[language]}><button type="button" className="modal-close" onClick={() => { setInfoId(null); setZoom(false) }} aria-label={L.close}><X size={19} /></button><span className="section-kicker">{L.info}</span><h2>{infoClue.formalName[language]}</h2>{infoImage && <button type="button" className="modal-image" onClick={() => setZoom(true)} aria-label={L.enlarge}><img src={infoImage} alt={infoClue.appearance[language]} /><span><ZoomIn size={18} /> {L.enlarge}</span></button>}
+      {!isGlobalLibrary && (localImages.get(infoClue.id)?.length || 0) > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{localImages.get(infoClue.id)!.map((url, index) => <button type="button" key={index} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={url} alt="" loading="lazy" /></button>)}</div>}
       {isGlobalLibrary && photosReady && infoClue.assetIds.length > 1 && <div className="instance-strip" aria-label={language === 'en' ? 'Photo examples' : '图片实例'}>{infoClue.assetIds.map((id, index) => <button type="button" key={id} className={photoIndex === index ? 'active' : ''} onClick={() => setPhotoIndex(index)} aria-label={`${language === 'en' ? 'Photo' : '图片'} ${index + 1}`} aria-pressed={photoIndex === index}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt="" loading="lazy" /></button>)}</div>}
       {isGlobalLibrary && infoClue.referenceAssetIds?.map((id) => <figure className="source-figure" key={id}><img src={`${import.meta.env.BASE_URL}${assetById.get(id)!.path.slice(1)}`} alt={L.sourceDiagram} loading="lazy" /><figcaption>{L.sourceDiagram}</figcaption></figure>)}
       <div className="info-details"><h3>{L.identify}</h3><p>{infoClue.identify[language]}</p><h3>{L.geography}</h3><p>{infoClue.geography[language]}</p><h3>{L.strength}</h3><p>{infoClue.strength[language]}</p><h3>{L.caveat}</h3><p>{infoClue.caveat[language]}</p>{isGlobalLibrary && <><h3>{L.sources}</h3><ul>{infoClue.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{new URL(url).hostname}</a></li>)}</ul>{(photosReady ? [...infoClue.assetIds, ...(infoClue.referenceAssetIds || [])] : []).map((id) => { const asset = assetById.get(id)!; return <p className="credit" key={id}><strong>{L.asset}:</strong> <a href={asset.sourceUrl} target="_blank" rel="noreferrer">{asset.author}</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.license}</a> · {L.reviewed}: {asset.reviewed}</p> })}<p className="credit">{L.reviewed}: {infoClue.reviewed}</p></>}</div></section></div>}

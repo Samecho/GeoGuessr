@@ -23,6 +23,10 @@ describe('custom library', () => {
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, regionalWeightMode: 'invalid' }] })).toThrow()
     const focused = { ...entry, imageDataUrl: 'data:image/png;base64,YQ==', cardCrop: 'left-half' }
     expect(parseCustomLibrary({ ...library, clues: [focused] }).clues[0].cardCrop).toBe('left-half')
+    const withExamples = { ...entry, imageDataUrl: 'data:image/png;base64,YQ==', additionalImageDataUrls: ['data:image/png;base64,Yg=='] }
+    expect(parseCustomLibrary({ ...library, clues: [withExamples] }).clues[0].additionalImageDataUrls).toHaveLength(1)
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, additionalImageDataUrls: withExamples.additionalImageDataUrls }] })).toThrow()
+    expect(() => parseCustomLibrary({ ...library, clues: [{ ...withExamples, additionalImageDataUrls: [withExamples.imageDataUrl] }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...focused, cardCrop: 'center' }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [{ ...entry, cardCrop: 'left-half' }] })).toThrow()
     expect(() => parseCustomLibrary({ ...library, clues: [entry, entry] })).toThrow()

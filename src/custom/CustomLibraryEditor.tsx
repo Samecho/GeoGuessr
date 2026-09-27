@@ -6,10 +6,10 @@ import { CUSTOM_KIND, imageFileToDataUrl, mergeCustomLibraries, parseCustomLibra
 import type { Language } from '../i18n'
 
 type DraftWeight = { locationId: string; seen: string; absent: string }
-type Draft = { id: string | null; en: string; zh: string; categoryId: string; imageDataUrl: string; weights: DraftWeight[]; supersedesClueIds: string[]; regionalWeightMode?: CustomClue['regionalWeightMode']; cardCrop?: CustomClue['cardCrop'] }
+type Draft = { id: string | null; en: string; zh: string; categoryId: string; imageDataUrl: string; additionalImageDataUrls?: string[]; weights: DraftWeight[]; supersedesClueIds: string[]; regionalWeightMode?: CustomClue['regionalWeightMode']; cardCrop?: CustomClue['cardCrop'] }
 const newDraft = (): Draft => ({ id: null, en: '', zh: '', categoryId: 'camera', imageDataUrl: '', weights: [], supersedesClueIds: [] })
 const fromClue = (clue: CustomClue): Draft => ({ id: clue.id, en: clue.appearance.en, zh: clue.appearance.zh,
-  categoryId: clue.categoryId, imageDataUrl: clue.imageDataUrl || '', supersedesClueIds: clue.supersedesClueIds || [], regionalWeightMode: clue.regionalWeightMode, cardCrop: clue.cardCrop,
+  categoryId: clue.categoryId, imageDataUrl: clue.imageDataUrl || '', additionalImageDataUrls: clue.additionalImageDataUrls, supersedesClueIds: clue.supersedesClueIds || [], regionalWeightMode: clue.regionalWeightMode, cardCrop: clue.cardCrop,
   weights: clue.weights.map((row) => ({ locationId: row.locationId, seen: String(row.seenMultiplier), absent: String(row.absentMultiplier) })) })
 
 const copy = {
@@ -58,7 +58,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
   const attachImage = async (file: File | null | undefined) => {
     if (!file) return
     setBusy(true)
-    try { setField('imageDataUrl', await imageFileToDataUrl(file)); setMessage('') }
+    try { const imageDataUrl = await imageFileToDataUrl(file); setDraft((current) => ({ ...current, imageDataUrl, additionalImageDataUrls: undefined })); setMessage('') }
     catch (error) { setMessage(`${T.imageError} ${error instanceof Error ? error.message : ''}`) }
     finally { setBusy(false) }
   }
@@ -95,7 +95,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
       setMessage(T.invalidWeight); return
     }
     const item: CustomClue = { id: draft.id || `custom-${crypto.randomUUID()}`, appearance: { en, zh }, categoryId: draft.categoryId,
-      ...(draft.imageDataUrl ? { imageDataUrl: draft.imageDataUrl } : {}), weights,
+      ...(draft.imageDataUrl ? { imageDataUrl: draft.imageDataUrl, ...(draft.additionalImageDataUrls?.length ? { additionalImageDataUrls: draft.additionalImageDataUrls } : {}) } : {}), weights,
       ...(draft.supersedesClueIds.length ? { supersedesClueIds: draft.supersedesClueIds } : {}),
       ...(draft.regionalWeightMode ? { regionalWeightMode: draft.regionalWeightMode } : {}),
       ...(draft.cardCrop && draft.imageDataUrl ? { cardCrop: draft.cardCrop } : {}) }
@@ -147,7 +147,7 @@ export function CustomLibraryEditor({ library, onChange, language }: { library: 
     <div className="custom-form"><div className="custom-form-row"><label>{T.en}<input value={draft.en} maxLength={120} onChange={(event) => setField('en', event.target.value)} placeholder="Black Street View car" /></label><label>{T.zh}<input value={draft.zh} maxLength={120} onChange={(event) => setField('zh', event.target.value)} placeholder="黑色街景车" /></label><label>{T.category}<select value={draft.categoryId} onChange={(event) => setField('categoryId', event.target.value)}>{categories.map((category) => <optgroup key={category.id} label={category.name[language]}>{category.children.map((child) => <option key={child.id} value={child.id}>{child.name[language]}</option>)}</optgroup>)}</select></label></div>
       <div className="custom-form-columns"><div><h3>{T.image}</h3><div className="custom-dropzone" tabIndex={0} onPaste={handlePaste} onDragOver={(event) => event.preventDefault()} onDrop={handleDrop} aria-label={T.imageHelp}>
         {draft.imageDataUrl ? <img src={draft.imageDataUrl} alt={draft.en || draft.zh || T.image} /> : <><ImagePlus size={28} /><span>{T.imageHelp}</span></>}
-      </div><div className="custom-image-actions"><button type="button" disabled={busy} onClick={() => imageInput.current?.click()}>{T.upload}</button><button type="button" disabled={busy} onClick={() => void pasteButton()}>{T.paste}</button>{draft.imageDataUrl && <button type="button" onClick={() => setField('imageDataUrl', '')}>{T.removeImage}</button>}</div><input ref={imageInput} className="sr-only" type="file" accept="image/png,image/jpeg,image/webp" aria-label={T.upload} onChange={(event) => { void attachImage(event.target.files?.[0]); event.target.value = '' }} /></div>
+      </div><div className="custom-image-actions"><button type="button" disabled={busy} onClick={() => imageInput.current?.click()}>{T.upload}</button><button type="button" disabled={busy} onClick={() => void pasteButton()}>{T.paste}</button>{draft.imageDataUrl && <button type="button" onClick={() => { setField('imageDataUrl', ''); setField('additionalImageDataUrls', undefined) }}>{T.removeImage}</button>}</div><input ref={imageInput} className="sr-only" type="file" accept="image/png,image/jpeg,image/webp" aria-label={T.upload} onChange={(event) => { void attachImage(event.target.files?.[0]); event.target.value = '' }} /></div>
       <div><h3>{T.weights}</h3><p className="custom-help">{T.weightsHelp}</p><div className="custom-target-add"><label>{T.country}<select value={targetCountry} onChange={(event) => { setTargetCountry(event.target.value); setTargetLocation('') }}><option value="">{T.country}</option>{countries.map((country) => <option key={country.id} value={country.id}>{country.name[language]}</option>)}</select></label><label>{T.region}<select value={targetLocation} disabled={!targetCountry} onChange={(event) => setTargetLocation(event.target.value)}><option value="">{T.wholeCountry}</option>{currentRegions.map((region) => <option key={region.id} value={region.id}>{region.name[language]}</option>)}</select></label><button type="button" onClick={addWeight}><Plus size={14} /> {T.addWeight}</button></div>
         <div className="custom-weight-list">{draft.weights.map((row, index) => <div className="custom-weight-row" key={row.locationId}><strong>{allNames.get(row.locationId) || row.locationId}</strong><label>{T.seen}<input type="number" min="0.01" max="1000" step="any" value={row.seen} onChange={(event) => setField('weights', draft.weights.map((item, i) => i === index ? { ...item, seen: event.target.value } : item))} /></label><label>{T.absent}<input type="number" min="0.01" max="1000" step="any" value={row.absent} onChange={(event) => setField('weights', draft.weights.map((item, i) => i === index ? { ...item, absent: event.target.value } : item))} /></label><button type="button" aria-label={`${T.remove}: ${allNames.get(row.locationId)}`} onClick={() => setField('weights', draft.weights.filter((item) => item.locationId !== row.locationId))}><Trash2 size={15} /></button></div>)}</div><p className="custom-help">{T.yourWeights}</p></div></div>
       <div className="custom-form-actions"><button type="button" className="custom-save" onClick={save}>{draft.id ? T.save : T.create}</button>{draft.id && <button type="button" onClick={() => setDraft(newDraft())}>{T.cancel}</button>}</div>

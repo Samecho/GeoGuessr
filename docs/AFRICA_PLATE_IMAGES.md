@@ -36,3 +36,23 @@ The table above records the original 20-card image audit. At the consolidation s
 ## 2026-09-27 presentation update
 
 The table above is the earlier image audit, not the current card count. In the current Africa library the five broad color observations are text-only, and all ten precise plate-layout observations have images. The cropped plate examples remain on the precise cards, and source images remain intact in the JSON.
+
+## 2026-09-27 missing regional examples audit
+
+Current plate section: 21 clues, including five broad text color clues and sixteen precise pictured clues. The latter have 23 image instances. The whole Africa library has 94 clues, 56 pictured clues, 38 text-only clues, and 63 image instances. Shared examples are selectable only through their one underlying clue ID and therefore never add a second score.
+
+| Visible layout or instance | Local source | Published treatment |
+|---|---|---|
+| Rwanda long white front / long yellow rear | `tuxundoc/非洲/rwanda/images/0002.png` | Second image on shared front-white/rear-yellow clue. |
+| Uganda white front / yellow rear with small striped flag | `tuxundoc/非洲/uganda/images/0005.png` | Separate specific plate card, full figure. |
+| Free State pale yellow-green plate, black characters | `tuxundoc/非洲/south-africa/images/0016.png`, crop (362, 301, 553, 354) | Separate regional card. |
+| Gauteng white plate, blue characters and round emblem | Same source, crop (244, 66, 438, 116) | Separate regional card. |
+| Northern Cape green characters and yellow-green decoration | Same source, crop (140, 349, 330, 406) | Separate regional card. |
+| KwaZulu-Natal white/blue plate | Same source, crop (558, 300, 749, 354) | Second image on shared white/blue clue. |
+| Eastern Cape white/black plate with yellow-green lower design | Same source, crop (377, 467, 555, 523) | Second image on existing band clue. |
+| North West similar lower yellow-green design | Same source, crop (313, 176, 497, 232) | Third image on existing band clue. |
+| Limpopo, Mpumalanga, Western Cape white/black examples | Same source, crops (483, 49, 674, 111), (548, 172, 733, 225), (104, 535, 291, 586) | Extra images on shared white-background/black-characters clue; no province-specific weight. |
+| Ghana standard white/black plate | `tuxundoc/非洲/ghana/images/0003.png`, crop (0, 0, 1920, 420) | Main image on shared white-background/black-characters clue. |
+| Tunisian military black/white plate with red flag panel | `tuxundoc/非洲/tunisia/images/0002.png`, crop (4, 354, 543, 455) | Separate military-context card. |
+
+The archive originals stay read-only. Focused plate excerpts are padded with a neutral dark background for the gallery aspect ratio; plate colors are not recolored. The North West and Eastern Cape plates are visually close to the existing lower-band clue, whereas ordinary white/black provincial plates are only extra examples of a shared pattern. The local Nigeria chapter provides a textual green-tinge comparison but no standalone Nigerian plate figure, so there is no fabricated Nigerian plate picture.

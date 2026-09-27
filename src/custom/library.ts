@@ -6,7 +6,7 @@ export const CUSTOM_KIND = 'street-clues-custom-library'
 export const MAX_CUSTOM_CLUES = 500
 export const MAX_IMAGE_DATA_LENGTH = 5_000_000
 export type CustomWeight = { locationId: string; seenMultiplier: number; absentMultiplier: number }
-export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; weights: CustomWeight[]; supersedesClueIds?: string[]; regionalWeightMode?: 'conditional'; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
+export type CustomClue = { id: string; appearance: Text2; categoryId: string; imageDataUrl?: string; additionalImageDataUrls?: string[]; weights: CustomWeight[]; supersedesClueIds?: string[]; regionalWeightMode?: 'conditional'; cardCrop?: 'left-half' | 'right-half' | 'top-half' | 'bottom-half' }
 export type CustomLibrary = { schemaVersion: 1; kind: typeof CUSTOM_KIND; clues: CustomClue[] }
 export const emptyCustomLibrary = (): CustomLibrary => ({ schemaVersion: CUSTOM_SCHEMA_VERSION, kind: CUSTOM_KIND, clues: [] })
 
@@ -45,6 +45,12 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
     if (raw.imageDataUrl !== undefined && (typeof raw.imageDataUrl !== 'string' || raw.imageDataUrl.length > MAX_IMAGE_DATA_LENGTH || !imagePattern.test(raw.imageDataUrl))) {
       throw new Error(`Invalid image in clue ${index + 1}. Use PNG, JPEG or WebP.`)
     }
+    if (raw.additionalImageDataUrls !== undefined && (!raw.imageDataUrl || !Array.isArray(raw.additionalImageDataUrls) ||
+      raw.additionalImageDataUrls.length > 8 || raw.additionalImageDataUrls.some((url) => typeof url !== 'string' ||
+        url.length > MAX_IMAGE_DATA_LENGTH || !imagePattern.test(url)) ||
+      new Set([raw.imageDataUrl, ...raw.additionalImageDataUrls]).size !== raw.additionalImageDataUrls.length + 1)) {
+      throw new Error(`Invalid additional images in clue ${index + 1}.`)
+    }
     const seenTargets = new Set<string>()
     const weights: CustomWeight[] = raw.weights.map((row, weightIndex) => {
       if (!isRecord(row) || typeof row.locationId !== 'string' || !allowedTargets.has(row.locationId) || seenTargets.has(row.locationId) ||
@@ -55,7 +61,8 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
       return { locationId: row.locationId, seenMultiplier: row.seenMultiplier, absentMultiplier: row.absentMultiplier }
     })
     return { id: raw.id, categoryId: raw.categoryId, appearance: { en: raw.appearance.en.trim(), zh: raw.appearance.zh.trim() },
-      ...(raw.imageDataUrl ? { imageDataUrl: raw.imageDataUrl } : {}), weights,
+      ...(raw.imageDataUrl ? { imageDataUrl: raw.imageDataUrl } : {}),
+      ...(raw.additionalImageDataUrls?.length ? { additionalImageDataUrls: raw.additionalImageDataUrls as string[] } : {}), weights,
       ...(raw.supersedesClueIds ? { supersedesClueIds: raw.supersedesClueIds as string[] } : {}),
       ...(raw.regionalWeightMode ? { regionalWeightMode: 'conditional' as const } : {}),
       ...(raw.cardCrop ? { cardCrop: raw.cardCrop as CustomClue['cardCrop'] } : {}) }
