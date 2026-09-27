@@ -4,8 +4,8 @@ test('built-in Africa library is selectable and separate from the global and per
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Global library' })).toHaveAttribute('aria-pressed', 'true')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.library-picker-note').first()).toContainText('95 clues · 14 documented candidates')
-  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
+  await expect(page.locator('.library-picker-note').first()).toContainText('107 clues · 14 documented candidates')
+  await expect(page.locator('.tree-all')).toContainText('107', { timeout: 15_000 })
   await expect(page.locator('.scope-inline .count-pill')).toHaveText('14')
   const route = page.locator('.text-clue').filter({ hasText: 'Road number: R followed by digits' })
   await expect(route).toHaveCount(1)
@@ -29,7 +29,7 @@ test('built-in Africa library is selectable and separate from the global and per
 test('Africa plate gallery has one broad card per color and keeps distinct plate layouts', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
+  await expect(page.locator('.tree-all')).toContainText('107', { timeout: 15_000 })
   const search = page.getByRole('searchbox', { name: 'Search clue labels' })
   for (const color of ['White', 'Yellow', 'Green', 'Blue', 'Black']) {
     const label = `${color} visible on a license plate`
@@ -45,7 +45,7 @@ test('Africa plate gallery has one broad card per color and keeps distinct plate
 test('Africa plate photo examples include Rwanda and South African province variants without duplicate selection', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Africa library' }).click()
-  await expect(page.locator('.tree-all')).toContainText('95', { timeout: 15_000 })
+  await expect(page.locator('.tree-all')).toContainText('107', { timeout: 15_000 })
   const search = page.getByRole('searchbox', { name: 'Search clue labels' })
   await search.fill('White front plate and yellow rear plate on the same vehicle')
   const paired = page.locator('.clue-card').filter({ hasText: 'White front plate and yellow rear plate on the same vehicle' })
@@ -78,4 +78,19 @@ test('Africa Nigerian plate images and their per-photo credit load', async ({ pa
   await page.locator('.info-modal .instance-strip button').nth(1).click()
   await expect(page.locator('.local-photo-credit')).toContainText('Joshua Doubek')
   await expect(page.locator('.local-photo-credit a')).toHaveCount(2)
+})
+
+
+test('Africa Plus pictured clue keeps its photo and opens Info without selecting it', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Africa library' }).click()
+  await expect(page.locator('.tree-all')).toContainText('107', { timeout: 15_000 })
+  const search = page.getByRole('searchbox', { name: 'Search clue labels' })
+  await search.fill('Taxi with orange-yellow fenders and rear quarter panels')
+  const card = page.locator('.clue-card').filter({ hasText: 'Taxi with orange-yellow fenders and rear quarter panels' })
+  await expect(card).toHaveCount(1)
+  await expect(card.locator('img')).toHaveJSProperty('naturalWidth', 990)
+  await card.locator('.info-button').click()
+  await expect(page.locator('.info-modal')).toBeVisible()
+  await expect(page.locator('.selection-chip')).toHaveCount(0)
 })
