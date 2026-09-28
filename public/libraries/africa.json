@@ -98,6 +98,11 @@
           "locationId": "loc:reunion",
           "seenMultiplier": 100,
           "absentMultiplier": 1
+        },
+        {
+          "locationId": "loc:rwanda",
+          "seenMultiplier": 4,
+          "absentMultiplier": 1
         }
       ]
     },
@@ -1096,6 +1101,11 @@
         {
           "locationId": "loc:uganda",
           "seenMultiplier": 10,
+          "absentMultiplier": 1
+        },
+        {
+          "locationId": "loc:rwanda",
+          "seenMultiplier": 5,
           "absentMultiplier": 1
         }
       ]
@@ -2794,6 +2804,46 @@
         }
       ],
       "regionalWeightMode": "conditional"
+    },
+    {
+      "id": "custom-africa-kinyarwanda",
+      "categoryId": "languages",
+      "appearance": {
+        "en": "Visible Kinyarwanda text",
+        "zh": "看见卢旺达语文字"
+      },
+      "weights": [
+        {
+          "locationId": "loc:rwanda",
+          "seenMultiplier": 120,
+          "absentMultiplier": 1
+        }
+      ]
+    },
+    {
+      "id": "custom-africa-kiswahili",
+      "categoryId": "languages",
+      "appearance": {
+        "en": "Visible Kiswahili text",
+        "zh": "看见斯瓦希里语文字"
+      },
+      "weights": [
+        {
+          "locationId": "loc:kenya",
+          "seenMultiplier": 12,
+          "absentMultiplier": 1
+        },
+        {
+          "locationId": "loc:uganda",
+          "seenMultiplier": 3,
+          "absentMultiplier": 1
+        },
+        {
+          "locationId": "loc:rwanda",
+          "seenMultiplier": 2,
+          "absentMultiplier": 1
+        }
+      ]
     }
   ]
 }
