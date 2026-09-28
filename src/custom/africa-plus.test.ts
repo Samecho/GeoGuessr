@@ -30,7 +30,7 @@ const newIds = [
 
 describe('Africa Plus merge', () => {
   it('keeps supplied photos, corrects bilingual visual descriptions, and absorbs duplicate text notes', () => {
-    expect(library.clues).toHaveLength(107)
+    expect(library.clues).toHaveLength(109)
     expect(new Set(newIds).size).toBe(12)
     for (const id of newIds) {
       const clue = library.clues.find((item) => item.id === id)
