@@ -18,13 +18,15 @@ import { PersonalLibraryManager } from './custom/PersonalLibraryManager'
 import { customClueToCard, emptyCustomLibrary, emptyCustomLibraryCollection, parseCustomLibrary, loadCustomLibraryCollection, saveCustomLibraryCollection, type CustomLibrary, type CustomLibraryCollection } from './custom/library'
 import { customClueRelevant, rankCustomCandidates } from './custom/scoring'
 import africaManifest from './data/africa-library-manifest.json'
+import europeManifest from './data/europe-library-manifest.json'
 import './styles.css'
 
 type Scope = { type: 'global' } | { type: 'countries'; ids: string[] }
-type LibraryId = 'global' | 'africa' | 'personal'
+type LibraryId = 'global' | 'africa' | 'europe' | 'personal'
 type PageId = 'match' | 'edit'
 const EMPTY_LOCAL_LIBRARY = emptyCustomLibrary()
 const AFRICA_CANDIDATES = new Set(africaManifest.candidateCountryIds)
+const EUROPE_CANDIDATES = new Set(europeManifest.candidateCountryIds)
 const firstLanguage = (): Language => localStorage.getItem('street-clues-language') === 'zh' ? 'zh' : 'en'
 
 function App() {
@@ -35,6 +37,9 @@ function App() {
   const [africaLibrary, setAfricaLibrary] = useState<CustomLibrary | null>(null)
   const [africaError, setAfricaError] = useState('')
   const [africaObservations, setAfricaObservations] = useState<Record<string, Observation>>({})
+  const [europeLibrary, setEuropeLibrary] = useState<CustomLibrary | null>(null)
+  const [europeError, setEuropeError] = useState('')
+  const [europeObservations, setEuropeObservations] = useState<Record<string, Observation>>({})
   const [officialObservations, setOfficialObservations] = useState<Record<string, Observation>>({})
   const [personalObservations, setPersonalObservations] = useState<Record<string, Record<string, Observation>>>({})
   const [customCollection, setCustomCollection] = useState<CustomLibraryCollection>(emptyCustomLibraryCollection)
@@ -52,6 +57,7 @@ function App() {
   const [observations, setObservations] = libraryId === 'global'
     ? [officialObservations, setOfficialObservations] as const
     : libraryId === 'africa' ? [africaObservations, setAfricaObservations] as const
+    : libraryId === 'europe' ? [europeObservations, setEuropeObservations] as const
     : [currentPersonalObservations, setCurrentPersonalObservations] as const
   const [openGroups, setOpenGroups] = useState<string[]>(['roads', 'writing'])
   const [categoryId, setCategoryId] = useState('all')
@@ -94,6 +100,15 @@ function App() {
       .catch((error: unknown) => { if (!controller.signal.aborted) setAfricaError(error instanceof Error ? error.message : String(error)) })
     return () => controller.abort()
   }, [libraryId, africaLibrary, africaError])
+  useEffect(() => {
+    if (libraryId !== 'europe' || europeLibrary || europeError) return
+    const controller = new AbortController()
+    void fetch(`${import.meta.env.BASE_URL}libraries/europe.json`, { signal: controller.signal })
+      .then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json() })
+      .then((value: unknown) => { if (!controller.signal.aborted) setEuropeLibrary(parseCustomLibrary(value)) })
+      .catch((error: unknown) => { if (!controller.signal.aborted) setEuropeError(error instanceof Error ? error.message : String(error)) })
+    return () => controller.abort()
+  }, [libraryId, europeLibrary, europeError])
   useEffect(() => { setPhotoIndex(0) }, [infoId])
   useEffect(() => { void fetch(`${import.meta.env.BASE_URL}source-images/ready.json`).then((response) => response.ok ? response.json() : null).then((manifest: { convertedCount?: number } | null) => setPhotosReady(manifest?.convertedCount === 5860)).catch(() => setPhotosReady(false)) }, [])
   useEffect(() => { localStorage.setItem('street-clues-language', language); document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en' }, [language])
@@ -104,11 +119,11 @@ function App() {
   }, [])
 
   const isGlobalLibrary = libraryId === 'global'
-  const selectableCountries = useMemo(() => countries.filter((country) => libraryId !== 'africa' || AFRICA_CANDIDATES.has(country.id)), [libraryId])
+  const selectableCountries = useMemo(() => countries.filter((country) => libraryId === 'africa' ? AFRICA_CANDIDATES.has(country.id) : libraryId === 'europe' ? EUROPE_CANDIDATES.has(country.id) : true), [libraryId])
   const scopedCountries = useMemo(() => selectableCountries.filter((country) => scope.type === 'global' || scope.ids.includes(country.id)), [scope, selectableCountries])
   const scopedIds = useMemo(() => scopedCountries.map((country) => country.id), [scopedCountries])
-  const activeLocalLibrary = libraryId === 'africa' ? africaLibrary || EMPTY_LOCAL_LIBRARY : customLibrary
-  const localCards = useMemo(() => activeLocalLibrary.clues.map((clue) => customClueToCard(clue, libraryId === 'africa' ? 'africa' : 'personal')), [activeLocalLibrary, libraryId])
+  const activeLocalLibrary = libraryId === 'africa' ? africaLibrary || EMPTY_LOCAL_LIBRARY : libraryId === 'europe' ? europeLibrary || EMPTY_LOCAL_LIBRARY : customLibrary
+  const localCards = useMemo(() => activeLocalLibrary.clues.map((clue) => customClueToCard(clue, libraryId === 'africa' ? 'africa' : libraryId === 'europe' ? 'europe' : 'personal')), [activeLocalLibrary, libraryId])
   const activeClues = isGlobalLibrary ? clues : localCards
   const activeClueById = useMemo(() => new Map(activeClues.map((clue) => [clue.id, clue])), [activeClues])
   const localImages = useMemo(() => new Map(activeLocalLibrary.clues.map((clue) => [clue.id, clue.imageDataUrl ? [clue.imageDataUrl, ...(clue.additionalImageDataUrls || [])] : []])), [activeLocalLibrary])
@@ -229,7 +244,7 @@ function App() {
     })
   }
   const exactGroup = scope.type === 'countries' ? geographicGroups.find((group) => group.countryIds.length === scope.ids.length && group.countryIds.every((id) => scope.ids.includes(id))) : undefined
-  const scopeTitle = scope.type === 'global' ? (libraryId === 'africa' ? (language === 'en' ? 'Africa library candidates' : '非洲题库候选') : L.global) : exactGroup ? exactGroup.name[language] : `${scopedIds.length} ${L.countries.toLowerCase()}`
+  const scopeTitle = scope.type === 'global' ? (libraryId === 'africa' ? (language === 'en' ? 'Africa library candidates' : '非洲题库候选') : libraryId === 'europe' ? (language === 'en' ? 'Europe library candidates' : '欧洲题库候选') : L.global) : exactGroup ? exactGroup.name[language] : `${scopedIds.length} ${L.countries.toLowerCase()}`
 
   return <div className="app-shell">
     <header className="topbar">
@@ -247,16 +262,18 @@ function App() {
     {pageId === 'match' && <>
     <section className="library-picker" aria-label={language === 'en' ? 'Choose clue library' : '选择线索题库'}>
       <span className="section-kicker">{language === 'en' ? 'CLUE LIBRARY' : '线索题库'}</span>
-      <div className="library-picker-buttons">{(['global', 'africa', 'personal'] as const).map((id) => <button type="button" key={id} className={libraryId === id ? 'active' : ''} aria-pressed={libraryId === id} onClick={() => { setLibraryId(id); setCategoryId('all'); setGallerySearch(''); setInfoId(null); setViewCountry(null) }}>{id === 'global' ? (language === 'en' ? 'Global library' : '全球题库') : id === 'africa' ? (language === 'en' ? 'Africa library' : '非洲题库') : (language === 'en' ? 'My library' : '我的题库')}</button>)}</div>
+      <div className="library-picker-buttons">{(['global', 'africa', 'europe', 'personal'] as const).map((id) => <button type="button" key={id} className={libraryId === id ? 'active' : ''} aria-pressed={libraryId === id} onClick={() => { setLibraryId(id); setCategoryId('all'); setGallerySearch(''); setInfoId(null); setViewCountry(null) }}>{id === 'global' ? (language === 'en' ? 'Global library' : '全球题库') : id === 'africa' ? (language === 'en' ? 'Africa library' : '非洲题库') : id === 'europe' ? (language === 'en' ? 'Europe library' : '欧洲题库') : (language === 'en' ? 'My library' : '我的题库')}</button>)}</div>
       {libraryId === 'personal' && customLoaded && <label className="personal-library-picker">{language === 'en' ? 'Personal library' : '个人题库'}<select aria-label={language === 'en' ? 'Personal library' : '个人题库'} value={customCollection.activeId} onChange={(event) => choosePersonalLibrary(event.target.value)}>{customCollection.libraries.map((entry) => <option key={entry.id} value={entry.id}>{entry.name} ({entry.library.clues.length})</option>)}</select></label>}
       {libraryId === 'africa' && <span className="library-picker-note">{language === 'en' ? `${africaManifest.clueCount} clues · ${africaManifest.candidateCountryIds.length} documented candidates` : `${africaManifest.clueCount} 条线索 · ${africaManifest.candidateCountryIds.length} 个已录入候选`}</span>}
       {libraryId === 'africa' && !africaLibrary && <span className="library-picker-note" role="status">{africaError ? (language === 'en' ? `Could not load Africa library: ${africaError}` : `非洲题库加载失败：${africaError}`) : (language === 'en' ? 'Loading library…' : '正在加载题库……')}</span>}
+      {libraryId === 'europe' && <span className="library-picker-note">{language === 'en' ? `${europeManifest.clueCount} clues · ${europeManifest.candidateCountryIds.length} documented candidates` : `${europeManifest.clueCount} 条线索 · ${europeManifest.candidateCountryIds.length} 个已录入候选`}</span>}
+      {libraryId === 'europe' && !europeLibrary && <span className="library-picker-note" role="status">{europeError ? (language === 'en' ? `Could not load Europe library: ${europeError}` : `欧洲题库加载失败：${europeError}`) : (language === 'en' ? 'Loading library…' : '正在加载题库……')}</span>}
     </section>
     <section className="scope-panel" aria-label={L.scope}>
       <div className="scope-panel-head"><div><span className="section-kicker">01 / {L.scope}</span><h2>{scopeTitle}</h2></div><span className="muted">{scopedIds.length} {L.count}</span></div>
       <div className="scope-controls">
-        <button type="button" className={`scope-button ${scope.type === 'global' ? 'chosen' : ''}`} onClick={() => setScope({ type: 'global' })}>{libraryId === 'africa' ? (language === 'en' ? 'All library candidates' : '全部题库候选') : L.global}</button>
-        {geographicGroups.filter((group) => group.kind === 'continent' && (libraryId !== 'africa' || group.countryIds.some((id) => AFRICA_CANDIDATES.has(id)))).map((group) => <button type="button" key={group.id} className={`scope-button ${groupIsSelected(group) ? 'chosen' : ''}`} aria-pressed={groupIsSelected(group)} onClick={() => toggleGroup(group)}>{group.name[language]}</button>)}
+        <button type="button" className={`scope-button ${scope.type === 'global' ? 'chosen' : ''}`} onClick={() => setScope({ type: 'global' })}>{libraryId === 'africa' || libraryId === 'europe' ? (language === 'en' ? 'All library candidates' : '全部题库候选') : L.global}</button>
+        {geographicGroups.filter((group) => group.kind === 'continent' && (libraryId === 'africa' ? group.countryIds.some((id) => AFRICA_CANDIDATES.has(id)) : libraryId === 'europe' ? group.id === 'continent:Europe' : true)).map((group) => libraryId === 'europe' ? { ...group, countryIds: europeManifest.candidateCountryIds } : group).map((group) => <button type="button" key={group.id} className={`scope-button ${groupIsSelected(group) ? 'chosen' : ''}`} aria-pressed={groupIsSelected(group)} onClick={() => toggleGroup(group)}>{group.name[language]}</button>)}
         <details className="country-picker"><summary className={`scope-button ${scope.type === 'countries' ? 'chosen' : ''}`}>{L.custom} <ChevronDown size={14} /></summary>
           <div className="country-picker-popover"><label className="search-field"><Search size={15} /><input type="search" value={countrySearch} onChange={(event) => setCountrySearch(event.target.value)} placeholder={L.searchCountry} aria-label={L.searchCountry} /></label>
             <div className="country-options">{selectableCountries.filter((country) => country.name[language].toLocaleLowerCase().includes(countrySearch.toLocaleLowerCase()) || country.id.toLowerCase().includes(countrySearch.toLowerCase())).map((country) => <label key={country.id} className="country-option"><input type="checkbox" checked={scope.type === 'countries' && scope.ids.includes(country.id)} onChange={() => toggleCountry(country.id)} />{country.flagCode ? <img src={`${import.meta.env.BASE_URL}flags/${country.flagCode}.svg`} alt="" /> : <span className="flag-fallback" aria-hidden="true">{country.continent === 'Antarctica' ? '◇' : '•'}</span>}<span>{country.name[language]}</span></label>)}</div>
@@ -281,7 +298,7 @@ function App() {
       </aside>
 
       <section className="gallery-panel" aria-label={L.gallery}>
-        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? (!isGlobalLibrary ? (language === 'en' ? (libraryId === 'africa' ? 'Africa clues' : 'My clues') : (libraryId === 'africa' ? '非洲线索' : '我的线索')) : L.all) : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
+        <div className="panel-heading gallery-heading"><div><span className="section-kicker">03 / {L.gallery}</span><h2>{activeCategoryId === 'all' ? (!isGlobalLibrary ? (language === 'en' ? (libraryId === 'africa' ? 'Africa clues' : libraryId === 'europe' ? 'Europe clues' : 'My clues') : (libraryId === 'africa' ? '非洲线索' : libraryId === 'europe' ? '欧洲线索' : '我的线索')) : L.all) : categories.flatMap((category) => category.children).find((child) => child.id === activeCategoryId)?.name[language]}</h2></div><span className="gallery-count">{language === 'en' ? `${displayedClues.length} illustrated · ${textOnly.length} text-only` : `${displayedClues.length} 个图片线索 · ${textOnly.length} 个文字线索`}</span></div>
         {isGlobalLibrary && canChooseCountryClues && <div className="gallery-mode" role="group" aria-label={L.countryClueMode}>
           <button type="button" className={!showAllCountryClues ? 'active' : ''} aria-pressed={!showAllCountryClues} onClick={() => setShowAllCountryClues(false)}>{L.regionClues}</button>
           <button type="button" className={showAllCountryClues ? 'active' : ''} aria-pressed={showAllCountryClues} onClick={() => setShowAllCountryClues(true)}>{L.allCitedCountryClues}</button>

@@ -131,7 +131,7 @@ export function parseCustomLibrary(value: unknown): CustomLibrary {
   return { schemaVersion: 1, kind: CUSTOM_KIND, clues }
 }
 
-export function customClueToCard(item: CustomClue, source: 'personal' | 'africa' = 'personal'): Clue {
+export function customClueToCard(item: CustomClue, source: 'personal' | 'africa' | 'europe' = 'personal'): Clue {
   return {
     id: item.id, categoryId: item.categoryId, groupId: item.id, appearance: item.appearance, formalName: item.appearance,
     identify: source === 'africa' ? { en: 'Select when this visual feature is actually observed.', zh: '实际看见该视觉特征时选择。' } : { en: 'Your own visual observation.', zh: '你添加的视觉观察。' },

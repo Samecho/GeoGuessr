@@ -8,3 +8,5 @@ tuxundoc/
 
 .tmp/
 __pycache__/
+
+street-clues-Europe-tidied.json

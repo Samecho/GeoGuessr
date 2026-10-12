@@ -13,7 +13,7 @@ Node.js 22 is required for the site. Rebuilding the local data and image copies 
 | `npm run import:tuxundoc` | Read all chapters under the ignored, unmodified `tuxundoc/` archive |
 | `npm run data:curate` | Build the playable bilingual library from reviewed phrases, context corrections and image choices |
 | `npm run photos:prepare` | Resize all 5,860 source images into `public/source-images/` without cropping |
-| `npm run data:validate` | Check both built-in libraries, references, bilingual card wording, reviewed photo mapping, and the complete image set |
+| `npm run data:validate` | Check all built-in libraries, references, bilingual card wording, reviewed photo mapping, and the complete image set |
 | `npm run data:report` | Validate and regenerate `docs/DATA_COVERAGE.md` |
 | `npm run data:focus-report` | Regenerate the Canada/Africa chapter progress table |
 | `npm test` | Run inference and data regression tests |
@@ -36,6 +36,8 @@ To add a clue, verify the visible feature in its chapter, then add a bilingual l
 ## Libraries and editing
 
 The **Match clues / 匹配线索** tab offers a library picker. **Global library / 全球题库** is the original 133-candidate evidence model and is unchanged. **Africa library / 非洲题库** loads `public/libraries/africa.json` only when selected: 109 clues (69 pictured, 40 text-only) with the 14 African countries or covered areas documented in that reviewed JSON. It is a built-in, read-only library; its multipliers are estimated relative likelihoods, not measured frequencies. Other African places in the Global library are not silently added to the Africa library's candidate set. Each library keeps its own current observations; the manual geographic scope is shared and intersects the chosen library's candidates. See [Africa library provenance and limitations](docs/AFRICA_LIBRARY.md) and [the Africa Plus merge review](docs/AFRICA_PLUS_MERGE.md).
+
+The **Europe library / 欧洲题库** is a separate built-in preset based on the owner’s 38-country JSON. It contains 115 clues (42 with embedded images, 73 text-only), with revised bilingual labels and [candidate-aware likelihood estimates](docs/EUROPE_USER_LIBRARY.md). It has no European regional scheme yet.
 
 The **Edit library / 编辑题库** tab manages multiple named personal libraries. Create a new library, rename or switch it, then create bilingual clues, upload or paste images, and set separate relative likelihood multipliers for seeing or clearly not seeing a clue in a country or supported region. Each library is saved in IndexedDB and exports its own versioned JSON backup containing embedded images; import merges into the currently selected library. Choose **My library / 我的题库** and a personal library in Match clues to score with its clues. Existing single-library browser data is migrated automatically without dropping its clues or images. Personal data is never sent to the Pages host. See [personal library format and scoring](docs/CUSTOM_LIBRARY.md).
 

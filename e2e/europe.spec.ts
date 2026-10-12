@@ -1,0 +1,22 @@
+import { expect, test } from '@playwright/test'
+
+test('Europe library loads calibrated clues and keeps a separate observation set', async ({ page }) => {
+  test.setTimeout(90_000)
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Europe library' }).click()
+  await expect(page.locator('.tree-all')).toContainText('115', { timeout: 15_000 })
+  await expect(page.locator('.scope-inline .count-pill')).toHaveText('38')
+  const search = page.getByRole('searchbox', { name: 'Search clue labels' })
+  await search.fill('Website address ends in .fi')
+  const domain = page.locator('.text-clue').filter({ hasText: 'Website address ends in .fi' })
+  await expect(domain).toHaveCount(1)
+  await domain.locator('.text-clue-pick').click()
+  await expect(page.locator('.chart-card').first().locator('[data-rank-id]').first()).toHaveAttribute('data-rank-id', 'loc:finland')
+  await expect(page.locator('.chart-card').first()).toContainText('95.6%')
+  await page.getByRole('button', { name: 'Global library' }).click()
+  await expect(page.locator('.selection-chip')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Europe library' }).click()
+  await expect(page.locator('.selection-chip')).toHaveCount(1)
+  await page.getByRole('button', { name: 'Switch to Simplified Chinese' }).click()
+  await expect(page.locator('.selection-chip')).toContainText('以 .fi 结尾的网址')
+})
